@@ -2,8 +2,8 @@ const express = require("express");
 const db = require("./data/database");
 const dotenv = require("dotenv");
 
-const corsMiddleware = require("./middleware/cors");
-const errorHandlerMiddleware = require("./middleware/errorHandler");
+const corsMiddleware = require("./middlewares/cors");
+const errorHandlerMiddleware = require("./middlewares/errorHandler");
 
 const authRoutes = require("./routers/auth.routes");
 
