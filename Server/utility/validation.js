@@ -15,6 +15,17 @@ const registerValidation = (data) => {
 	return Joi.validate(data, schema);
 };
 
+//login validation
+const loginValidation = (data) => {
+	const schema = {
+		nim: Joi.number().required(),
+		password: Joi.string().required(),
+	};
+
+	return Joi.validate(data, schema);
+};
+
 module.exports = {
 	registerValidation,
+	loginValidation,
 };

@@ -55,7 +55,27 @@ const userRegister = async (req, res, next) => {
 	}
 };
 
-const userLogin = async (req, res, next) => {};
+const userLogin = async (req, res, next) => {
+	const { nim, password } = req.body;
+
+	const { error } = validation.loginValidation({
+		nim,
+		password,
+	});
+	if (error) return next(error.details[0].message);
+
+	try {
+		const user = await User.findOne({ nim });
+		if (!user) return next(new Error("User not found"));
+
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!isMatch) return next(new Error("Password is incorrect"));
+
+		res.json(user);
+	} catch (err) {
+		return next(err);
+	}
+};
 
 module.exports = {
 	register: userRegister,
