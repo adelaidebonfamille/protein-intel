@@ -16,19 +16,19 @@ const userSchema = new mongoose.Schema({
 	},
 	faculty: {
 		type: String,
-		required: false,
+		required: true,
 	},
 	major: {
 		type: String,
-		required: false,
+		required: true,
 	},
 	entryYear: {
 		type: Number,
-		required: false,
+		required: true,
 	},
 	phone: {
 		type: String,
-		required: false,
+		required: true,
 	},
 });
 
