@@ -7,4 +7,6 @@ router.patch("/", testController.saveTest);
 
 router.get("/", testController.findTest);
 
+router.post("/end", testController.endTest);
+
 module.exports = router;

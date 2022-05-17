@@ -1,4 +1,5 @@
 const Problem = require("../models/problem.model");
+const Test = require("../models/test.model");
 
 const readAllProblems = async (req, res, next) => {
 	try {
@@ -85,6 +86,18 @@ const updateProblemById = async (req, res, next) => {
 		});
 
 		res.json({ message: "Problem updated successfully" });
+	} catch (error) {
+		return next(error);
+	}
+};
+
+const getAllUserScore = async (req, res, next) => {
+	try {
+		const allUserScore = await Test.find({});
+		res.json({
+			message: "All user score delivered successfully",
+			userScore: allUserScore,
+		});
 	} catch (error) {
 		return next(error);
 	}
