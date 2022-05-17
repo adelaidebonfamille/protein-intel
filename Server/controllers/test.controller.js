@@ -71,7 +71,35 @@ const saveTestAnswer = async (req, res, next) => {
 	}
 };
 
+const findTestByNim = async (req, res, next) => {
+	const { nim } = req.user;
+
+	let test;
+	try {
+		test = await Test.findOne({ nim });
+	} catch (error) {
+		return next(error);
+	}
+
+	if (!test) {
+		return next(new Error("Test not found"));
+	}
+
+	if (test.testTime < new Date()) {
+		test.isTestOver = true;
+		test.save();
+		return next(new Error("Test is over"));
+	}
+
+	if (test.isTestOver) {
+		return next(new Error("Test is over"));
+	}
+
+	res.json({ message: "Test found successfully", test });
+};
+
 module.exports = {
 	startTest: startTest,
 	saveTest: saveTestAnswer,
+	findTest: findTestByNim,
 };
