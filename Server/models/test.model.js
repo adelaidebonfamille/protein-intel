@@ -10,8 +10,12 @@ const TestSchema = new mongoose.Schema({
 		type: Array,
 		required: true,
 	},
-	testEnd: {
+	testTime: {
 		type: Date,
+		required: true,
+	},
+	isTestOver: {
+		type: Boolean,
 		required: true,
 	},
 });

@@ -1,4 +1,4 @@
-const Problem = require("./../models/problem.model");
+const Problem = require("../models/problem.model");
 const Test = require("../models/test.model");
 
 const startTest = async (req, res, next) => {
@@ -28,7 +28,8 @@ const startTest = async (req, res, next) => {
 		const test = new Test({
 			nim,
 			testAnswer,
-			testEnd: time,
+			testTime: time,
+			isTestOver: false,
 		});
 		await test.save();
 		res.json({ message: "Test started successfully", userTest: test });
@@ -38,5 +39,5 @@ const startTest = async (req, res, next) => {
 };
 
 module.exports = {
-	start: startTest,
+	startTest: startTest,
 };

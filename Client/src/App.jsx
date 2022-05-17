@@ -3,6 +3,9 @@ import axios from "axios";
 import styles from "./App.module.css";
 
 function App() {
+	const [selectedFile, setSelectedFile] = useState(null);
+	const [clicks, setClicks] = useState(0);
+
 	const name = useRef();
 	const nim = useRef();
 	const password = useRef();
@@ -12,7 +15,6 @@ function App() {
 	const entryYear = useRef();
 	const phone = useRef();
 
-	const [selectedFile, setSelectedFile] = useState(null);
 	const registerHandler = async (e) => {
 		e.preventDefault();
 		const formData = new FormData();
@@ -51,8 +53,16 @@ function App() {
 		setSelectedFile(event.target.files[0]);
 	};
 
+	const clicksHandler = () => {
+		setClicks((prevClicks) => prevClicks + 1);
+	};
+
 	return (
 		<>
+			<div>
+				<button onClick={clicksHandler}>Clicks : {clicks}</button>
+			</div>
+
 			<form className={styles.form} onSubmit={registerHandler}>
 				<label htmlFor="name">Nama</label>
 				<input type="text" name="name" id="name" ref={name} />
