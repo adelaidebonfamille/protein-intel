@@ -26,11 +26,18 @@ const problemFileUpload = multer({
 		cb(null, "problem_" + uuid() + "_" + file.originalname);
 	},
 	fileFilter: (req, file, cb) => {
-		if (file.mimetype === ".mp3") {
+		if (
+			file.mimetype === ".mp3" ||
+			file.mimetype === ".jpg" ||
+			file.mimetype === ".png" ||
+			file.mimetype === ".jpeg"
+		) {
 			cb(null, true);
 		} else {
 			cb(null, false);
-			return cb(new Error("only .mp3 file are allowed!"));
+			return cb(
+				new Error("only mp3, jpg, jpeg or png file are allowed!")
+			);
 		}
 	},
 });
