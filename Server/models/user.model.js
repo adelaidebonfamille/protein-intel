@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	kpm: {
+		type: String,
+		required: true,
+	},
 	entryYear: {
 		type: Number,
 		required: true,

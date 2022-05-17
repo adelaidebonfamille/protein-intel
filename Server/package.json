@@ -5,7 +5,8 @@
 		"express": "^4.18.1",
 		"joi": "^17.6.0",
 		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^6.3.3"
+		"mongoose": "^6.3.3",
+		"multer": "^1.4.4"
 	},
 	"name": "protein-new",
 	"version": "1.0.0",

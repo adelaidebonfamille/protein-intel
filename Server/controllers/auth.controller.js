@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 
 const validation = require("../utility/validation");
 
+const generateToken = require("../utility/generate-token");
+
 const User = require("../models/user.model");
 
 const userRegister = async (req, res, next) => {
@@ -15,6 +17,7 @@ const userRegister = async (req, res, next) => {
 		entryYear,
 		phone,
 	} = req.body;
+	const kpm = req.file.filename;
 
 	//check if password and confirmPassword are the same
 	if (password !== confirmPassword) {
@@ -45,11 +48,12 @@ const userRegister = async (req, res, next) => {
 		major,
 		entryYear,
 		phone,
+		kpm,
 	});
 
 	try {
-		const savedUser = await user.save();
-		res.json(savedUser);
+		await user.save();
+		res.json({ message: "User created successfully" });
 	} catch (err) {
 		return next(err);
 	}
@@ -71,7 +75,12 @@ const userLogin = async (req, res, next) => {
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) return next(new Error("Password is incorrect"));
 
-		res.json(user);
+		const token = generateToken(user.nim);
+
+		res.json({
+			message: "User logged in successfully",
+			token,
+		});
 	} catch (err) {
 		return next(err);
 	}
