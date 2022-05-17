@@ -1,10 +1,11 @@
 const multer = require("multer");
+const uuid = require("uuid").v4;
 
 const kpmUpload = multer({
 	storage: multer.diskStorage({
 		destination: "user-data/kpm",
 		filename: function (req, file, cb) {
-			cb(null, req.body.nim + "-" + file.originalname);
+			cb(null, uuid() + "-" + file.originalname);
 		},
 	}),
 });
