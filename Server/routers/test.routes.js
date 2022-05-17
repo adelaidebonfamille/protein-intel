@@ -9,4 +9,6 @@ router.get("/", testController.findTest);
 
 router.post("/end", testController.endTest);
 
+router.get("/problems", testController.getTestProblems);
+
 module.exports = router;

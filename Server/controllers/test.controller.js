@@ -4,6 +4,44 @@ const Score = require("../models/score.model");
 
 const calculateScore = require("../utility/calculate-score");
 
+const getTestProblems = async (req, res, next) => {
+	try {
+		const testProblems = await Problem.find({}, { answers: 0 });
+
+		const readingProblem = testProblems.filter((problem) => {
+			return problem.type === "reading";
+		});
+		const listeningProblem = testProblems.filter((problem) => {
+			return problem.type === "listening";
+		});
+		const structureProblem = testProblems.filter((problem) => {
+			return problem.type === "structure";
+		});
+
+		//randomize the order of the problems
+		const readingProblemRandom = readingProblem.sort(() => {
+			return 0.5 - Math.random();
+		});
+		const listeningProblemRandom = listeningProblem.sort(() => {
+			return 0.5 - Math.random();
+		});
+		const structureProblemRandom = structureProblem.sort(() => {
+			return 0.5 - Math.random();
+		});
+
+		res.json({
+			message: "All test problems delivered successfully",
+			problems: {
+				reading: readingProblemRandom,
+				listening: listeningProblemRandom,
+				structure: structureProblemRandom,
+			},
+		});
+	} catch (error) {
+		return next(error);
+	}
+};
+
 const startTest = async (req, res, next) => {
 	const { nim } = req.user;
 
@@ -18,7 +56,7 @@ const startTest = async (req, res, next) => {
 	allProblems.forEach((problem) => {
 		testAnswers.push({
 			problemId: problem._id,
-			answer: "X",
+			answer: "",
 		});
 	});
 
@@ -57,17 +95,18 @@ const saveTestAnswer = async (req, res, next) => {
 
 	if (test.testTime < new Date()) {
 		test.isTestOver = true;
+		await test.save();
 	}
 
 	if (test.isTestOver) {
 		try {
-			await test.save();
 			const score = calculateScore(testAnswers);
 
 			const newScore = new Score({
 				nim,
 				score,
 			});
+
 			await newScore.save();
 
 			res.json({ message: "Test ended successfully", score });
@@ -104,11 +143,23 @@ const findTestByNim = async (req, res, next) => {
 	if (test.testTime < new Date()) {
 		test.isTestOver = true;
 		test.save();
-		return next(new Error("Test is over"));
 	}
 
 	if (test.isTestOver) {
-		return next(new Error("Test is over"));
+		try {
+			const score = calculateScore(test.answers);
+
+			const newScore = new Score({
+				nim,
+				score,
+			});
+
+			await newScore.save();
+
+			res.json({ message: "Test ended successfully", score });
+		} catch (error) {
+			return next(error);
+		}
 	}
 
 	res.json({ message: "Test found successfully", test });
@@ -153,4 +204,5 @@ module.exports = {
 	saveTest: saveTestAnswer,
 	findTest: findTestByNim,
 	endTest: endTestAndCalculateScore,
+	getTestProblems: getTestProblems,
 };
