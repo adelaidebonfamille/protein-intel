@@ -4,6 +4,7 @@ import axios from "axios";
 function App() {
 	const [selectedFile, setSelectedFile] = useState(null);
 	const registerHandler = async (e) => {
+		e.preventDefault();
 		const formData = new FormData({
 			name: e.target.name.value,
 			nim: e.target.nim.value,
@@ -77,6 +78,7 @@ function App() {
 					name="kpm"
 					id="kpm"
 					accept=".pdf,.doc,.docx,application/msword"
+					onChange={fileChangedHandler}
 				/>
 
 				<label htmlFor="phone">Nomor Telpon</label>
