@@ -1,5 +1,14 @@
 const Problem = require("../models/problem.model");
 
+const readAllProblems = async (req, res, next) => {
+	try {
+		const allProblems = await Problem.find({});
+		res.json(allProblems);
+	} catch (error) {
+		return next(error);
+	}
+};
+
 const addProblem = async (req, res, next) => {
 	const { description, key, type } = req.body;
 	const associatedFile = req.file.filename;
@@ -33,6 +42,19 @@ const addProblem = async (req, res, next) => {
 	}
 };
 
+const deleteProblemById = async (req, res, next) => {
+	const { id } = req.params;
+	try {
+		await Problem.findByIdAndDelete(id);
+
+		res.json({ message: "Problem deleted successfully" });
+	} catch (error) {
+		return next(error);
+	}
+};
+
 module.exports = {
 	createProblem: addProblem,
+	getAllProblems: readAllProblems,
+	deleteProblem: deleteProblemById,
 };
