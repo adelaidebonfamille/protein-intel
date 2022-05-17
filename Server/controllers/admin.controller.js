@@ -15,6 +15,10 @@ const addProblem = async (req, res, next) => {
 		associatedFile = "";
 	}
 
+	if (type !== "listening" || type !== "reading" || type !== "structure") {
+		return next(new Error("Type must be listening, reading or structure"));
+	}
+
 	try {
 		const problem = new Problem({
 			description,

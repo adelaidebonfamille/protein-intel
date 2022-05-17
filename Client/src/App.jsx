@@ -53,7 +53,7 @@ function App() {
 
 	return (
 		<>
-			<form className={styles.form}>
+			<form className={styles.form} onSubmit={registerHandler}>
 				<label htmlFor="name">Nama</label>
 				<input type="text" name="name" id="name" ref={name} />
 
@@ -104,6 +104,8 @@ function App() {
 
 				<button>Submit</button>
 			</form>
+
+			<form></form>
 		</>
 	);
 }
