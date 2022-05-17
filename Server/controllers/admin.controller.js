@@ -14,7 +14,7 @@ const readAllProblems = async (req, res, next) => {
 
 const addProblem = async (req, res, next) => {
 	const { description, key, type } = req.body;
-	const associatedFile = req.file.filename;
+	const associatedFile = `/problems/files/${req.file.filename}`;
 
 	const { error } = validation.addProblemValidation({
 		description,
