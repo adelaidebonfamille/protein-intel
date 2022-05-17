@@ -25,7 +25,16 @@ const loginValidation = (data) => {
 	return schema.validate(data);
 };
 
+const addProblemValidation = (data) => {
+	const schema = Joi.object({
+		description: Joi.string().required(),
+		key: Joi.string().required(),
+		type: Joi.string().required(),
+	});
+};
+
 module.exports = {
 	registerValidation,
 	loginValidation,
+	addProblemValidation,
 };

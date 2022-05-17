@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-let mongodbUrl =
-	"mongodb+srv://azie-dev:azie122333@azie-database.yfjgj.mongodb.net/intelprotein?retryWrites=true&w=majority";
+let mongodbUrl = process.env.DEV_DATABASE;
 
 async function connectToDatabase() {
 	if (process.env.DB_CONNECT) {
