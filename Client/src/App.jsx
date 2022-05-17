@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
+import styles from "./App.module.css";
 
 function App() {
 	const name = useRef();
@@ -51,8 +52,8 @@ function App() {
 	};
 
 	return (
-		<div className="App" onSubmit={registerHandler}>
-			<form>
+		<>
+			<form className={styles.form}>
 				<label htmlFor="name">Nama</label>
 				<input type="text" name="name" id="name" ref={name} />
 
@@ -103,7 +104,7 @@ function App() {
 
 				<button>Submit</button>
 			</form>
-		</div>
+		</>
 	);
 }
 

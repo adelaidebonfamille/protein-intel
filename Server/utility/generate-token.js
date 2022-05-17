@@ -7,4 +7,4 @@ const generateUserToken = (data) => {
 	return token;
 };
 
-module.exports = generateToken;
+module.exports = generateUserToken;
