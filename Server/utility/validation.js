@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 //register validation
 const registerValidation = (data) => {
-	const schema = {
+	const schema = Joi.object({
 		nim: Joi.number().required(),
 		password: Joi.string().required(),
 		name: Joi.string().required(),
@@ -10,19 +10,19 @@ const registerValidation = (data) => {
 		major: Joi.string().required(),
 		entryYear: Joi.number().required(),
 		phone: Joi.string().required(),
-	};
+	});
 
-	return Joi.validate(data, schema);
+	return schema.validate(data);
 };
 
 //login validation
 const loginValidation = (data) => {
-	const schema = {
+	const schema = Joi.object({
 		nim: Joi.number().required(),
 		password: Joi.string().required(),
-	};
+	});
 
-	return Joi.validate(data, schema);
+	return schema.validate(data);
 };
 
 module.exports = {
