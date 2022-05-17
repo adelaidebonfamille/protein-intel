@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 
 const corsMiddleware = require("./middlewares/cors");
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
+const verifyTokenMiddleware = require("./middlewares/verifyToken");
 
 const authRoutes = require("./routers/auth.routes");
 
@@ -16,6 +17,8 @@ app.use(corsMiddleware);
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+
+app.use(verifyTokenMiddleware);
 
 app.use(errorHandlerMiddleware);
 
