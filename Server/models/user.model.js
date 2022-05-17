@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
 	nim: {
-		type: Number,
+		type: String,
 		required: true,
 		unique: true,
 	},

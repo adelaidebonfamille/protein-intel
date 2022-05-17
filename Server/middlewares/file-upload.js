@@ -5,7 +5,7 @@ const kpmUpload = multer({
 	storage: multer.diskStorage({
 		destination: "user-data/kpm",
 		filename: function (req, file, cb) {
-			cb(null, uuid() + "-" + file.originalname);
+			cb(null, uuid() + "_" + file.originalname);
 		},
 	}),
 });
