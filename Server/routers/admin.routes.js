@@ -12,4 +12,6 @@ router.post(
 
 router.delete("/problems/:id", adminController.deleteProblem);
 
+router.patch("/problems/:id", adminController.updateProblem);
+
 module.exports = router;

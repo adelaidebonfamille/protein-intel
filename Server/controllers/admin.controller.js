@@ -56,8 +56,43 @@ const deleteProblemById = async (req, res, next) => {
 	}
 };
 
+const updateProblemById = async (req, res, next) => {
+	const { id } = req.params;
+	const { description, key, type } = req.body;
+	const associatedFile = `/problems/files/${req.file.filename}`;
+
+	const { error } = validation.addProblemValidation({
+		description,
+		key,
+		type,
+	});
+	if (error) return next(error.details[0].message);
+
+	if (!associatedFile) {
+		associatedFile = "";
+	}
+
+	if (type !== "listening" || type !== "reading" || type !== "structure") {
+		return next(new Error("Type must be listening, reading or structure"));
+	}
+
+	try {
+		await Problem.findByIdAndUpdate(id, {
+			description,
+			key,
+			associatedFile,
+			type,
+		});
+
+		res.json({ message: "Problem updated successfully" });
+	} catch (error) {
+		return next(error);
+	}
+};
+
 module.exports = {
 	createProblem: addProblem,
+	updateProblem: updateProblemById,
 	getAllProblems: readAllProblems,
 	deleteProblem: deleteProblemById,
 };
