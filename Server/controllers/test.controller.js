@@ -29,7 +29,6 @@ const startTest = async (req, res, next) => {
 			nim,
 			testAnswer,
 			testTime: time,
-			isTestOver: false,
 		});
 		await test.save();
 		res.json({ message: "Test started successfully", userTest: test });
@@ -38,6 +37,41 @@ const startTest = async (req, res, next) => {
 	}
 };
 
+const saveTestAnswer = async (req, res, next) => {
+	const { nim } = req.user;
+	const { testAnswer } = req.body;
+
+	let test;
+	try {
+		test = await Test.findOne({ nim });
+	} catch (error) {
+		return next(error);
+	}
+
+	if (!test) {
+		return next(new Error("Test not found"));
+	}
+
+	if (test.testTime < new Date()) {
+		test.isTestOver = true;
+		return next(new Error("Test is over"));
+	}
+
+	if (test.isTestOver) {
+		return next(new Error("Test is over"));
+	}
+
+	test.testAnswer = testAnswer;
+
+	try {
+		await test.save();
+		res.json({ message: "Test answer saved successfully" });
+	} catch (error) {
+		return next(error);
+	}
+};
+
 module.exports = {
 	startTest: startTest,
+	saveTest: saveTestAnswer,
 };

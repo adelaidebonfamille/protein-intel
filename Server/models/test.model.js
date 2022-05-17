@@ -17,6 +17,7 @@ const TestSchema = new mongoose.Schema({
 	isTestOver: {
 		type: Boolean,
 		required: true,
+		default: false,
 	},
 });
 
