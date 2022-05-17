@@ -75,7 +75,10 @@ const userLogin = async (req, res, next) => {
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) return next(new Error("Password is incorrect"));
 
-		const token = generateToken(user.nim);
+		const token = generateToken({
+			nim: user.nim,
+			role: "user",
+		});
 
 		res.json({
 			message: "User logged in successfully",
@@ -86,7 +89,25 @@ const userLogin = async (req, res, next) => {
 	}
 };
 
+const adminLogin = (req, res, next) => {
+	const { username, password } = req.body;
+
+	if (username !== "admin" || password !== "HarusRandombiargakbocor007") {
+		return next(new Error("Username or Password is incorrect"));
+	}
+
+	const token = generateToken({
+		role: "admin",
+	});
+
+	res.json({
+		message: "Admin Successfully Logged In",
+		token,
+	});
+};
+
 module.exports = {
 	register: userRegister,
 	login: userLogin,
+	admin: adminLogin,
 };

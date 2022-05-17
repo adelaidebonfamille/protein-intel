@@ -11,4 +11,6 @@ router.post(
 
 router.post("/login", authController.login);
 
+router.post("/admin", authController.admin);
+
 module.exports = router;
