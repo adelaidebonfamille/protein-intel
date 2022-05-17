@@ -3,7 +3,10 @@ const Problem = require("../models/problem.model");
 const readAllProblems = async (req, res, next) => {
 	try {
 		const allProblems = await Problem.find({});
-		res.json(allProblems);
+		res.json({
+			message: "All problems delivered successfully",
+			problems: allProblems,
+		});
 	} catch (error) {
 		return next(error);
 	}
