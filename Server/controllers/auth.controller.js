@@ -26,6 +26,10 @@ const userRegister = async (req, res, next) => {
 		);
 	}
 
+	if (!kpm) {
+		return next(new Error("There are no Kpm file Attached"));
+	}
+
 	const { error } = validation.registerValidation({
 		nim,
 		password,

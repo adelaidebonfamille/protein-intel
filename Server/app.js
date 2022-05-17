@@ -5,8 +5,10 @@ const dotenv = require("dotenv");
 const corsMiddleware = require("./middlewares/cors");
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 const verifyTokenMiddleware = require("./middlewares/verifyToken");
+const verifyRolesMiddleware = require("./middlewares/verifyRoles");
 
 const authRoutes = require("./routers/auth.routes");
+const adminRoutes = require("./routers/admin.routes");
 
 const app = express();
 
@@ -15,12 +17,13 @@ dotenv.config();
 app.use(corsMiddleware);
 
 app.use(express.json());
-
-app.use();
+app.use("/problems/files", express.static("/problem-data/files"));
 
 app.use("/api/auth", authRoutes);
 
 app.use(verifyTokenMiddleware);
+
+app.use("/api/admin", verifyRolesMiddleware.bind(null, "admin"), adminRoutes);
 
 app.use(errorHandlerMiddleware);
 

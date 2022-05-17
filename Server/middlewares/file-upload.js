@@ -20,7 +20,7 @@ const kpmUpload = multer({
 
 const problemFileUpload = multer({
 	storage: multer.diskStorage({
-		destination: "problem-data/",
+		destination: "/problem-data/files",
 	}),
 	filename: (req, file, cb) => {
 		cb(null, "problem_" + uuid() + "_" + file.originalname);

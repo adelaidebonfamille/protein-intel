@@ -13,10 +13,6 @@ const problemSchema = new mongoose.Schema({
 		type: String,
 		required: false,
 	},
-	associatedFileType: {
-		type: String,
-		required: false,
-	},
 	type: {
 		type: String,
 		required: true,
