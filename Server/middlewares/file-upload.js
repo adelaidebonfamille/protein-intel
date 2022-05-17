@@ -8,6 +8,14 @@ const kpmUpload = multer({
 			cb(null, uuid() + "_" + file.originalname);
 		},
 	}),
+	fileFilter: (req, file, cb) => {
+		if (file.mimetype === ".pdf") {
+			cb(null, true);
+		} else {
+			cb(null, false);
+			return cb(new Error("only .pdf file are allowed!"));
+		}
+	},
 });
 
 const configuredKpmUpload = kpmUpload.single("kpm");

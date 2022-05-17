@@ -52,11 +52,7 @@ function App() {
 
 	return (
 		<div className="App" onSubmit={registerHandler}>
-			<form
-				action="http://localhost:5000/api/auth/register"
-				method="post"
-				encType="multipart/form-data"
-			>
+			<form>
 				<label htmlFor="name">Nama</label>
 				<input type="text" name="name" id="name" ref={name} />
 
@@ -101,7 +97,7 @@ function App() {
 					type="file"
 					name="kpm"
 					id="kpm"
-					accept=".pdf,.doc,.docx,application/msword"
+					accept=".pdf"
 					onChange={fileChangedHandler}
 				/>
 
