@@ -10,6 +10,7 @@ const verifyRolesMiddleware = require("./middlewares/verifyRoles");
 const authRoutes = require("./routers/auth.routes");
 const adminRoutes = require("./routers/admin.routes");
 const testRoutes = require("./routers/test.routes");
+const userRoutes = require("./routers/user.routes");
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use("/api/auth", authRoutes);
 app.use(verifyTokenMiddleware);
 
 app.use("/api/admin", verifyRolesMiddleware.bind(null, "admin"), adminRoutes);
+
+app.use("/api/user", userRoutes);
 
 app.use("/api/test", verifyRolesMiddleware.bind(null, "user"), testRoutes);
 
