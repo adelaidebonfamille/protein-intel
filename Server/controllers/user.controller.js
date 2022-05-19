@@ -1,4 +1,5 @@
 const Problem = require("../models/problem.model");
+const Score = require("../models/score.model");
 
 const getTestProblems = async (req, res, next) => {
 	try {
@@ -42,7 +43,7 @@ const getTestProblems = async (req, res, next) => {
 };
 
 const updateUserData = async (req, res, next) => {
-	const { userId } = req.params;
+	const { id: userId } = req.params;
 	const { data } = req.body;
 	if (req.file.filename) {
 		data.kpm = req.file.filename;
@@ -56,7 +57,21 @@ const updateUserData = async (req, res, next) => {
 	}
 };
 
+const getUserScore = async (req, res, next) => {
+	const { id: userId } = req.params;
+	try {
+		const userScore = await Score.find({ userId });
+		res.json({
+			message: "User score delivered successfully",
+			userScore: userScore,
+		});
+	} catch (error) {
+		return next(error);
+	}
+};
+
 module.exports = {
 	getTestProblems,
 	updateUserData,
+	getUserScore,
 };
