@@ -6,11 +6,11 @@ const fileUploadMiddleware = require("../middlewares/file-upload");
 router.get("/problems", userController.getTestProblems);
 
 router.patch(
-	"/profile/:id",
+	"/profile",
 	fileUploadMiddleware.kpmUpload,
 	userController.updateUserData
 );
 
-router.get("/scores/:id", userController.getUserScore);
+router.get("/scores", userController.getUserScore);
 
 module.exports = router;

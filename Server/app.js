@@ -27,7 +27,7 @@ app.use(verifyTokenMiddleware);
 
 app.use("/api/admin", verifyRolesMiddleware.bind(null, "admin"), adminRoutes);
 
-app.use("/api/user", userRoutes);
+app.use("/api/user", verifyRolesMiddleware.bind(null, "user"), userRoutes);
 
 app.use("/api/test", verifyRolesMiddleware.bind(null, "user"), testRoutes);
 
