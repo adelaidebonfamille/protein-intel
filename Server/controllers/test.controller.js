@@ -4,50 +4,20 @@ const Score = require("../models/score.model");
 
 const calculateScore = require("../utility/calculate-score");
 
-const getTestProblems = async (req, res, next) => {
-	try {
-		const testProblems = await Problem.find({}, { answers: 0 });
-
-		const readingProblem = testProblems.filter((problem) => {
-			return problem.type === "reading";
-		});
-		const listeningProblem = testProblems.filter((problem) => {
-			return problem.type === "listening";
-		});
-		const structureProblem = testProblems.filter((problem) => {
-			return problem.type === "structure";
-		});
-
-		//randomize the order of the problems
-		const readingProblemRandom = readingProblem.sort(() => {
-			return 0.5 - Math.random();
-		});
-		const listeningProblemRandom = listeningProblem.sort(() => {
-			return 0.5 - Math.random();
-		});
-		const structureProblemRandom = structureProblem.sort(() => {
-			return 0.5 - Math.random();
-		});
-
-		res.json({
-			message: "All test problems delivered successfully",
-			problems: {
-				reading: readingProblemRandom,
-				listening: listeningProblemRandom,
-				structure: structureProblemRandom,
-			},
-		});
-	} catch (error) {
-		return next(error);
-	}
-};
-
 const startTest = async (req, res, next) => {
 	const { nim } = req.user;
 
+	const existingTest = await Test.findOne({ nim });
+	if (existingTest) {
+		return res.json({
+			message: "Test have been started already",
+			test: existingTest,
+		});
+	}
+
 	let allProblems;
 	try {
-		allProblems = await Problem.find({});
+		allProblems = await Problem.find({}, { key: 0 });
 	} catch (error) {
 		return next(error);
 	}
@@ -204,5 +174,4 @@ module.exports = {
 	saveTest: saveTestAnswer,
 	findTest: findTestByNim,
 	endTest: endTestAndCalculateScore,
-	getTestProblems: getTestProblems,
 };

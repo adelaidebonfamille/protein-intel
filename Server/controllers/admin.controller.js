@@ -108,4 +108,5 @@ module.exports = {
 	updateProblem: updateProblemById,
 	getAllProblems: readAllProblems,
 	deleteProblem: deleteProblemById,
+	getAllScore: getAllUserScore,
 };

@@ -7,17 +7,7 @@ const generateToken = require("../utility/generate-token");
 const User = require("../models/user.model");
 
 const userRegister = async (req, res, next) => {
-	const {
-		nim,
-		password,
-		confirmPassword,
-		name,
-		faculty,
-		major,
-		entryYear,
-		phone,
-	} = req.body;
-	const kpm = req.file.filename;
+	const { nim, password, confirmPassword, name } = req.body;
 
 	//check if password and confirmPassword are the same
 	if (password !== confirmPassword) {
@@ -34,10 +24,6 @@ const userRegister = async (req, res, next) => {
 		nim,
 		password,
 		name,
-		faculty,
-		major,
-		entryYear,
-		phone,
 	});
 	if (error) return next(error.details[0].message);
 
@@ -48,11 +34,6 @@ const userRegister = async (req, res, next) => {
 		nim,
 		password: hashedPassword,
 		name,
-		faculty,
-		major,
-		entryYear,
-		phone,
-		kpm,
 	});
 
 	try {

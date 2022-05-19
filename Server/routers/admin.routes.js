@@ -14,4 +14,6 @@ router.delete("/problems/:id", adminController.deleteProblem);
 
 router.patch("/problems/:id", adminController.updateProblem);
 
+router.get("/scores", adminController.getAllScore);
+
 module.exports = router;

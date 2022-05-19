@@ -16,23 +16,23 @@ const userSchema = new mongoose.Schema({
 	},
 	faculty: {
 		type: String,
-		required: true,
+		required: false,
 	},
 	major: {
 		type: String,
-		required: true,
+		required: false,
 	},
 	kpm: {
 		type: String,
-		required: true,
+		required: false,
 	},
 	entryYear: {
 		type: Number,
-		required: true,
+		required: false,
 	},
 	phone: {
 		type: String,
-		required: true,
+		required: false,
 	},
 });
 
