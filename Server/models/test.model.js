@@ -19,6 +19,10 @@ const TestSchema = new mongoose.Schema({
 		required: true,
 		default: false,
 	},
+	batch: {
+		type: String,
+		required: true,
+	},
 });
 
 module.exports = mongoose.model("Test", TestSchema);

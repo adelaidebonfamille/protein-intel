@@ -1,11 +1,23 @@
 const Problem = require("../models/problem.model");
 const Test = require("../models/test.model");
 const Score = require("../models/score.model");
+const Batch = require("../models/batch.model");
 
 const calculateScore = require("../utility/calculate-score");
 
 const startTest = async (req, res, next) => {
 	const { nim } = req.user;
+	const { batch } = req.body;
+
+	let isBatchExist;
+	try {
+		isBatchExist = await Batch.findOne({ batch });
+	} catch (error) {
+		return next(error);
+	}
+	if (!isBatchExist.isActive) {
+		return next(new Error("Batch not found or inactive"));
+	}
 
 	const existingTest = await Test.findOne({ nim });
 	if (existingTest) {
