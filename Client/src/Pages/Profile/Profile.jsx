@@ -69,6 +69,9 @@ const Profile = () => {
 				<label htmlFor="nim">NIM</label>
 				<input type="text" name="nim" id="nim" ref={nim} />
 
+				<label htmlFor="email">Email</label>
+				<input type="email" id="email" name="email" />
+
 				<label htmlFor="password">Password</label>
 				<input
 					type="password"

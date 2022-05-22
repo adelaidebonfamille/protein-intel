@@ -1,34 +1,36 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 
 const Navbar = () => {
 	return (
 		<nav className={styles.nav}>
 			<div>
-				<h4>Protein Intel</h4>
+				<h4>
+					<Link to={"/"}>Protein Intel</Link>
+				</h4>
 			</div>
 			<ul className={styles.link1}>
 				<li>
-					<a href="">Home</a>
+					<Link to={"/"}>Home</Link>
 				</li>
 				<li>
-					<a href="">Product</a>
+					<Link to={"/exam"}>Start Exam</Link>
 				</li>
 				<li>
-					<a href="">Features</a>
-				</li>
-				<li>
-					<a href="">Pricing</a>
+					<a href="https://intel.ilkom.unsri.ac.id/">
+						Intel Official Website
+					</a>
 				</li>
 			</ul>
 			<ul className={styles.link2}>
 				<li>
-					<a href="">Sign In</a>
+					<Link to={"/login"}>Sign In</Link>
 				</li>
 				<li>
-					<a href="">
+					<Link to={"/Register"}>
 						<button>Register</button>
-					</a>
+					</Link>
 				</li>
 			</ul>
 		</nav>
