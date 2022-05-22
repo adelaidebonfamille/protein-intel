@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
-import styles from "./profile.module.css";
+import styles from "./Profile.module.css";
 
 const Profile = () => {
 	const [selectedFile, setSelectedFile] = useState(null);
@@ -20,10 +20,6 @@ const Profile = () => {
 		const formData = new FormData();
 
 		formData.append("kpm", selectedFile);
-		formData.append("name", name.current.value);
-		formData.append("nim", nim.current.value);
-		formData.append("password", password.current.value);
-		formData.append("confirmPassword", confirmPassword.current.value);
 		formData.append("faculty", faculty.current.value);
 		formData.append("major", major.current.value);
 		formData.append("entryYear", entryYear.current.value);
@@ -57,35 +53,39 @@ const Profile = () => {
 		setClicks((prevClicks) => prevClicks + 1);
 	};
 	return (
-		<div>
+		<div className={styles.container}>
 			<div>
 				<button onClick={clicksHandler}>Clicks : {clicks}</button>
 			</div>
 
 			<form className={styles.form} onSubmit={registerHandler}>
 				<label htmlFor="name">Nama</label>
-				<input type="text" name="name" id="name" ref={name} />
-
-				<label htmlFor="nim">NIM</label>
-				<input type="text" name="nim" id="nim" ref={nim} />
-
-				<label htmlFor="email">Email</label>
-				<input type="email" id="email" name="email" />
-
-				<label htmlFor="password">Password</label>
 				<input
-					type="password"
-					name="password"
-					id="password"
-					ref={password}
+					type="text"
+					name="name"
+					value={"Azie Melza Pratama"}
+					disabled
+					id="name"
+					ref={name}
 				/>
 
-				<label htmlFor="confirmPassword">Confirm Password</label>
+				<label htmlFor="nim">NIM</label>
 				<input
-					type="password"
-					name="confirmPassword"
-					id="confirmPassword"
-					ref={confirmPassword}
+					type="text"
+					name="nim"
+					value={"0000XXXXXXXXXX"}
+					disabled
+					id="nim"
+					ref={nim}
+				/>
+
+				<label htmlFor="email">Email</label>
+				<input
+					type="email"
+					id="email"
+					value={"masuksorga21@gmail.com"}
+					disabled
+					name="email"
 				/>
 
 				<label htmlFor="faculty">Fakultas</label>
@@ -115,6 +115,27 @@ const Profile = () => {
 				/>
 
 				<button>Submit</button>
+			</form>
+
+			<div className={styles.border}></div>
+
+			<form action="" className={styles.form}>
+				<h3>Ganti Password</h3>
+				<label htmlFor="password">Password</label>
+				<input
+					type="password"
+					name="password"
+					id="password"
+					ref={password}
+				/>
+
+				<label htmlFor="confirmPassword">Confirm Password</label>
+				<input
+					type="password"
+					name="confirmPassword"
+					id="confirmPassword"
+					ref={confirmPassword}
+				/>
 			</form>
 		</div>
 	);
