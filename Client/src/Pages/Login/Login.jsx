@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styles from "./Login.module.css";
 
 const Login = () => {
@@ -13,7 +14,8 @@ const Login = () => {
 							<div className={styles["input-field"]}>
 								<input
 									type="text"
-									placeholder="Masukkan NIM"
+									placeholder="Masukkan Email"
+									name="email"
 									required
 								/>
 							</div>
@@ -29,6 +31,7 @@ const Login = () => {
 									Lupa password?
 								</a>
 							</div>
+
 							<div
 								className={`${styles["input-field"]} ${styles.button}`}
 							>
@@ -38,12 +41,12 @@ const Login = () => {
 						<div className={styles["login-signup"]}>
 							<span className={styles.text}>
 								Belum daftar?{"  "}
-								<a
-									href="registrasi.html"
+								<Link
+									to={"/register"}
 									className={`${styles.text} ${styles["signup-text"]}`}
 								>
 									Registrasi disini
-								</a>
+								</Link>
 							</span>
 						</div>
 					</div>

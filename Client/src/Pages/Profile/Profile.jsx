@@ -4,7 +4,6 @@ import styles from "./Profile.module.css";
 
 const Profile = () => {
 	const [selectedFile, setSelectedFile] = useState(null);
-	const [clicks, setClicks] = useState(0);
 
 	const name = useRef();
 	const nim = useRef();
@@ -48,16 +47,8 @@ const Profile = () => {
 	const fileChangedHandler = (event) => {
 		setSelectedFile(event.target.files[0]);
 	};
-
-	const clicksHandler = () => {
-		setClicks((prevClicks) => prevClicks + 1);
-	};
 	return (
 		<div className={styles.container}>
-			<div>
-				<button onClick={clicksHandler}>Clicks : {clicks}</button>
-			</div>
-
 			<form className={styles.form} onSubmit={registerHandler}>
 				<label htmlFor="name">Nama</label>
 				<input
