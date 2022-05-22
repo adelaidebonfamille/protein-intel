@@ -18,6 +18,9 @@ const Navbar = () => {
 					<Link to={"/exam"}>Start Exam</Link>
 				</li>
 				<li>
+					<Link to={"/profile"}>Profile</Link>
+				</li>
+				<li>
 					<a href="https://intel.ilkom.unsri.ac.id/">
 						Intel Official Website
 					</a>
