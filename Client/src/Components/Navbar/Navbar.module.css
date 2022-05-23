@@ -1,58 +1,58 @@
 .nav {
-	display: flex;
-	background-color: white;
-	justify-content: space-around;
-	color: black;
-	align-items: center;
-	padding: 1rem 0;
-	font-family: "Inter", sans-serif;
+  display: flex;
+  background-color: white;
+  justify-content: space-around;
+  color: black;
+  align-items: center;
+  padding: 1rem 0;
+  font-family: "Inter", sans-serif;
 }
 
 .nav h4 {
-	font-size: 20px;
+  font-size: 20px;
 }
 
 .nav h4 a {
-	color: black;
-	text-decoration: none;
+  color: black;
+  text-decoration: none;
 }
 
 .nav .link1 {
-	display: flex;
-	list-style: none;
-	width: 24%;
-	justify-content: space-between;
+  display: flex;
+  list-style: none;
+  width: 24%;
+  justify-content: space-between;
 }
 
 .nav .link2 {
-	display: flex;
-	list-style: none;
-	width: 12%;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  list-style: none;
+  width: 12%;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav .link2 button {
-	background-color: #5e5ff5;
-	color: white;
-	border: none;
-	padding: 9px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: all 0.3s ease 0s;
+  background-color: #5e5ff5;
+  color: white;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
 }
 
 .nav ul li a {
-	color: black;
-	text-decoration: none;
-	transition: all 0.3s ease 0s;
+  color: black;
+  text-decoration: none;
+  transition: all 0.3s ease 0s;
 }
 
 .nav ul li a:hover {
-	color: #5e5ff5;
+  color: #5e5ff5;
 }
 
 .nav .link2 button:hover {
-	background-color: black;
-	color: white;
+  background-color: black;
+  color: white;
 }

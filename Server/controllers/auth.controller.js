@@ -9,6 +9,10 @@ const User = require("../models/user.model");
 const userRegister = async(req, res, next) => {
     const { nim, password, confirmPassword, name, email } = req.body;
 
+    if (isNaN(nim)) {
+        return next(new Error("NIM must be a number"));
+    }
+
     //check if password and confirmPassword are the same
     if (password !== confirmPassword) {
         return next(

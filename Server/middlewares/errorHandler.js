@@ -1,8 +1,8 @@
 const errorHandler = (error, req, res, next) => {
-	console.log(error);
-	res.json({
-		error,
-	});
+    console.log(error);
+    res.json({
+        error: error,
+    });
 };
 
 module.exports = errorHandler;
