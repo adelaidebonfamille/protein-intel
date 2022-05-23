@@ -1,105 +1,105 @@
 .form-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 20px;
-    padding-bottom: 60px;
-    background: #eee;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  padding-bottom: 60px;
+  background: #eee;
 }
 
 .form-container form {
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    background: #fff;
-    text-align: center;
-    width: 500px;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  text-align: center;
+  width: 500px;
 }
 
 .form-container form label {
-    margin: 8px 0;
-    font-size: 16px;
-    color: rgb(102, 101, 101);
+  margin: 8px 0;
+  font-size: 16px;
+  color: rgb(102, 101, 101);
 }
 
 .file {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    margin: 8px 0;
-    border: none;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 8px 0;
+  border: none;
 }
 
 .form-container .file button {
-    margin-right: 10px;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 15px;
-    background-color: #5e5ff5;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease 0s;
+  margin-right: 10px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 15px;
+  background-color: #5e5ff5;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
 }
 
 .form-container .file button:hover {
-    background-color: black;
-    color: white;
+  background-color: black;
+  color: white;
 }
 
 .form-container button {
-    margin: 15px 0;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 17px;
-    background-color: #5e5ff5;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease 0s;
+  margin: 15px 0;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 17px;
+  background-color: #5e5ff5;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
 }
 
 .form-container button:hover {
-    background-color: black;
-    color: white;
+  background-color: black;
+  color: white;
 }
 
 .form-container .changepass {
-    text-align: left;
-    margin: 20px 0 10px 0;
+  text-align: left;
+  margin: 20px 0 10px 0;
 }
 
 .form-container .changepass input {
-    text-align: left;
+  text-align: left;
 }
 
 .form-container hr {
-    margin: 30px 0;
-    color: rgb(241, 241, 241);
-    border-width: 0.05px;
-    border-style: ridge;
+  margin: 30px 0;
+  color: rgb(241, 241, 241);
+  border-width: 0.05px;
+  border-style: ridge;
 }
 
 .form-container .change {
-    text-align: right;
+  text-align: right;
 }
 
 .disabled {
-    background: #0505f9bb;
-    color: white;
+  background: #0505f9bb;
+  color: white;
 }
 
 .form-container form input {
-    width: 100%;
-    padding: 10px 15px;
-    font-size: 17px;
-    margin: 8px 0;
-    border-radius: 3px;
-    text-align: center;
-    border: none;
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 17px;
+  margin: 8px 0;
+  border-radius: 3px;
+  text-align: center;
+  border: none;
 }
 
 .form-container form input:not(.disabled) {
-    background: #5e5ef53d;
+  background: #5e5ef53d;
 }
