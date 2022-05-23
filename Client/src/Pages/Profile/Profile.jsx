@@ -6,8 +6,6 @@ const Profile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [kpmName, setKpmName] = useState("Tidak Ada File Terpilih");
 
-  const name = useRef();
-  const nim = useRef();
   const password = useRef();
   const confirmPassword = useRef();
   const faculty = useRef();
@@ -35,7 +33,7 @@ const Profile = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "http://localhost:5000/api/user/profile",
         formData,
         config
       );
@@ -60,7 +58,6 @@ const Profile = () => {
           value={"Azie Melza Pratama"}
           disabled
           id="name"
-          ref={name}
           className={styles.disabled}
         />
 
@@ -71,7 +68,6 @@ const Profile = () => {
           value={"0000XXXXXXXXXX"}
           disabled
           id="nim"
-          ref={nim}
           className={styles.disabled}
         />
 

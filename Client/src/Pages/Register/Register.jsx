@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Register.module.css";
+import axios from "axios";
 
 const Register = () => {
+  const [isError, setIsError] = useState(null);
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post("http://localhost:5000/api/auth/register", {
+        name: e.target.name.value,
+        nim: e.target.nim.value,
+        email: e.target.email.value,
+        password: e.target.password.value,
+        confirmPassword: e.target.confirmPassword.value,
+      });
+    } catch (error) {
+      console.log(error);
+      setIsError(error);
+    }
+  };
+
   return (
     <div className={styles.body}>
       <div className={styles.container}>
@@ -10,15 +29,23 @@ const Register = () => {
           <div className={`${styles.form} ${styles.login}`}>
             <span className={styles.title}>Registrasi</span>
 
-            <form action="#">
+            <form onSubmit={onSubmitHandler}>
               <div className={styles["input-field"]}>
-                <input type="text" placeholder="Masukkan Nama" required />
-                <i className={`${styles.uil} ${styles["uil-user"]}`}></i>
+                <input
+                  type="text"
+                  placeholder="Masukkan Nama"
+                  required
+                  name="name"
+                />
               </div>
 
               <div className={styles["input-field"]}>
-                <input type="text" placeholder="Masukkan Email" required />
-                <i className={`${styles.uil} ${styles["uil-user"]}`}></i>
+                <input
+                  type="text"
+                  placeholder="Masukkan Email"
+                  required
+                  name="email"
+                />
               </div>
 
               <div className={styles["input-field"]}>
@@ -27,10 +54,8 @@ const Register = () => {
                   placeholder="Masukkan 
 									NIM"
                   required
+                  name="nim"
                 />
-                <i
-                  className={`${styles.uil} ${styles["uil-envelope-shield"]} ${styles.icon}`}
-                ></i>
               </div>
 
               <div className={styles["input-field"]}>
@@ -38,8 +63,8 @@ const Register = () => {
                   type="password"
                   placeholder="Masukkan Password"
                   required
+                  name="password"
                 />
-                <i className={`${styles.uil} ${styles["uil-lock-alt"]}`}></i>
               </div>
 
               <div className={styles["input-field"]}>
@@ -47,16 +72,19 @@ const Register = () => {
                   type="password"
                   placeholder="Konfirmasi Password"
                   required
+                  name="confirmPassword"
                 />
-                <i
-                  className={`${styles.uil} ${styles["uil-lock"]} ${styles.icon}`}
-                ></i>
               </div>
 
-              <div className={` ${styles["input-field"]} ${styles.button} `}>
-                <input type="button" value="Registrasi" />
-              </div>
+              <button
+                type="submit"
+                className={`${styles["input-field"]} ${styles.button}`}
+              >
+                Registrasi
+              </button>
             </form>
+
+            <div></div>
 
             <div className={styles["login-signup"]}>
               <span className={styles.text}>

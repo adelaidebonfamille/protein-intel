@@ -1,20 +1,20 @@
 const mongoose = require("mongoose");
 
-let mongodbUrl = `${process.env.DEV_DB_CONNECT}`;
+let mongodbUrl = `mongodb://localhost:27017/protein`;
 
 async function connectToDatabase() {
-	if (process.env.DB_CONNECT) {
-		mongodbUrl = `${process.env.DB_CONNECT}`;
-	}
-	mongoose.connect(
-		mongodbUrl,
-		{
-			useNewUrlParser: true,
-		},
-		() => console.log("Connected to database")
-	);
+    if (process.env.DB_CONNECT) {
+        mongodbUrl = `${process.env.DB_CONNECT}`;
+    }
+    console.log(mongodbUrl);
+    mongoose.connect(
+        mongodbUrl, {
+            useNewUrlParser: true,
+        },
+        () => console.log("Connected to database")
+    );
 }
 
 module.exports = {
-	connectToDatabase: connectToDatabase,
+    connectToDatabase: connectToDatabase,
 };
