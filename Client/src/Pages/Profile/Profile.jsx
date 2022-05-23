@@ -4,6 +4,7 @@ import styles from "./Profile.module.css";
 
 const Profile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [kpmName, setKpmName] = useState("Tidak Ada File Terpilih");
 
   const name = useRef();
   const nim = useRef();
@@ -45,11 +46,13 @@ const Profile = () => {
   };
 
   const fileChangedHandler = (event) => {
+    event.preventDefault();
     setSelectedFile(event.target.files[0]);
+    setKpmName(event.target.files[0].name);
   };
   return (
-    <div className={styles.container}>
-      <form className={styles.form} onSubmit={registerHandler}>
+    <div className={styles["form-container"]}>
+      <form onSubmit={registerHandler}>
         <label htmlFor="name">Nama</label>
         <input
           type="text"
@@ -58,6 +61,7 @@ const Profile = () => {
           disabled
           id="name"
           ref={name}
+          className={styles.disabled}
         />
 
         <label htmlFor="nim">NIM</label>
@@ -68,6 +72,7 @@ const Profile = () => {
           disabled
           id="nim"
           ref={nim}
+          className={styles.disabled}
         />
 
         <label htmlFor="email">Email</label>
@@ -77,6 +82,7 @@ const Profile = () => {
           value={"masuksorga21@gmail.com"}
           disabled
           name="email"
+          className={styles.disabled}
         />
 
         <label htmlFor="faculty">Fakultas</label>
@@ -91,21 +97,31 @@ const Profile = () => {
         <label htmlFor="phone">Nomor Telpon</label>
         <input type="text" name="phone" id="phone" ref={phone} />
 
-        <label htmlFor="kpm">Kpm</label>
-        <input
-          type="file"
-          name="kpm"
-          id="kpm"
-          accept=".pdf"
-          onChange={fileChangedHandler}
-        />
+        <div className={styles.file}>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("kpm").click();
+            }}
+          >
+            Choose File
+          </button>
+          <p>{kpmName}</p>
+          <input
+            type="file"
+            hidden
+            id="kpm"
+            name="kpm"
+            onChange={fileChangedHandler}
+          />
+        </div>
 
         <button>Submit</button>
       </form>
 
       <div className={styles.border}></div>
 
-      <form action="" className={styles.form}>
+      <form action="" className={styles.changepass}>
         <h3>Ganti Password</h3>
         <label htmlFor="password">Password</label>
         <input type="password" name="password" id="password" ref={password} />
