@@ -3,7 +3,7 @@ import styles from "./Register.module.css";
 
 const Register = () => {
 	return (
-		<div className= { styles.body } >
+		<div className={ styles.body }>
 			<div className={ styles.container }>
 				<div className={ styles.forms }>
 					<div className={ `${ styles.form } ${  styles.login }` }>
