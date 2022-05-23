@@ -7,7 +7,7 @@ const AuthContext = React.createContext({
   userDataHandler: (token) => {},
   isError: false,
   register: (email, username, password, confirmPassword) => {},
-  login: (username, password) => {},
+  login: (email, password) => {},
   logout: () => {},
 });
 
@@ -17,13 +17,14 @@ export const AuthProvider = (props) => {
   const [error, setError] = useState(false);
   const [userData, setUserData] = useState(null);
 
-  const register = async (email, username, password, confirmPassword) => {
+  const register = async (email, name, nim, password, confirmPassword) => {
     try {
       const response = await axios.post(`${BASE_URL}/register`, {
         email,
-        username,
+        name,
         password,
         confirmPassword,
+        nim,
       });
       if (response.data.error) {
         console.log(response.data.error);
@@ -36,11 +37,11 @@ export const AuthProvider = (props) => {
     }
   };
 
-  const login = async (username, password) => {
+  const login = async (email, password) => {
     let response;
     try {
       response = await axios.post(`${BASE_URL}/login`, {
-        username,
+        email,
         password,
       });
       if (response.data.error) {
@@ -63,26 +64,6 @@ export const AuthProvider = (props) => {
     setUserData(null);
   };
 
-  const userDataHandler = async (token) => {
-    let user;
-    try {
-      user = await axios.post(`${BASE_URL}/user`, {
-        token,
-      });
-      console.log(user);
-    } catch (error) {
-      setError(error.message.split(":")[0]);
-      logout();
-      return;
-    }
-
-    if (user.data.exp * 1000 < Date.now()) {
-      logout();
-      return;
-    }
-    setUserData(user.data);
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -91,7 +72,6 @@ export const AuthProvider = (props) => {
         logout,
         error,
         userData,
-        userDataHandler,
       }}
     >
       {props.children}
