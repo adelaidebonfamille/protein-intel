@@ -95,7 +95,7 @@ const Register = () => {
               </div>
 
               {isError && (
-                <div className={`${styles["input-field"]} ${styles["alert"]}`}>
+                <div className={`${styles["input-field"]} ${styles.error}`}>
                   <span>{`${isError}`}</span>
                 </div>
               )}

@@ -30,6 +30,7 @@
     list-style: none;
     width: 12%;
     justify-content: space-between;
+    gap: 1rem;
     align-items: center;
 }
 
@@ -64,6 +65,7 @@
     font: inherit;
     margin: 0 10px;
     min-width: 100px;
+    text-align: center;
 }
 
 .btn-secondary:hover {

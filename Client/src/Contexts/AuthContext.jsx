@@ -6,15 +6,13 @@ const AuthContext = React.createContext({
   register: (email, name, nim, password, confirmPassword) => {},
   login: (email, password) => {},
   logout: () => {},
-  isAuth: false,
-  checkToken: () => {},
+  loadUser: () => {},
   userData: {},
 });
 
 const BASE_URL = "http://localhost:5000/api/auth";
 
 export const AuthProvider = (props) => {
-  const [isAuth, setIsAuth] = useState(false);
   const [userData, setUserData] = useState(null);
 
   const register = async (email, name, nim, password, confirmPassword) => {
@@ -54,23 +52,24 @@ export const AuthProvider = (props) => {
     }
 
     localStorage.setItem("token", response.data.token);
-    setIsAuth(true);
     setUserData(jwtDecode(response.data.token));
+
+    return {
+      error: null,
+      message: "Successfully Logged In, redirecting in 5 seconds",
+    };
   };
 
   const logout = () => {
     localStorage.removeItem("token");
-    setIsAuth(false);
     setUserData(null);
   };
 
-  const checkToken = () => {
+  const loadUser = () => {
     const token = localStorage.getItem("token");
     if (token) {
-      setIsAuth(true);
       setUserData(jwtDecode(token));
     } else {
-      setIsAuth(false);
       setUserData(null);
     }
   };
@@ -81,8 +80,7 @@ export const AuthProvider = (props) => {
         register,
         login,
         logout,
-        isAuth,
-        checkToken,
+        loadUser,
         userData,
       }}
     >

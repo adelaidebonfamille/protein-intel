@@ -6,6 +6,10 @@ import AuthContext from "../../Contexts/AuthContext";
 const Navbar = () => {
   const authCtx = useContext(AuthContext);
 
+  const onLogoutHandler = () => {
+    authCtx.logout();
+  };
+
   return (
     <nav className={styles.nav}>
       <div>
@@ -25,7 +29,23 @@ const Navbar = () => {
         </li>
       </ul>
       <ul className={styles.link2}>
-        {authCtx.isAuth ? null : (
+        {authCtx.userData ? (
+          <>
+            <li>
+              <Link to={"/profile"}>
+                <div className={styles["btn-secondary"]}>Profiles</div>
+              </Link>
+            </li>
+            <li>
+              <button
+                className={styles["btn-primary"]}
+                onClick={onLogoutHandler}
+              >
+                Log out
+              </button>
+            </li>
+          </>
+        ) : (
           <>
             <li>
               <Link to={"/login"}>
