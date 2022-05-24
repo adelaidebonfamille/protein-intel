@@ -13,6 +13,7 @@ import Problems from "./Pages/Admin/Problems/Problems";
 import Scores from "./Pages/Admin/Scores/Scores";
 
 import AuthContext from "./Contexts/AuthContext";
+import RequireAuth from "./helpers/RequireAuth";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -25,12 +26,18 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        <Route element={<RequireAuth role="user" />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+
         <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/problems" element={<Problems />} />
-        <Route path="/admin/scores" element={<Scores />} />
+        <Route element={<RequireAuth role="admin" />}>
+          <Route path="/admin/problems" element={<Problems />} />
+          <Route path="/admin/scores" element={<Scores />} />
+        </Route>
       </Routes>
     </div>
   );

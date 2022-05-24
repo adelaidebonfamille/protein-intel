@@ -11,7 +11,7 @@ const Admin = () => {
       <div className={styles["login-container"]}>
         <h1>Admin Login</h1>
         <form action="#" onSubmit={onSubmitHandler}>
-          <div classname={styles["input-field"]}>
+          <div className={styles["input-field"]}>
             <p>email</p>
             <input
               type="text"
@@ -20,7 +20,7 @@ const Admin = () => {
               required
             />
           </div>
-          <div classname={styles["input-field"]}>
+          <div className={styles["input-field"]}>
             <p>password</p>
             <input
               type="password"

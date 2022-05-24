@@ -7,7 +7,7 @@ const RequireAuth = (props) => {
 
   const isAuthenticated =
     authCtx.userData &&
-    authCtx.userData.roles === props.roles &&
+    authCtx.userData.roles === props.role &&
     authCtx.userData.exp * 1000 > Date.now();
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
