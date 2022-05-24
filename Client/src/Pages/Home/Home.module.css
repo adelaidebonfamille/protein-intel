@@ -1,101 +1,101 @@
 .about {
-    background: url(../../Assets/Hero/hero.jpg) no-repeat left;
-    background-size: 55%;
-    background-color: #fdfdfd;
-    color: rgb(25, 25, 25);
-    overflow: hidden;
-    height: 100vh;
-    font-family: "Inter", sans-serif;
+  background: url(../../Assets/Hero/hero.jpg) no-repeat left;
+  background-size: 55%;
+  background-color: #fdfdfd;
+  color: rgb(25, 25, 25);
+  overflow: hidden;
+  height: 100vh;
+  font-family: "Inter", sans-serif;
 }
 
 .about h2 {
-    text-align: center;
-    margin-bottom: 15px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 .inner-section {
-    width: 55%;
-    float: right;
-    background-color: #fafafa;
-    padding: 140px;
-    box-shadow: 13px 12px 8px rgba(0, 0, 0, 0.3);
-    outline: 3px solid #5e5ff5;
-    border-bottom-left-radius: 1rem;
+  width: 55%;
+  float: right;
+  background-color: #fafafa;
+  padding: 140px;
+  box-shadow: 13px 12px 8px rgba(0, 0, 0, 0.3);
+  outline: 3px solid #5e5ff5;
+  border-bottom-left-radius: 1rem;
 }
 
 .inner-section h1 {
-    margin-bottom: 30px;
-    font-size: 30px;
-    font-weight: 900;
-    font-weight: semi-bold;
-    color: #5e5ff5;
+  margin-bottom: 30px;
+  font-size: 30px;
+  font-weight: 900;
+  font-weight: semi-bold;
+  color: #5e5ff5;
 }
 
 .inner-section p {
-    font-size: 18px;
-    line-height: 30px;
-    margin-bottom: 30px;
+  font-size: 18px;
+  line-height: 30px;
+  margin-bottom: 30px;
 }
 
 .text {
-    font-size: 13px;
-    color: rgb(25, 25, 25);
-    line-height: 30px;
-    text-align: justify;
-    margin-bottom: 40px;
+  font-size: 13px;
+  color: rgb(25, 25, 25);
+  line-height: 30px;
+  text-align: justify;
+  margin-bottom: 40px;
 }
 
 .skills {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .skills button {
-    font-size: 22px;
-    text-align: center;
-    letter-spacing: 2px;
-    border: none;
-    border-radius: 20px;
-    padding: 8px;
-    width: 200px;
-    background-color: #5e5ff5;
-    color: #fafafa;
-    cursor: pointer;
+  font-size: 22px;
+  text-align: center;
+  letter-spacing: 2px;
+  border: none;
+  border-radius: 20px;
+  padding: 8px;
+  width: 200px;
+  background-color: #5e5ff5;
+  color: #fafafa;
+  cursor: pointer;
 }
 
 .skills button:hover {
-    transition: 0.5s;
-    background-color: #fafafa;
-    color: #5e5ff5;
-    outline: #5e5ff5 solid 3px;
+  transition: 0.5s;
+  background-color: #fafafa;
+  color: #5e5ff5;
+  outline: #5e5ff5 solid 3px;
 }
 
 @media screen and (max-width: 1200px) {
-    .inner-section {
-        padding: 80px;
-    }
+  .inner-section {
+    padding: 80px;
+  }
 }
 
 @media screen and (max-width: 1000px) {
-    .about {
-        background-size: 100%;
-        padding: 100px 40px;
-    }
-    .inner-section {
-        width: 100%;
-    }
+  .about {
+    background-size: 100%;
+    padding: 100px 40px;
+  }
+  .inner-section {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 600px) {
-    .about {
-        padding: 0;
-    }
-    .inner-section {
-        padding: 60px;
-    }
-    .skills button {
-        font-size: 19px;
-        padding: 5px;
-        width: 160px;
-    }
+  .about {
+    padding: 0;
+  }
+  .inner-section {
+    padding: 60px;
+  }
+  .skills button {
+    font-size: 19px;
+    padding: 5px;
+    width: 160px;
+  }
 }
