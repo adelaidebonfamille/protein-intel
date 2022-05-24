@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const AuthContext = React.createContext({
-  isError: false,
-  register: (email, username, password, confirmPassword) => {},
+  register: (email, name, nim, password, confirmPassword) => {},
   login: (email, password) => {},
   logout: () => {},
   isAuth: false,
@@ -13,7 +12,6 @@ const AuthContext = React.createContext({
 const BASE_URL = "http://localhost:5000/api/auth";
 
 export const AuthProvider = (props) => {
-  const [error, setError] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
 
   const register = async (email, name, nim, password, confirmPassword) => {
@@ -26,14 +24,16 @@ export const AuthProvider = (props) => {
         nim,
       });
       if (response.data.error) {
-        console.log(response.data.error);
-        setError(response.data.error);
+        return { error: response.data.error };
       }
     } catch (error) {
-      console.log(error);
-      setError(error);
-      return;
+      return { error: error };
     }
+
+    return {
+      error: null,
+      message: "Successfully Registered, redirecting in 5 seconds",
+    };
   };
 
   const login = async (email, password) => {
@@ -44,14 +44,10 @@ export const AuthProvider = (props) => {
         password,
       });
       if (response.data.error) {
-        console.log(response.data.error);
-        setError(response.data.error);
-        return;
+        return { error: response.data.error };
       }
     } catch (error) {
-      console.log(error);
-      setError(error);
-      return;
+      return { error: error };
     }
 
     localStorage.setItem("token", response.data.token);
@@ -78,7 +74,6 @@ export const AuthProvider = (props) => {
         register,
         login,
         logout,
-        error,
         isAuth,
         checkToken,
       }}
