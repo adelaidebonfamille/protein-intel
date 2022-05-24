@@ -42,8 +42,11 @@
   cursor: pointer;
   transition: all 0.3s ease 0s;
   font: inherit;
+<<<<<<< HEAD
   margin: 0 10px;
   min-width: 100px;
+=======
+>>>>>>> 264d0f0c52dc9dce623ebb141a16fda9b7b47635
 }
 
 .nav ul li a {
@@ -62,9 +65,12 @@
   background-color: white;
   outline: #5e5ff5 solid 3px;
 }
+<<<<<<< HEAD
 
 @media screen and (max-width: 768px) {
   .nav {
     display: none;
   }
 }
+=======
+>>>>>>> 264d0f0c52dc9dce623ebb141a16fda9b7b47635

@@ -42,6 +42,13 @@
   width: 100%;
 }
 
+.input-field p {
+  font-weight: 600;
+  font-size: 20;
+  margin-bottom: 4px;
+}
+
+
 .input-field input {
   position: absolute;
   height: 100%;
