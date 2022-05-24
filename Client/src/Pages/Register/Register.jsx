@@ -31,6 +31,7 @@ const Register = () => {
 
             <form onSubmit={onSubmitHandler}>
               <div className={styles["input-field"]}>
+                <p>Name</p>
                 <input
                   type="text"
                   placeholder="Masukkan Nama"
@@ -40,6 +41,7 @@ const Register = () => {
               </div>
 
               <div className={styles["input-field"]}>
+                <p>Email</p>
                 <input
                   type="text"
                   placeholder="Masukkan Email"
@@ -49,6 +51,7 @@ const Register = () => {
               </div>
 
               <div className={styles["input-field"]}>
+                <p>NIM</p>
                 <input
                   type="text"
                   placeholder="Masukkan 
@@ -59,6 +62,7 @@ const Register = () => {
               </div>
 
               <div className={styles["input-field"]}>
+                <p>Password</p>
                 <input
                   type="password"
                   placeholder="Masukkan Password"
@@ -68,6 +72,7 @@ const Register = () => {
               </div>
 
               <div className={styles["input-field"]}>
+                <p>Konfirmasi Password</p>
                 <input
                   type="password"
                   placeholder="Konfirmasi Password"

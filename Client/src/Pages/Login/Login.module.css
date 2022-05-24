@@ -42,6 +42,12 @@
   width: 100%;
 }
 
+.input-field p {
+  font-weight: 600;
+  font-size: 20;
+  margin-bottom: 4px;
+}
+
 .input-field input {
   position: absolute;
   height: 100%;
@@ -97,6 +103,11 @@
 .form a.text {
   color: #5e5ff5;
   text-decoration: none;
+}
+
+.form a {
+  display: inline-block;
+  margin-top: 10px;
 }
 
 .form a:hover {

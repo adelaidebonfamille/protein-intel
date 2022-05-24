@@ -20,6 +20,7 @@ const Login = () => {
 
             <form action="#" onSubmit={onSubmitHandler}>
               <div className={styles["input-field"]}>
+                <p>Email</p>
                 <input
                   type="text"
                   placeholder="Masukkan Email"
@@ -28,6 +29,7 @@ const Login = () => {
                 />
               </div>
               <div className={styles["input-field"]}>
+                <p>Password</p>
                 <input
                   type="password"
                   placeholder="Masukkan Password"
@@ -36,10 +38,10 @@ const Login = () => {
                 />
               </div>
               <div className={styles["checkbox-text"]}>
-                <a href="#" className={styles.text}>
-                  Lupa password?
-                </a>
               </div>
+              <a href="#" className={styles.text}>
+                Lupa password?
+              </a>
 
               <button
                 type="submit"
