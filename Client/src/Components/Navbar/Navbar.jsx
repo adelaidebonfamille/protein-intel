@@ -29,12 +29,12 @@ const Navbar = () => {
           <>
             <li>
               <Link to={"/login"}>
-                <button>Sign In</button>
+                <button className={styles["btn-secondary"]}>Sign In</button>
               </Link>
             </li>
             <li>
               <Link to={"/Register"}>
-                <button>Register</button>
+                <button className={styles["btn-primary"]}>Register</button>
               </Link>
             </li>
           </>

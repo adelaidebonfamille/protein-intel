@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 const AuthContext = React.createContext({
   register: (email, name, nim, password, confirmPassword) => {},
@@ -7,12 +8,14 @@ const AuthContext = React.createContext({
   logout: () => {},
   isAuth: false,
   checkToken: () => {},
+  userData: {},
 });
 
 const BASE_URL = "http://localhost:5000/api/auth";
 
 export const AuthProvider = (props) => {
   const [isAuth, setIsAuth] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   const register = async (email, name, nim, password, confirmPassword) => {
     try {
@@ -52,19 +55,23 @@ export const AuthProvider = (props) => {
 
     localStorage.setItem("token", response.data.token);
     setIsAuth(true);
+    setUserData(jwtDecode(response.data.token));
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setIsAuth(false);
+    setUserData(null);
   };
 
   const checkToken = () => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsAuth(true);
+      setUserData(jwtDecode(token));
     } else {
       setIsAuth(false);
+      setUserData(null);
     }
   };
 
@@ -76,6 +83,7 @@ export const AuthProvider = (props) => {
         logout,
         isAuth,
         checkToken,
+        userData,
       }}
     >
       {props.children}

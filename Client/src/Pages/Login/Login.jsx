@@ -37,8 +37,7 @@ const Login = () => {
                   required
                 />
               </div>
-              <div className={styles["checkbox-text"]}>
-              </div>
+              <div className={styles["checkbox-text"]}></div>
               <a href="#" className={styles.text}>
                 Lupa password?
               </a>

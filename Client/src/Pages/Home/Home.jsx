@@ -15,8 +15,12 @@ const Home = () => {
           neque.
         </p>
         <div className={styles.skills}>
-          <Link to='/register'><button>Register</button></Link>
-          <Link to='/login'><button>Sign In</button></Link>
+          <Link to="/register">
+            <button>Register</button>
+          </Link>
+          <Link to="/login">
+            <button>Sign In</button>
+          </Link>
         </div>
       </div>
     </div>
