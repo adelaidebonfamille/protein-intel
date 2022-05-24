@@ -23,6 +23,7 @@ const Profile = () => {
   const phone = useRef();
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(`${baseUrl}/profile`, {
         headers: {
@@ -33,6 +34,13 @@ const Profile = () => {
         setName(res.data.user.name);
         setNim(res.data.user.nim);
         setEmail(res.data.user.email);
+        if (res.data.user.faculty)
+          faculty.current.value = res.data.user.faculty;
+        if (res.data.user.major) major.current.value = res.data.user.major;
+        if (res.data.user.entryYear)
+          entryYear.current.value = res.data.user.entryYear;
+        if (res.data.user.phone) phone.current.value = res.data.user.phone;
+        setIsLoading(false);
       });
   }, []);
 
@@ -75,6 +83,7 @@ const Profile = () => {
   return (
     <div className={styles["form-container"]}>
       <form onSubmit={updateProfileHandler}>
+        {isLoading && <div className={styles.loading}>Loading...</div>}
         <label htmlFor="name">Nama</label>
         <input
           type="text"

@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const dotenv = require("dotenv");
 
 const validation = require("../utility/validation");
 
@@ -101,8 +102,12 @@ const userLogin = async(req, res, next) => {
 
 const adminLogin = (req, res, next) => {
     const { username, password } = req.body;
+    dotenv.config();
 
-    if (username !== "admin" || password !== "HarusRandombiargakbocor007") {
+    if (
+        username !== process.env.ADMIN_USERNAME ||
+        password !== process.env.ADMIN_PASSWORD
+    ) {
         return next(new Error("Username or Password is incorrect"));
     }
 

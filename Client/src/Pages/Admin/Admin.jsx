@@ -9,9 +9,15 @@ const Admin = () => {
   return (
     <>
       <div className={styles["login-container"]}>
+<<<<<<< HEAD
         <h1>admin login</h1>
         <form action="#" onSubmit={onSubmitHandler}>
           <div className={styles["input-field"]}>
+=======
+        <h1>Admin Login</h1>
+        <form action="#" onSubmit={onSubmitHandler}>
+          <div classname={styles["input-field"]}>
+>>>>>>> cb265cd23d66903b69daee3c14f40517ad86e141
             <p>email</p>
             <input
               type="text"
@@ -20,7 +26,11 @@ const Admin = () => {
               required
             />
           </div>
+<<<<<<< HEAD
           <div className={styles["input-field"]}>
+=======
+          <div classname={styles["input-field"]}>
+>>>>>>> cb265cd23d66903b69daee3c14f40517ad86e141
             <p>password</p>
             <input
               type="password"

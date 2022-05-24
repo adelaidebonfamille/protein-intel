@@ -1,10 +1,16 @@
 import styles from "./Problems.module.css";
 import axios from "axios";
 import { useState } from "react";
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
 
 const Problems = () => {
   const [search, setSearch] = useState(false);
+=======
+
+const Problems = () => {
+  const [searchId, setSearchId] = useState("");
+>>>>>>> cb265cd23d66903b69daee3c14f40517ad86e141
 
   const [isAddText, setIsAddText] = useState(false);
   const [isAddImage, setIsAddImage] = useState(false);
@@ -12,6 +18,7 @@ const Problems = () => {
 
   const searchHandler = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
 
     if ( e.target.searchId.value === "" ) {
         await axios.get("http://localhost:5000/api/admin/problems", {
@@ -55,6 +62,25 @@ const Problems = () => {
   return (
     <>
     <Link to='/admin'><div className={ styles[ "go-back-home" ] }>Go back to Admin Homepage</div></Link>
+=======
+  };
+
+  const addProblemHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post("http://localhost:5000/api/admin/problems", {
+        description: e.target.description.value,
+        key: e.target.key.value,
+        type: e.target.type.value,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+>>>>>>> cb265cd23d66903b69daee3c14f40517ad86e141
     <div className={styles.container}>
       <div className={styles["input-container"]}>
         <form onSubmit={searchHandler}>
@@ -67,7 +93,10 @@ const Problems = () => {
           <div className={styles.buttons}>
             <button
               onClick={() => {
+<<<<<<< HEAD
                 setSearch(false);
+=======
+>>>>>>> cb265cd23d66903b69daee3c14f40517ad86e141
                 setIsAddText(true);
                 setIsAddImage(false);
                 setIsAddAudio(false);
@@ -77,7 +106,10 @@ const Problems = () => {
             </button>
             <button
               onClick={() => {
+<<<<<<< HEAD
                 setSearch(false);
+=======
+>>>>>>> cb265cd23d66903b69daee3c14f40517ad86e141
                 setIsAddText(false);
                 setIsAddImage(true);
                 setIsAddAudio(false);
@@ -87,7 +119,10 @@ const Problems = () => {
             </button>
             <button
               onClick={() => {
+<<<<<<< HEAD
                 setSearch(false);
+=======
+>>>>>>> cb265cd23d66903b69daee3c14f40517ad86e141
                 setIsAddText(false);
                 setIsAddImage(false);
                 setIsAddAudio(true);
@@ -98,6 +133,7 @@ const Problems = () => {
           </div>
         </div>
       </div>
+<<<<<<< HEAD
       {search && (
           <div>
 
@@ -169,6 +205,74 @@ const Problems = () => {
               />
               <label htmlFor="answer-type1">A</label>
 
+=======
+      {isAddText && (
+        <div>
+          <h3>Add Problem Type Text</h3>
+          <form onSubmit={addProblemHandler}>
+            <p>Question</p>
+            <textarea
+              name="description"
+              id=""
+              cols="60"
+              rows="10"
+              required
+            ></textarea>
+            <p>Options</p>
+            <div className={styles["text-inputs"]}>
+              A{" "}
+              <textarea
+                name="key1"
+                id=""
+                cols="60"
+                rows="2"
+                required
+              ></textarea>
+              B{" "}
+              <textarea
+                name="key2"
+                id=""
+                cols="60"
+                rows="2"
+                required
+              ></textarea>
+              C{" "}
+              <textarea
+                name="key3"
+                id=""
+                cols="60"
+                rows="2"
+                required
+              ></textarea>
+              D{" "}
+              <textarea
+                name="key4"
+                id=""
+                cols="60"
+                rows="2"
+                required
+              ></textarea>
+              E{" "}
+              <textarea
+                name="key5"
+                id=""
+                cols="60"
+                rows="2"
+                required
+              ></textarea>
+            </div>
+            <p>Right Answer</p>
+            <div className={styles.keys}>
+              <input
+                type="radio"
+                id="answer-type1"
+                name="key"
+                value="A"
+                required
+              />
+              <label htmlFor="answer-type1">A</label>
+
+>>>>>>> cb265cd23d66903b69daee3c14f40517ad86e141
               <input
                 type="radio"
                 id="answer-type2"
@@ -472,7 +576,10 @@ const Problems = () => {
         </div>
       )}
     </div>
+<<<<<<< HEAD
     </>
+=======
+>>>>>>> cb265cd23d66903b69daee3c14f40517ad86e141
   );
 };
 
