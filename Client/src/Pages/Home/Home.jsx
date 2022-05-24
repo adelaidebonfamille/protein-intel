@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Home.module.css";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -14,8 +15,8 @@ const Home = () => {
           neque.
         </p>
         <div className={styles.skills}>
-          <button>Register</button>
-          <button>Sign In</button>
+          <Link to='/register'><button>Register</button></Link>
+          <Link to='/login'><button>Sign In</button></Link>
         </div>
       </div>
     </div>
