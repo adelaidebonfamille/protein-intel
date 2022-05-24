@@ -14,7 +14,7 @@ const Problems = () => {
     e.preventDefault();
 
     if ( e.target.searchId.value === "" ) {
-        await axios.get("http://localhost:5000/api/admin/problems", {
+      await axios.get("http://localhost:5000/api/admin/problems", {
             headers: {
                 "auth-token": localStorage.getItem("token")
             }
