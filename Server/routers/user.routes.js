@@ -5,10 +5,12 @@ const fileUploadMiddleware = require("../middlewares/file-upload");
 
 router.get("/problems", userController.getTestProblems);
 
+router.get("/profile", userController.getUserData);
+
 router.patch(
-	"/profile",
-	fileUploadMiddleware.kpmUpload,
-	userController.updateUserData
+    "/profile",
+    fileUploadMiddleware.kpmUpload,
+    userController.updateUserData
 );
 
 router.get("/scores", userController.getUserScore);

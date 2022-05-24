@@ -1,19 +1,42 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import styles from "./Profile.module.css";
 
 const Profile = () => {
+  const baseUrl =
+    "http://localhost:5000/api/user" || `${process.env.API_URL}/user`;
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [kpmName, setKpmName] = useState("Tidak Ada File Terpilih");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [name, setName] = useState("");
+  const [nim, setNim] = useState("");
+  const [email, setEmail] = useState("");
 
   const password = useRef();
   const confirmPassword = useRef();
+  const oldPassword = useRef();
   const faculty = useRef();
   const major = useRef();
   const entryYear = useRef();
   const phone = useRef();
 
-  const registerHandler = async (e) => {
+  useEffect(() => {
+    axios
+      .get(`${baseUrl}/profile`, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setName(res.data.user.name);
+        setNim(res.data.user.nim);
+        setEmail(res.data.user.email);
+      });
+  }, []);
+
+  const updateProfileHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
 
@@ -32,7 +55,7 @@ const Profile = () => {
     };
 
     try {
-      const res = await axios.post(
+      const res = await axios.patch(
         "http://localhost:5000/api/user/profile",
         formData,
         config
@@ -48,14 +71,15 @@ const Profile = () => {
     setSelectedFile(event.target.files[0]);
     setKpmName(event.target.files[0].name);
   };
+
   return (
     <div className={styles["form-container"]}>
-      <form onSubmit={registerHandler}>
+      <form onSubmit={updateProfileHandler}>
         <label htmlFor="name">Nama</label>
         <input
           type="text"
           name="name"
-          value={"Azie Melza Pratama"}
+          value={name}
           disabled
           id="name"
           className={styles.disabled}
@@ -65,7 +89,7 @@ const Profile = () => {
         <input
           type="text"
           name="nim"
-          value={"0000XXXXXXXXXX"}
+          value={nim}
           disabled
           id="nim"
           className={styles.disabled}
@@ -75,7 +99,7 @@ const Profile = () => {
         <input
           type="email"
           id="email"
-          value={"masuksorga21@gmail.com"}
+          value={email}
           disabled
           name="email"
           className={styles.disabled}
@@ -118,15 +142,28 @@ const Profile = () => {
       <div className={styles.border}></div>
 
       <form action="" className={styles.changepass}>
-        <h3>Ganti Password</h3>
+        <h3>Change Password</h3>
+        <label htmlFor="oldPassword">Old Password</label>
+        <input
+          type="password"
+          name="oldPassword"
+          id="oldPassword"
+          ref={oldPassword}
+        />
+
         <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password" ref={password} />
+        <input
+          type="password"
+          name="NewPassword"
+          id="newPassword"
+          ref={password}
+        />
 
         <label htmlFor="confirmPassword">Confirm Password</label>
         <input
           type="password"
-          name="confirmPassword"
-          id="confirmPassword"
+          name="newConfirmPassword"
+          id="newConfirmPassword"
           ref={confirmPassword}
         />
       </form>

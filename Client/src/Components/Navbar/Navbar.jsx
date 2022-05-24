@@ -33,7 +33,7 @@ const Navbar = () => {
           <>
             <li>
               <Link to={"/profile"}>
-                <div className={styles["btn-secondary"]}>Profiles</div>
+                <div className={styles["btn-secondary"]}>Profile</div>
               </Link>
             </li>
             <li>

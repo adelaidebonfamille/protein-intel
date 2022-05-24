@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = React.createContext({
   register: (email, name, nim, password, confirmPassword) => {},
@@ -10,10 +11,12 @@ const AuthContext = React.createContext({
   userData: {},
 });
 
-const BASE_URL = "http://localhost:5000/api/auth";
+const BASE_URL =
+  "http://localhost:5000/api/auth" || `${process.env.API_URL}/auth`;
 
 export const AuthProvider = (props) => {
   const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
 
   const register = async (email, name, nim, password, confirmPassword) => {
     try {
@@ -63,6 +66,7 @@ export const AuthProvider = (props) => {
   const logout = () => {
     localStorage.removeItem("token");
     setUserData(null);
+    navigate("/");
   };
 
   const loadUser = () => {
