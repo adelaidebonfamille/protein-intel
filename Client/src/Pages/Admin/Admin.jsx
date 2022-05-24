@@ -9,7 +9,7 @@ const Admin = () => {
   return (
     <>
       <div className={styles["login-container"]}>
-        <h1>admin login</h1>
+        <h1>Admin Login</h1>
         <form action="#" onSubmit={onSubmitHandler}>
           <div className={styles["input-field"]}>
             <p>email</p>

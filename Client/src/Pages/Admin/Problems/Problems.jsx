@@ -40,9 +40,6 @@ const Problems = () => {
 
     try {
       await axios.post("http://localhost:5000/api/admin/problems", {
-        headers: {
-            "auth-token": localStorage.getItem("token")
-        },
         description: e.target.description.value,
         key: e.target.key.value,
         type: e.target.type.value,
