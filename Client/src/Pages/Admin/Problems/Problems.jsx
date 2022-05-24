@@ -1,9 +1,10 @@
 import styles from "./Problems.module.css";
 import axios from "axios";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Problems = () => {
-  const [searchId, setSearchId] = useState("");
+  const [search, setSearch] = useState(false);
 
   const [isAddText, setIsAddText] = useState(false);
   const [isAddImage, setIsAddImage] = useState(false);
@@ -11,6 +12,27 @@ const Problems = () => {
 
   const searchHandler = async (e) => {
     e.preventDefault();
+
+    if ( e.target.searchId.value === "" ) {
+      await axios.get("http://localhost:5000/api/admin/problems", {
+            headers: {
+                "auth-token": localStorage.getItem("token")
+            }
+        })
+        .then((response)=> {
+            setSearch(true);
+            setIsAddText(false);
+            setIsAddImage(false);
+            setIsAddAudio(false);
+
+            console.log(response)
+        })
+        .catch((error)=> {
+            console.log(error)
+        })
+    } else {
+        
+    }
   };
 
   const addProblemHandler = async (e) => {
@@ -28,6 +50,8 @@ const Problems = () => {
   };
 
   return (
+    <>
+    <Link to='/admin'><div className={ styles[ "go-back-home" ] }>Go back to Admin Homepage</div></Link>
     <div className={styles.container}>
       <div className={styles["input-container"]}>
         <form onSubmit={searchHandler}>
@@ -40,6 +64,7 @@ const Problems = () => {
           <div className={styles.buttons}>
             <button
               onClick={() => {
+                setSearch(false);
                 setIsAddText(true);
                 setIsAddImage(false);
                 setIsAddAudio(false);
@@ -49,6 +74,7 @@ const Problems = () => {
             </button>
             <button
               onClick={() => {
+                setSearch(false);
                 setIsAddText(false);
                 setIsAddImage(true);
                 setIsAddAudio(false);
@@ -58,6 +84,7 @@ const Problems = () => {
             </button>
             <button
               onClick={() => {
+                setSearch(false);
                 setIsAddText(false);
                 setIsAddImage(false);
                 setIsAddAudio(true);
@@ -68,6 +95,11 @@ const Problems = () => {
           </div>
         </div>
       </div>
+      {search && (
+          <div>
+
+          </div>
+      )}
       {isAddText && (
         <div>
           <h3>Add Problem Type Text</h3>
@@ -437,6 +469,7 @@ const Problems = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
