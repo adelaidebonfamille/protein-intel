@@ -26,7 +26,7 @@ const userRegister = async(req, res, next) => {
         name,
         email,
     });
-    if (error) return next(error.details[0].message);
+    if (error) return next(error.details[0]);
 
     let existingUserByNim;
     try {
@@ -34,7 +34,7 @@ const userRegister = async(req, res, next) => {
     } catch (error) {
         return next(error);
     }
-    if (existingUserByNim) return next(new Error("User already exists"));
+    if (existingUserByNim) return next(new Error("Nim is already taken"));
 
     let existingUserByEmail;
     try {

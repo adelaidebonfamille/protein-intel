@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const AuthContext = React.createContext({
-  userData: null,
-  userDataHandler: (token) => {},
   isError: false,
   register: (email, username, password, confirmPassword) => {},
   login: (email, password) => {},
   logout: () => {},
+  isAuth: false,
+  checkToken: () => {},
 });
 
 const BASE_URL = "http://localhost:5000/api/auth";
 
 export const AuthProvider = (props) => {
   const [error, setError] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [isAuth, setIsAuth] = useState(false);
 
   const register = async (email, name, nim, password, confirmPassword) => {
     try {
@@ -54,13 +54,22 @@ export const AuthProvider = (props) => {
       return;
     }
 
-    localStorage.setItem("token", response.data.accessToken);
-    setUserData(jwtDecode(response.data.accessToken));
+    localStorage.setItem("token", response.data.token);
+    setIsAuth(true);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
-    setUserData(null);
+    setIsAuth(false);
+  };
+
+  const checkToken = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuth(true);
+    } else {
+      setIsAuth(false);
+    }
   };
 
   return (
@@ -70,7 +79,8 @@ export const AuthProvider = (props) => {
         login,
         logout,
         error,
-        userData,
+        isAuth,
+        checkToken,
       }}
     >
       {props.children}

@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Login.module.css";
+import AuthContext from "../../Contexts/AuthContext";
 
 const Login = () => {
+  const authCtx = useContext(AuthContext);
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    authCtx.login(e.target.email.value, e.target.password.value);
+  };
+
   return (
     <div className={styles.body}>
       <div className={styles.container}>
@@ -10,7 +18,7 @@ const Login = () => {
           <div className={`${styles.form} ${styles.login}`}>
             <span className={styles.title}>Login</span>
 
-            <form action="#">
+            <form action="#" onSubmit={onSubmitHandler}>
               <div className={styles["input-field"]}>
                 <input
                   type="text"
@@ -23,6 +31,7 @@ const Login = () => {
                 <input
                   type="password"
                   placeholder="Masukkan Password"
+                  name="password"
                   required
                 />
               </div>
@@ -32,9 +41,12 @@ const Login = () => {
                 </a>
               </div>
 
-              <div className={`${styles["input-field"]} ${styles.button}`}>
-                <input type="button" value="Login" />
-              </div>
+              <button
+                type="submit"
+                className={`${styles["input-field"]} ${styles.button}`}
+              >
+                Login
+              </button>
             </form>
             <div className={styles["login-signup"]}>
               <span className={styles.text}>

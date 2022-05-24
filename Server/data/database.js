@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-let mongodbUrl = `mongodb://localhost:27017/protein`;
+dotenv.config();
+
+let mongodbUrl = process.env.DEV_DB_CONNECT;
 
 async function connectToDatabase() {
     if (process.env.DB_CONNECT) {
         mongodbUrl = `${process.env.DB_CONNECT}`;
     }
-    console.log(mongodbUrl);
     mongoose.connect(
         mongodbUrl, {
             useNewUrlParser: true,
