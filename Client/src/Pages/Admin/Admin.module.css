@@ -1,0 +1,33 @@
+.login-container{
+    width: 200px;
+    margin: auto;
+    display: block;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    flex: 1 1 1;
+    align-items: center;
+    justify-content: center;
+}
+
+Link {
+    text-decoration: none;
+}
+.category-button {
+    background-color: #5e5ff5;
+    color: white;
+    font-weight: 600;
+    width: 80%;
+    padding: 5rem;
+    border-radius: 32px;
+    box-shadow: 2px 2px #525288;
+}
+
+.category-button:hover {
+    background-color: #525288;
+    transform: translate(2px, 2px);  
+    transition: all .2s;
+}

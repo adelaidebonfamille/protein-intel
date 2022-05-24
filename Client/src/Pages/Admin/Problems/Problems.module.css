@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 200px;
+}
+
+.input-container {
+    display: flex;
+    justify-content: center;
+}
+
+.input-container .add-problems {
+    margin-left: 100px;
+    text-align: center;
+}
+
+.add-problems .buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.buttons button {
+    margin-left: 20px;
+}
+
+.text-inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.text-inputs textarea {
+    margin-bottom: 10px;
+}
+
+.keys label {
+    margin-right: 30px;
+}
