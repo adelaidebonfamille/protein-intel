@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
+import AuthContext from "../../Contexts/AuthContext";
 
 const Navbar = () => {
+  const authCtx = useContext(AuthContext);
+
+  const onLogoutHandler = () => {
+    authCtx.logout();
+  };
+
   return (
     <nav className={styles.nav}>
       <div>
@@ -15,24 +22,43 @@ const Navbar = () => {
           <Link to={"/"}>Home</Link>
         </li>
         <li>
-          <Link to={"/exam"}>Exam</Link>
+          <Link to={"/exam"}>Start Exam</Link>
         </li>
         <li>
-          <Link to={"/profile"}>Profile</Link>
-        </li>
-        <li>
-          <a href="https://intel.ilkom.unsri.ac.id/">Intel Official Website</a>
+          <a href="https://intel.ilkom.unsri.ac.id/">About Us</a>
         </li>
       </ul>
       <ul className={styles.link2}>
-        <li>
-          <Link to={"/login"}>Sign In</Link>
-        </li>
-        <li>
-          <Link to={"/Register"}>
-            <button>Register</button>
-          </Link>
-        </li>
+        {authCtx.userData ? (
+          <>
+            <li>
+              <Link to={"/profile"}>
+                <div className={styles["btn-secondary"]}>Profile</div>
+              </Link>
+            </li>
+            <li>
+              <button
+                className={styles["btn-primary"]}
+                onClick={onLogoutHandler}
+              >
+                Log out
+              </button>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <Link to={"/login"}>
+                <button className={styles["btn-secondary"]}>Sign In</button>
+              </Link>
+            </li>
+            <li>
+              <Link to={"/Register"}>
+                <button className={styles["btn-primary"]}>Register</button>
+              </Link>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );

@@ -1,14 +1,29 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import AuthContext from "../../Contexts/AuthContext";
 
 const Login = () => {
   const authCtx = useContext(AuthContext);
+  const [isError, setIsError] = useState(null);
+  const [isMessage, setIsMessage] = useState(null);
+  const navigate = useNavigate();
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    authCtx.login(e.target.email.value, e.target.password.value);
+    authCtx.login(e.target.email.value, e.target.password.value).then((res) => {
+      if (res.error) {
+        setIsError(res.error);
+        setIsMessage(null);
+      } else {
+        setIsMessage(res.message);
+        setIsError(null);
+        //redirect to login page after 5 second
+        setTimeout(() => {
+          navigate("/");
+        }, 5000);
+      }
+    });
   };
 
   return (
@@ -37,11 +52,13 @@ const Login = () => {
                   required
                 />
               </div>
-              <div className={styles["checkbox-text"]}>
-              </div>
+              <div className={styles["checkbox-text"]}></div>
               <a href="#" className={styles.text}>
                 Lupa password?
               </a>
+
+              {isError && <div className={styles.error}>{isError}</div>}
+              {isMessage && <div className={styles.messsage}>{isMessage}</div>}
 
               <button
                 type="submit"

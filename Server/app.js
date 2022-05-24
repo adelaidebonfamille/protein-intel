@@ -1,8 +1,8 @@
 const express = require("express");
+const cors = require("cors");
 const db = require("./data/database");
 const dotenv = require("dotenv");
 
-const corsMiddleware = require("./middlewares/cors");
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 const verifyTokenMiddleware = require("./middlewares/verifyToken");
 const verifyRolesMiddleware = require("./middlewares/verifyRoles");
@@ -14,9 +14,9 @@ const userRoutes = require("./routers/user.routes");
 
 const app = express();
 
-dotenv.config();
+app.use(cors());
 
-app.use(corsMiddleware);
+dotenv.config();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

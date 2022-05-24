@@ -9,7 +9,7 @@ const User = require("../models/user.model");
 const userRegister = async(req, res, next) => {
     const { nim, password, confirmPassword, name, email } = req.body;
 
-    if ( !(/^\d{14}$/.test(nim)) ) {
+    if (!/^\d{14}$/.test(nim)) {
         return next(new Error("each character in NIM must be a number"));
     }
 
@@ -89,6 +89,7 @@ const userLogin = async(req, res, next) => {
 
     const token = generateToken({
         nim: user.nim,
+        name: user.name,
         role: "user",
     });
 

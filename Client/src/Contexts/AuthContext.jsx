@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = React.createContext({
-  isError: false,
-  register: (email, username, password, confirmPassword) => {},
+  register: (email, name, nim, password, confirmPassword) => {},
   login: (email, password) => {},
   logout: () => {},
-  isAuth: false,
-  checkToken: () => {},
+  loadUser: () => {},
+  userData: {},
 });
 
-const BASE_URL = "http://localhost:5000/api/auth";
+const BASE_URL =
+  "http://localhost:5000/api/auth" || `${process.env.API_URL}/auth`;
 
 export const AuthProvider = (props) => {
-  const [error, setError] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
 
   const register = async (email, name, nim, password, confirmPassword) => {
     try {
@@ -26,14 +28,16 @@ export const AuthProvider = (props) => {
         nim,
       });
       if (response.data.error) {
-        console.log(response.data.error);
-        setError(response.data.error);
+        return { error: response.data.error };
       }
     } catch (error) {
-      console.log(error);
-      setError(error);
-      return;
+      return { error: error };
     }
+
+    return {
+      error: null,
+      message: "Successfully Registered, redirecting in 5 seconds",
+    };
   };
 
   const login = async (email, password) => {
@@ -44,31 +48,33 @@ export const AuthProvider = (props) => {
         password,
       });
       if (response.data.error) {
-        console.log(response.data.error);
-        setError(response.data.error);
-        return;
+        return { error: response.data.error };
       }
     } catch (error) {
-      console.log(error);
-      setError(error);
-      return;
+      return { error: error };
     }
 
     localStorage.setItem("token", response.data.token);
-    setIsAuth(true);
+    setUserData(jwtDecode(response.data.token));
+
+    return {
+      error: null,
+      message: "Successfully Logged In, redirecting in 5 seconds",
+    };
   };
 
   const logout = () => {
     localStorage.removeItem("token");
-    setIsAuth(false);
+    setUserData(null);
+    navigate("/");
   };
 
-  const checkToken = () => {
+  const loadUser = () => {
     const token = localStorage.getItem("token");
     if (token) {
-      setIsAuth(true);
+      setUserData(jwtDecode(token));
     } else {
-      setIsAuth(false);
+      setUserData(null);
     }
   };
 
@@ -78,9 +84,8 @@ export const AuthProvider = (props) => {
         register,
         login,
         logout,
-        error,
-        isAuth,
-        checkToken,
+        loadUser,
+        userData,
       }}
     >
       {props.children}

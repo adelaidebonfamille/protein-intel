@@ -30,10 +30,11 @@
   list-style: none;
   width: 12%;
   justify-content: space-between;
+  gap: 1rem;
   align-items: center;
 }
 
-.nav .link2 button {
+.btn-primary {
   background-color: #5e5ff5;
   color: white;
   border: none;
@@ -42,6 +43,34 @@
   cursor: pointer;
   transition: all 0.3s ease 0s;
   font: inherit;
+  margin: 0 10px;
+  min-width: 100px;
+}
+
+.btn-primary:hover {
+  color: #5e5ff5;
+  background-color: white;
+  outline: #5e5ff5 solid 3px;
+}
+
+.btn-secondary {
+  background-color: white;
+  color: #5e5ff5;
+  outline: #5e5ff5 solid 3px;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  font: inherit;
+  margin: 0 10px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.btn-secondary:hover {
+  color: white;
+  background-color: #5e5ff5;
 }
 
 .nav ul li a {
@@ -55,8 +84,8 @@
   font: bold;
 }
 
-.nav .link2 button:hover {
-  color: #5e5ff5;
-  background-color: white;
-  outline: #5e5ff5 solid 3px;
+@media screen and (max-width: 768px) {
+  .nav {
+    display: none;
+  }
 }

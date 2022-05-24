@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import styles from "./App.module.css";
@@ -12,7 +12,14 @@ import Admin from "./Pages/Admin/Admin";
 import Problems from "./Pages/Admin/Problems/Problems";
 import Scores from "./Pages/Admin/Scores/Scores";
 
+import AuthContext from "./Contexts/AuthContext";
+
 function App() {
+  const authCtx = useContext(AuthContext);
+  useEffect(() => {
+    authCtx.loadUser();
+  }, []);
+
   return (
     <div className={styles.body}>
       <Navbar />

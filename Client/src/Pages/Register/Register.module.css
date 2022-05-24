@@ -48,7 +48,6 @@
   margin-bottom: 4px;
 }
 
-
 .input-field input {
   position: absolute;
   height: 100%;
@@ -123,6 +122,17 @@
   transition: all 0.3s ease;
 }
 
+.button:hover {
+  background-color: white;
+  color: #5e5ff5;
+  outline: #5e5ff5 solid 3px;
+}
+
+.button:active {
+  background-color: #4949f4;
+  color: white;
+}
+
 .button input:hover {
   background-color: #4c4cc9;
 }
@@ -130,4 +140,33 @@
 .form .login-signup {
   margin-top: 30px;
   text-align: center;
+}
+
+.error {
+  display: flex;
+  margin-top: 35px;
+  border: none;
+  outline: rgb(247, 48, 48) 3px solid;
+  color: rgb(247, 48, 48);
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  background-color: rgb(255, 255, 255);
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+}
+
+.messsage {
+  display: flex;
+  margin-top: 35px;
+  border: none;
+  color: rgb(255, 255, 255);
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  background-color: rgb(76, 243, 61);
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
 }

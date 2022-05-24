@@ -1,25 +1,38 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Register.module.css";
-import axios from "axios";
+
+import AuthContext from "../../Contexts/AuthContext";
 
 const Register = () => {
   const [isError, setIsError] = useState(null);
-  const onSubmitHandler = async (e) => {
+  const [isMessage, setIsMessage] = useState(null);
+  const navigate = useNavigate();
+  const authCtx = useContext(AuthContext);
+  const onSubmitHandler = (e) => {
     e.preventDefault();
 
-    try {
-      await axios.post("http://localhost:5000/api/auth/register", {
-        name: e.target.name.value,
-        nim: e.target.nim.value,
-        email: e.target.email.value,
-        password: e.target.password.value,
-        confirmPassword: e.target.confirmPassword.value,
+    authCtx
+      .register(
+        e.target.email.value,
+        e.target.name.value,
+        e.target.nim.value,
+        e.target.password.value,
+        e.target.confirmPassword.value
+      )
+      .then((res) => {
+        if (res.error) {
+          setIsError(res.error);
+          setIsMessage(null);
+        } else {
+          setIsMessage(res.message);
+          setIsError(null);
+          //redirect to login page after 5 second
+          setTimeout(() => {
+            navigate("/login");
+          }, 5000);
+        }
       });
-    } catch (error) {
-      console.log(error);
-      setIsError(error);
-    }
   };
 
   return (
@@ -80,6 +93,17 @@ const Register = () => {
                   name="confirmPassword"
                 />
               </div>
+
+              {isError && (
+                <div className={`${styles["input-field"]} ${styles.error}`}>
+                  <span>{`${isError}`}</span>
+                </div>
+              )}
+              {isMessage && (
+                <div className={`${styles["input-field"]} ${styles.messsage}`}>
+                  <span>{`${isMessage}`}</span>
+                </div>
+              )}
 
               <button
                 type="submit"

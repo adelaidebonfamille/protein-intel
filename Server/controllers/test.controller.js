@@ -2,188 +2,208 @@ const Problem = require("../models/problem.model");
 const Test = require("../models/test.model");
 const Score = require("../models/score.model");
 const Batch = require("../models/batch.model");
+const User = require("../models/user.model");
 
 const calculateScore = require("../utility/calculate-score");
 
-const startTest = async (req, res, next) => {
-	const { nim } = req.user;
-	const { batch } = req.body;
+const startTest = async(req, res, next) => {
+    const { nim } = req.user;
+    const { batch } = req.body;
 
-	let isBatchExist;
-	try {
-		isBatchExist = await Batch.findOne({ batch });
-	} catch (error) {
-		return next(error);
-	}
-	if (!isBatchExist.isActive) {
-		return next(new Error("Batch not found or inactive"));
-	}
+    let user;
+    try {
+        user = await User.findOne({ nim });
+    } catch (error) {
+        return next(error);
+    }
+    if (!user.faculty ||
+        !user.major ||
+        !user.kpm ||
+        !user.entryYear ||
+        !user.phone
+    ) {
+        return next(
+            new Error(
+                "User Profiles are not complete, please complete your profile first"
+            )
+        );
+    }
 
-	const existingTest = await Test.findOne({ nim });
-	if (existingTest) {
-		return res.json({
-			message: "Test have been started already",
-			test: existingTest,
-		});
-	}
+    let isBatchExist;
+    try {
+        isBatchExist = await Batch.findOne({ batch });
+    } catch (error) {
+        return next(error);
+    }
+    if (!isBatchExist.isActive) {
+        return next(new Error("Batch not found or inactive"));
+    }
 
-	let allProblems;
-	try {
-		allProblems = await Problem.find({}, { key: 0 });
-	} catch (error) {
-		return next(error);
-	}
+    const existingTest = await Test.findOne({ nim });
+    if (existingTest) {
+        return res.json({
+            message: "Test have been started already",
+            test: existingTest,
+        });
+    }
 
-	const testAnswers = [];
-	allProblems.forEach((problem) => {
-		testAnswers.push({
-			problemId: problem._id,
-			answer: "",
-		});
-	});
+    let allProblems;
+    try {
+        allProblems = await Problem.find({}, { key: 0 });
+    } catch (error) {
+        return next(error);
+    }
 
-	//get time 2 hours and 30 minutes from now
-	const time = new Date();
-	time.setHours(time.getHours() + 2);
-	time.setMinutes(time.getMinutes() + 30);
+    const testAnswers = [];
+    allProblems.forEach((problem) => {
+        testAnswers.push({
+            problemId: problem._id,
+            answer: "",
+        });
+    });
 
-	try {
-		const test = new Test({
-			nim,
-			answers: testAnswers,
-			testTime: time,
-		});
-		await test.save();
-		res.json({ message: "Test started successfully", userTest: test });
-	} catch (error) {
-		return next(error);
-	}
+    //get time 2 hours and 30 minutes from now
+    const time = new Date();
+    time.setHours(time.getHours() + 2);
+    time.setMinutes(time.getMinutes() + 30);
+
+    try {
+        const test = new Test({
+            nim,
+            answers: testAnswers,
+            testTime: time,
+        });
+        await test.save();
+        res.json({ message: "Test started successfully", userTest: test });
+    } catch (error) {
+        return next(error);
+    }
 };
 
-const saveTestAnswer = async (req, res, next) => {
-	const { nim } = req.user;
-	const { testAnswers } = req.body;
+const saveTestAnswer = async(req, res, next) => {
+    const { nim } = req.user;
+    const { testAnswers } = req.body;
 
-	let test;
-	try {
-		test = await Test.findOne({ nim });
-	} catch (error) {
-		return next(error);
-	}
+    let test;
+    try {
+        test = await Test.findOne({ nim });
+    } catch (error) {
+        return next(error);
+    }
 
-	if (!test) {
-		return next(new Error("Test not found"));
-	}
+    if (!test) {
+        return next(new Error("Test not found"));
+    }
 
-	if (test.testTime < new Date()) {
-		test.isTestOver = true;
-		await test.save();
-	}
+    if (test.testTime < new Date()) {
+        test.isTestOver = true;
+        await test.save();
+    }
 
-	if (test.isTestOver) {
-		try {
-			const score = calculateScore(testAnswers);
+    if (test.isTestOver) {
+        try {
+            const score = calculateScore(testAnswers);
 
-			const newScore = new Score({
-				nim,
-				score,
-			});
+            const newScore = new Score({
+                nim,
+                score,
+            });
 
-			await newScore.save();
+            await newScore.save();
 
-			res.json({ message: "Test ended successfully", score });
-		} catch (error) {
-			return next(error);
-		}
-		return next(new Error("Test is over"));
-	}
+            res.json({ message: "Test ended successfully", score });
+        } catch (error) {
+            return next(error);
+        }
+        return next(new Error("Test is over"));
+    }
 
-	test.answers = testAnswers;
+    test.answers = testAnswers;
 
-	try {
-		await test.save();
-		res.json({ message: "Test answer saved successfully" });
-	} catch (error) {
-		return next(error);
-	}
+    try {
+        await test.save();
+        res.json({ message: "Test answer saved successfully" });
+    } catch (error) {
+        return next(error);
+    }
 };
 
-const findTestByNim = async (req, res, next) => {
-	const { nim } = req.user;
+const findTestByNim = async(req, res, next) => {
+    const { nim } = req.user;
 
-	let test;
-	try {
-		test = await Test.findOne({ nim });
-	} catch (error) {
-		return next(error);
-	}
+    let test;
+    try {
+        test = await Test.findOne({ nim });
+    } catch (error) {
+        return next(error);
+    }
 
-	if (!test) {
-		return next(new Error("Test not found"));
-	}
+    if (!test) {
+        return next(new Error("Test not found"));
+    }
 
-	if (test.testTime < new Date()) {
-		test.isTestOver = true;
-		test.save();
-	}
+    if (test.testTime < new Date()) {
+        test.isTestOver = true;
+        test.save();
+    }
 
-	if (test.isTestOver) {
-		try {
-			const score = calculateScore(test.answers);
+    if (test.isTestOver) {
+        try {
+            const score = calculateScore(test.answers);
 
-			const newScore = new Score({
-				nim,
-				score,
-			});
+            const newScore = new Score({
+                nim,
+                score,
+            });
 
-			await newScore.save();
+            await newScore.save();
 
-			res.json({ message: "Test ended successfully", score });
-		} catch (error) {
-			return next(error);
-		}
-	}
+            res.json({ message: "Test ended successfully", score });
+        } catch (error) {
+            return next(error);
+        }
+    }
 
-	res.json({ message: "Test found successfully", test });
+    res.json({ message: "Test found successfully", test });
 };
 
-const endTestAndCalculateScore = async (req, res, next) => {
-	const { nim } = req.user;
+const endTestAndCalculateScore = async(req, res, next) => {
+    const { nim } = req.user;
 
-	let test;
-	try {
-		test = await Test.findOne({ nim });
-	} catch (error) {
-		return next(error);
-	}
+    let test;
+    try {
+        test = await Test.findOne({ nim });
+    } catch (error) {
+        return next(error);
+    }
 
-	test.isTestOver = true;
+    test.isTestOver = true;
 
-	try {
-		await test.save();
-		res.json({ message: "Test ended successfully" });
-	} catch (error) {
-		return next(error);
-	}
+    try {
+        await test.save();
+        res.json({ message: "Test ended successfully" });
+    } catch (error) {
+        return next(error);
+    }
 
-	const score = calculateScore(test.answers);
+    const score = calculateScore(test.answers);
 
-	try {
-		const newScore = new Score({
-			nim,
-			score,
-		});
-		await newScore.save();
+    try {
+        const newScore = new Score({
+            nim,
+            score,
+        });
+        await newScore.save();
 
-		res.json({ message: "Score saved successfully", score });
-	} catch (error) {
-		return next(error);
-	}
+        res.json({ message: "Score saved successfully", score });
+    } catch (error) {
+        return next(error);
+    }
 };
 
 module.exports = {
-	startTest: startTest,
-	saveTest: saveTestAnswer,
-	findTest: findTestByNim,
-	endTest: endTestAndCalculateScore,
+    startTest: startTest,
+    saveTest: saveTestAnswer,
+    findTest: findTestByNim,
+    endTest: endTestAndCalculateScore,
 };
