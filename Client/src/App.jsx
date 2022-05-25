@@ -13,7 +13,7 @@ import Problems from "./Pages/Admin/Problems/Problems";
 import Scores from "./Pages/Admin/Scores/Scores";
 
 import AuthContext from "./Contexts/AuthContext";
-import RequireAuth from "./helpers/RequireAuth";
+import RequireAuth from "./Helpers/RequireAuth";
 
 function App() {
   const authCtx = useContext(AuthContext);
