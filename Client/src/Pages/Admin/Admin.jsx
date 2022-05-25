@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Admin.module.css";
-import axios from "axios";
 import AuthContext from "../../Contexts/AuthContext";
 
 const Admin = () => {
