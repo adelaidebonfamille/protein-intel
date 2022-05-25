@@ -1,9 +1,10 @@
 const Problem = require("../models/problem.model");
 const Test = require("../models/test.model");
+const Validation = require("../utility/validation");
 
 const readAllProblems = async(req, res, next) => {
     try {
-        const allProblems = await Problem.find({});
+        const allProblems = await Problem.find();
         res.json({
             message: "All problems delivered successfully",
             problems: allProblems,
@@ -14,13 +15,15 @@ const readAllProblems = async(req, res, next) => {
 };
 
 const addProblem = async(req, res, next) => {
-    const { description, key, type } = req.body;
+    const { description, key, type, choice } = req.body;
+
     const associatedFile = `/problems/files/${req.file.filename}`;
 
-    const { error } = validation.addProblemValidation({
+    const { error } = Validation.addProblemValidation({
         description,
         key,
         type,
+        choice
     });
     if (error) return next(error.details[0]);
 
@@ -28,7 +31,7 @@ const addProblem = async(req, res, next) => {
         associatedFile = "";
     }
 
-    if (type !== "listening" || type !== "reading" || type !== "structure") {
+    if (type !== "listening" && type !== "reading" && type !== "structure") {
         return next(new Error("Type must be listening, reading or structure"));
     }
 
@@ -38,6 +41,7 @@ const addProblem = async(req, res, next) => {
             key,
             associatedFile,
             type,
+            choice
         });
         await problem.save();
         res.json({ message: "Problem added successfully" });
@@ -62,7 +66,7 @@ const updateProblemById = async(req, res, next) => {
     const { description, key, type } = req.body;
     const associatedFile = `/problems/files/${req.file.filename}`;
 
-    const { error } = validation.addProblemValidation({
+    const { error } = Validation.addProblemValidation({
         description,
         key,
         type,
@@ -73,7 +77,7 @@ const updateProblemById = async(req, res, next) => {
         associatedFile = "";
     }
 
-    if (type !== "listening" || type !== "reading" || type !== "structure") {
+    if (type !== "listening" && type !== "reading" && type !== "structure") {
         return next(new Error("Type must be listening, reading or structure"));
     }
 

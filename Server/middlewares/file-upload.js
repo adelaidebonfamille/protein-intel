@@ -21,22 +21,22 @@ const kpmUpload = multer({
 const problemFileUpload = multer({
 	storage: multer.diskStorage({
 		destination: "/problem-data/files",
+		filename: (req, file, cb) => {
+			cb(null, "problem_" + uuid() + "_" + file.originalname);
+		},
 	}),
-	filename: (req, file, cb) => {
-		cb(null, "problem_" + uuid() + "_" + file.originalname);
-	},
 	fileFilter: (req, file, cb) => {
 		if (
-			file.mimetype === ".mp3" ||
-			file.mimetype === ".jpg" ||
-			file.mimetype === ".png" ||
-			file.mimetype === ".jpeg"
+			file.mimetype === "audio/mpeg" ||
+			file.mimetype === "image/jpg" ||
+			file.mimetype === "image/png" ||
+			file.mimetype === "image/jpeg"
 		) {
 			cb(null, true);
 		} else {
 			cb(null, false);
 			return cb(
-				new Error("only mp3, jpg, jpeg or png file are allowed!")
+				new Error(`only mp3, jpg, jpeg or png file are allowed!`)
 			);
 		}
 	},
