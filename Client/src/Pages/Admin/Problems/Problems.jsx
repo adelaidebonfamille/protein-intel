@@ -78,6 +78,21 @@ const Problems = () => {
     }
   };
 
+  const getFileHandler = (filename) => {
+    try {
+      axios.get(`http://localhost:5000${filename}`, {
+        headers: {
+          "auth-token": localStorage.getItem('token')
+        }
+      })
+      .then((response) => {
+        console.log(response);
+      })
+    } catch (error) {
+      console.log(error);
+    }
+ }
+
   return (
     <>
       <Link to="/admin">
@@ -140,12 +155,12 @@ const Problems = () => {
                   <h4>File Used</h4>
                   {problem.type == "listening" ? (
                     <audio controls>
-                      <source src={problem.associatedFile} type="audio/mpeg" />
+                      <source src={getFileHandler(problem.associatedFile) }  type="audio/mpeg" />
                     </audio>
                   ) : (
                     <img
-                      src={problem.associatedFile}
-                      alt="server error dalam mengambil gambar"
+                      src={ getFileHandler(problem.associatedFile) }
+                      alt="server failed to retrieve file"
                     />
                   )}
                 </>
