@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styles from "./Admin.module.css";
 
 const Admin = () => {
@@ -7,47 +6,43 @@ const Admin = () => {
   };
 
   return (
-    <>
-      <div className={styles["login-container"]}>
-        <h1>Admin Login</h1>
-        <form action="#" onSubmit={onSubmitHandler}>
-          <div className={styles["input-field"]}>
-            <p>email</p>
-            <input
-              type="text"
-              placeholder="masukkan email"
-              name="email"
-              required
-            />
-          </div>
-          <div className={styles["input-field"]}>
-            <p>password</p>
-            <input
-              type="password"
-              placeholder="masukkan password"
-              name="password"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className={`${styles["input-field"]} ${styles.button}`}
-          >
-            Login
-          </button>
-        </form>
-      </div>
+    <div className={styles.body}>
       <div className={styles.container}>
-        <Link to="problems">
-          <div className={styles["category-button"]}>
-            Change / Delete Uploaded Problems
+        <div className={styles.form}>
+          <div className={`${styles.form} ${styles.login}`}>
+            <span className={styles.title}>Login</span>
+
+            <form action="#" onSubmit={onSubmitHandler}>
+              <div className={styles["input-field"]}>
+                <p>Username</p>
+                <input
+                  type="text"
+                  placeholder="Masukkan Username"
+                  name="username"
+                  required
+                />
+              </div>
+              <div className={styles["input-field"]}>
+                <p>Password</p>
+                <input
+                  type="password"
+                  placeholder="Masukkan Password"
+                  name="password"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className={`${styles["input-field"]} ${styles.button}`}
+              >
+                Login
+              </button>
+            </form>
           </div>
-        </Link>
-        <Link to="scores">
-          <div className={styles["category-button"]}>See All User Score</div>
-        </Link>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

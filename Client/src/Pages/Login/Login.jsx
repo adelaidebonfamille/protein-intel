@@ -37,7 +37,7 @@ const Login = () => {
               <div className={styles["input-field"]}>
                 <p>Email</p>
                 <input
-                  type="text"
+                  type="email"
                   placeholder="Masukkan Email"
                   name="email"
                   required

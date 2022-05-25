@@ -29,7 +29,7 @@ const Navbar = () => {
         </li>
       </ul>
       <ul className={styles.link2}>
-        {authCtx.userData ? (
+        {authCtx.userData && authCtx.userData.role === "user" ? (
           <>
             <li>
               <Link to={"/profile"}>

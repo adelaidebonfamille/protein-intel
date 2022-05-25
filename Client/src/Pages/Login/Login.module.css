@@ -131,6 +131,10 @@
   transition: all 0.3s ease;
 }
 
+.input-field.button:hover {
+  background-color: #3f3ff5;
+}
+
 .button input:hover {
   background-color: #4c4cc9;
 }
