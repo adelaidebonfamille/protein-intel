@@ -53,14 +53,14 @@ const Problems = () => {
       formData.append("description", e.target.description.value);
       formData.append("key", e.target.key.value);
       formData.append("type", e.target.type.value);
-      
+
       for (let i = 1; i <= 5; i++) {
-        formData.append("choice[]", e.target[`choice-${i}`].value)
+        formData.append("choice[]", e.target[`choice-${i}`].value);
       }
 
       if (selectedFile.current) {
         formData.append("problem", selectedFile.current);
-        console.log(selectedFile.current)
+        console.log(selectedFile.current);
       }
 
       axios
@@ -130,19 +130,29 @@ const Problems = () => {
 
         {search &&
           allProblems.map((problem) => (
-            <div key={problem["_id"].toString()}>
+            <div className={styles.problem} key={problem["_id"].toString()} >
               <h4>Id</h4>
               <p>{problem["_id"].toString()}</p>
               <h4>Type</h4>
               <p>{problem.type}</p>
+              {problem.associatedFile &&
+                <>
+                  <h4>File Used</h4>
+                  {(problem.type == 'listening')? 
+                    <audio controls>
+                      <source src={problem.associatedFile} type="audio/mpeg" />
+                    </audio>
+                    :
+                    <img src={problem.associatedFile} alt="server error dalam mengambil gambar"/>
+                  }
+                </>
+              }
               <h4>Question</h4>
               <p>{problem.description}</p>
               <h4>Choice</h4>
               <ol type="A">
                 {problem.choice.map((choice, index) => (
-                  <>
                     <li key={index}>{choice}</li>
-                  </>
                 ))}
               </ol>
               <h4>Key</h4>
@@ -285,7 +295,12 @@ const Problems = () => {
             <h3>Add Problem Type Image</h3>
             <form onSubmit={addProblemHandler}>
               <p>Input Image</p>
-              <input type="file" onChange={fileChangedHandler} required accept=".jpg, .png, .jpeg"/>
+              <input
+                type="file"
+                onChange={fileChangedHandler}
+                required
+                accept=".jpg, .png, .jpeg"
+              />
               <p>Question</p>
               <textarea
                 name="description"
@@ -416,7 +431,12 @@ const Problems = () => {
             <h3>Add Problem Type Audio</h3>
             <form onSubmit={addProblemHandler}>
               <p>Input Audio</p>
-              <input type="file" onChange={fileChangedHandler} required accept=".mp3"/>
+              <input
+                type="file"
+                onChange={fileChangedHandler}
+                required
+                accept=".mp3"
+              />
               <p>Question</p>
               <textarea
                 name="description"

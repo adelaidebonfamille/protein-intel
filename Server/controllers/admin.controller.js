@@ -1,6 +1,6 @@
 const Problem = require("../models/problem.model");
 const Test = require("../models/test.model");
-const Validation = require("../utility/validation");
+const validation = require("../utility/validation");
 
 const readAllProblems = async(req, res, next) => {
     try {
@@ -17,19 +17,15 @@ const readAllProblems = async(req, res, next) => {
 const addProblem = async(req, res, next) => {
     const { description, key, type, choice } = req.body;
 
-    const associatedFile = `/problems/files/${req.file.filename}`;
+    const associatedFile = (typeof req.file == 'undefined') ? "" : `/problems/files/${req.file.filename}`
 
-    const { error } = Validation.addProblemValidation({
+    const { error } = validation.addProblemValidation({
         description,
         key,
         type,
         choice
     });
     if (error) return next(error.details[0]);
-
-    if (!associatedFile) {
-        associatedFile = "";
-    }
 
     if (type !== "listening" && type !== "reading" && type !== "structure") {
         return next(new Error("Type must be listening, reading or structure"));
@@ -66,7 +62,7 @@ const updateProblemById = async(req, res, next) => {
     const { description, key, type } = req.body;
     const associatedFile = `/problems/files/${req.file.filename}`;
 
-    const { error } = Validation.addProblemValidation({
+    const { error } = validation.addProblemValidation({
         description,
         key,
         type,

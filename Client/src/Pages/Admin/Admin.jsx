@@ -4,6 +4,8 @@ import styles from "./Admin.module.css";
 import axios from "axios";
 
 const Admin = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
@@ -15,6 +17,7 @@ const Admin = () => {
         })
         .then((response) => {
           localStorage.setItem("token", response.data.token);
+          setIsAdmin(true);
         });
     } catch (error) {
       console.log(error);
@@ -23,7 +26,7 @@ const Admin = () => {
 
   return (
     <>
-      {localStorage.getItem("token") ? (
+      { ( localStorage.getItem("token") || isAdmin )  ? (
         <div className={styles.container}>
           <Link to="problems">
             <div className={styles["category-button"]}>

@@ -22,6 +22,7 @@
 .input-container {
   display: flex;
   justify-content: center;
+  margin-bottom: 4rem;
 }
 
 .input-container .add-problems {
@@ -50,4 +51,14 @@
 
 .keys label {
   margin-right: 30px;
+}
+
+.problem {
+  text-align: left;
+  margin-bottom: 2rem;
+  background-color: beige;
+}
+
+.problem ol {
+  padding-left: 1.25rem;
 }

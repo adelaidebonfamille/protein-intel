@@ -59,6 +59,7 @@ const Profile = () => {
     const config = {
       headers: {
         "content-type": "multipart/form-data",
+        "auth-token": localStorage.getItem("token"),
       },
     };
 
@@ -82,8 +83,7 @@ const Profile = () => {
 
   return (
     <div className={styles["form-container"]}>
-      <form onSubmit={updateProfileHandler}>
-        {isLoading && <div className={styles.loading}>Loading...</div>}
+      <form>
         <label htmlFor="name">Nama</label>
         <input
           type="text"
@@ -113,6 +113,9 @@ const Profile = () => {
           name="email"
           className={styles.disabled}
         />
+      </form>
+      <form onSubmit={updateProfileHandler}>
+        {isLoading && <div className={styles.loading}>Loading...</div>}
 
         <label htmlFor="faculty">Fakultas</label>
         <input type="text" name="faculty" id="faculty" ref={faculty} />
@@ -145,7 +148,7 @@ const Profile = () => {
           />
         </div>
 
-        <button>Submit</button>
+        <button type="submit">Submit</button>
       </form>
 
       <div className={styles.border}></div>

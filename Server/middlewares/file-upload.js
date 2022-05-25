@@ -1,5 +1,6 @@
 const multer = require("multer");
 const uuid = require("uuid").v4;
+const path = require("path");
 
 const kpmUpload = multer({
 	storage: multer.diskStorage({
@@ -9,12 +10,18 @@ const kpmUpload = multer({
 		},
 	}),
 	fileFilter: (req, file, cb) => {
-		if (file.mimetype === ".pdf") {
-			cb(null, true);
-		} else {
-			cb(null, false);
-			return cb(new Error("only .pdf file are allowed!"));
+		var ext = path.extname(file.originalname);
+		if (
+			ext !== ".png" &&
+			ext !== ".jpg" &&
+			ext !== ".jpeg" &&
+			ext !== ".pdf" &&
+			ext !== ".docx" &&
+			ext !== ".doc"
+		) {
+			return cb(new Error("Only images, pdf and docs are allowed"));
 		}
+		cb(null, true);
 	},
 });
 
@@ -26,19 +33,16 @@ const problemFileUpload = multer({
 		},
 	}),
 	fileFilter: (req, file, cb) => {
+		var ext = path.extname(file.originalname);
 		if (
-			file.mimetype === "audio/mpeg" ||
-			file.mimetype === "image/jpg" ||
-			file.mimetype === "image/png" ||
-			file.mimetype === "image/jpeg"
+			ext !== ".mp3" &&
+			ext !== ".jpeg" &&
+			ext !== ".jpg" &&
+			ext !== ".png"
 		) {
-			cb(null, true);
-		} else {
-			cb(null, false);
-			return cb(
-				new Error(`only mp3, jpg, jpeg or png file are allowed!`)
-			);
+			return cb(new Error("Only images or audio are allowed"));
 		}
+		cb(null, true);
 	},
 });
 
