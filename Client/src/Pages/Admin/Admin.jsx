@@ -1,32 +1,35 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Admin.module.css";
 import axios from "axios";
+import AuthContext from "../../Contexts/AuthContext";
 
 const Admin = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
-
+  const [isError, setIsError] = useState(null);
+  const [isMessage, setIsMessage] = useState(null);
+  const authCtx = useContext(AuthContext);
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-
-    try {
-      await axios
-        .post("http://localhost:5000/api/auth/admin", {
-          username: e.target.username.value,
-          password: e.target.password.value,
-        })
-        .then((response) => {
-          localStorage.setItem("token", response.data.token);
-          setIsAdmin(true);
-        });
-    } catch (error) {
-      console.log(error);
-    }
+    authCtx
+      .adminLogin(e.target.username.value, e.target.password.value)
+      .then((res) => {
+        if (res.error) {
+          setIsError(res.error);
+          setIsMessage(null);
+        } else {
+          setIsMessage(res.message);
+          setIsError(null);
+          //redirect to login page after 5 second
+          setTimeout(() => {
+            navigate("/admin");
+          }, 3000);
+        }
+      });
   };
 
   return (
     <>
-      { ( localStorage.getItem("token") || isAdmin )  ? (
+      {authCtx.userData && authCtx.userData.role === "admin" ? (
         <div className={styles.container}>
           <Link to="problems">
             <div className={styles["category-button"]}>

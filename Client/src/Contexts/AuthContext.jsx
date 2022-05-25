@@ -8,6 +8,7 @@ const AuthContext = React.createContext({
   login: (email, password) => {},
   logout: () => {},
   loadUser: () => {},
+  adminLogin: (username, password) => {},
   userData: {},
 });
 
@@ -80,6 +81,29 @@ export const AuthProvider = (props) => {
     }
   };
 
+  const adminLogin = async (username, password) => {
+    let response;
+    try {
+      response = await axios.post(`${BASE_URL}/admin`, {
+        username,
+        password,
+      });
+      if (response.data.error) {
+        return { error: response.data.error };
+      }
+    } catch (error) {
+      return { error: error };
+    }
+
+    localStorage.setItem("token", response.data.token);
+    setUserData(jwtDecode(response.data.token));
+
+    return {
+      error: null,
+      message: "Successfully Logged In, redirecting...",
+    };
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -88,6 +112,7 @@ export const AuthProvider = (props) => {
         logout,
         loadUser,
         userData,
+        adminLogin,
       }}
     >
       {props.children}
