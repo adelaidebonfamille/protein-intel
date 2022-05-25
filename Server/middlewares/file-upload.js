@@ -14,7 +14,6 @@ const kpmUpload = multer({
 		if (
 			ext !== ".png" &&
 			ext !== ".jpg" &&
-			ext !== ".gif" &&
 			ext !== ".jpeg" &&
 			ext !== ".pdf" &&
 			ext !== ".docx" &&
@@ -34,19 +33,16 @@ const problemFileUpload = multer({
 		cb(null, "problem_" + uuid() + "_" + file.originalname);
 	},
 	fileFilter: (req, file, cb) => {
+		var ext = path.extname(file.originalname);
 		if (
-			file.mimetype === ".mp3" ||
-			file.mimetype === ".jpg" ||
-			file.mimetype === ".png" ||
-			file.mimetype === ".jpeg"
+			ext !== ".mp3" &&
+			ext !== ".jpeg" &&
+			ext !== ".jpg" &&
+			ext !== ".png"
 		) {
-			cb(null, true);
-		} else {
-			cb(null, false);
-			return cb(
-				new Error("only mp3, jpg, jpeg or png file are allowed!")
-			);
+			return cb(new Error("Only images, pdf and docs are allowed"));
 		}
+		cb(null, true);
 	},
 });
 
