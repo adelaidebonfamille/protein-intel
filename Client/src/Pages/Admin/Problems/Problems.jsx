@@ -130,29 +130,32 @@ const Problems = () => {
 
         {search &&
           allProblems.map((problem) => (
-            <div className={styles.problem} key={problem["_id"].toString()} >
+            <div className={styles.problem} key={problem["_id"].toString()}>
               <h4>Id</h4>
               <p>{problem["_id"].toString()}</p>
               <h4>Type</h4>
               <p>{problem.type}</p>
-              {problem.associatedFile &&
+              {problem.associatedFile && (
                 <>
                   <h4>File Used</h4>
-                  {(problem.type == 'listening')? 
+                  {problem.type == "listening" ? (
                     <audio controls>
                       <source src={problem.associatedFile} type="audio/mpeg" />
                     </audio>
-                    :
-                    <img src={problem.associatedFile} alt="server error dalam mengambil gambar"/>
-                  }
+                  ) : (
+                    <img
+                      src={problem.associatedFile}
+                      alt="server error dalam mengambil gambar"
+                    />
+                  )}
                 </>
-              }
+              )}
               <h4>Question</h4>
               <p>{problem.description}</p>
               <h4>Choice</h4>
               <ol type="A">
                 {problem.choice.map((choice, index) => (
-                    <li key={index}>{choice}</li>
+                  <li key={index}>{choice}</li>
                 ))}
               </ol>
               <h4>Key</h4>

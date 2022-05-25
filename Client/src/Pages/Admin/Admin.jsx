@@ -25,9 +25,9 @@ const Admin = () => {
   };
 
   return (
-    <>
-      { ( localStorage.getItem("token") || isAdmin )  ? (
-        <div className={styles.container}>
+    <div className={styles.body}>
+      {localStorage.getItem("token") || isAdmin ? (
+    <div className={ styles[ "category-container" ] }>
           <Link to="problems">
             <div className={styles["category-button"]}>
               Change / Delete Uploaded Problems
@@ -38,32 +38,43 @@ const Admin = () => {
           </Link>
         </div>
       ) : (
-        <div className={styles["login-container"]}>
-          <h1>Admin Login</h1>
-          <form action="#" onSubmit={onSubmitHandler}>
-            <div className={styles["input-field"]}>
-              <p>Username</p>
-              <input
-                type="text"
-                placeholder="masukkan username"
-                name="username"
-                required
-              />
+        <div className={styles.container}>
+          <div className={styles.form}>
+            <div className={`${styles.form} ${styles.login}`}>
+              <span className={styles.title}>Admin Login</span>
+
+              <form action="#" onSubmit={onSubmitHandler}>
+                <div className={styles["input-field"]}>
+                  <p>Username</p>
+                  <input
+                    type="text"
+                    placeholder="Masukkan Username"
+                    name="username"
+                    required
+                  />
+                </div>
+                <div className={styles["input-field"]}>
+                  <p>Password</p>
+                  <input
+                    type="password"
+                    placeholder="Masukkan Password"
+                    name="password"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className={`${styles["input-field"]} ${styles.button}`}
+                >
+                  Login
+                </button>
+              </form>
             </div>
-            <div className={styles["input-field"]}>
-              <p>password</p>
-              <input
-                type="password"
-                placeholder="masukkan password"
-                name="password"
-                required
-              />
-            </div>
-            <button type="submit">Login</button>
-          </form>
+          </div>
         </div>
       )}
-    </>
+</div>
   );
 };
 

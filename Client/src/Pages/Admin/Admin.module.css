@@ -6,6 +6,21 @@
   background-color: #5e5ff5;
 }
 
+.category-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.category-button {
+  padding: 2rem;
+  font-weight: 600;
+  background-color: rgb(255, 216, 216);
+  height: 200px;
+  width: 200px;
+  border-radius: 30px;
+}
 .container {
   position: relative;
   max-width: 430px;
