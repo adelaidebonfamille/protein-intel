@@ -19,6 +19,7 @@ function App() {
   const authCtx = useContext(AuthContext);
   useEffect(() => {
     authCtx.loadUser();
+    console.log(authCtx.userData);
   }, []);
 
   return (
@@ -34,6 +35,7 @@ function App() {
         </Route>
 
         <Route path="/admin" element={<Admin />} />
+
         <Route element={<RequireAuth role="admin" />}>
           <Route path="/admin/problems" element={<Problems />} />
           <Route path="/admin/scores" element={<Scores />} />

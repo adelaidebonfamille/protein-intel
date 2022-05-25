@@ -71,10 +71,8 @@ export const AuthProvider = (props) => {
 
   const loadUser = () => {
     const token = localStorage.getItem("token");
-
-    let decoded;
     if (token) {
-      decoded = jwtDecode(token);
+      const decoded = jwtDecode(token);
       if (decoded.exp < Date.now() / 1000) {
         return logout();
       }

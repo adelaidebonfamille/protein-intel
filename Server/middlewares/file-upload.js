@@ -1,5 +1,6 @@
 const multer = require("multer");
 const uuid = require("uuid").v4;
+const path = require("path");
 
 const kpmUpload = multer({
 	storage: multer.diskStorage({
@@ -9,12 +10,19 @@ const kpmUpload = multer({
 		},
 	}),
 	fileFilter: (req, file, cb) => {
-		if (file.mimetype === ".pdf") {
-			cb(null, true);
-		} else {
-			cb(null, false);
-			return cb(new Error("only .pdf file are allowed!"));
+		var ext = path.extname(file.originalname);
+		if (
+			ext !== ".png" &&
+			ext !== ".jpg" &&
+			ext !== ".gif" &&
+			ext !== ".jpeg" &&
+			ext !== ".pdf" &&
+			ext !== ".docx" &&
+			ext !== ".doc"
+		) {
+			return cb(new Error("Only images, pdf and docs are allowed"));
 		}
+		cb(null, true);
 	},
 });
 
