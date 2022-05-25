@@ -40,6 +40,8 @@ const Profile = () => {
         if (res.data.user.entryYear)
           entryYear.current.value = res.data.user.entryYear;
         if (res.data.user.phone) phone.current.value = res.data.user.phone;
+        if (res.data.user.kpm) setKpmName(res.data.user.kpm.slice(41));
+
         setIsLoading(false);
       });
   }, []);
@@ -138,7 +140,7 @@ const Profile = () => {
           >
             Choose File
           </button>
-          <p>{kpmName}</p>
+          <div className={styles.kpmName}>{kpmName}</div>
           <input
             type="file"
             hidden

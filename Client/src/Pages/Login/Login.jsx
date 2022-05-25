@@ -21,7 +21,7 @@ const Login = () => {
         //redirect to login page after 5 second
         setTimeout(() => {
           navigate("/");
-        }, 3000);
+        }, 5000);
       }
     });
   };
@@ -37,7 +37,7 @@ const Login = () => {
               <div className={styles["input-field"]}>
                 <p>Email</p>
                 <input
-                  type="email"
+                  type="text"
                   placeholder="Masukkan Email"
                   name="email"
                   required
