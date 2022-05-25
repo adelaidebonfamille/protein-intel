@@ -20,6 +20,12 @@
   height: 200px;
   width: 200px;
   border-radius: 30px;
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.category-button:hover {
+  transform: translate(1px, 1px);
+  transition: all .2s;
 }
 .container {
   position: relative;

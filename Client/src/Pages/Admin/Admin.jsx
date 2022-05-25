@@ -30,7 +30,7 @@ const Admin = () => {
   return (
     <div className={styles.body}>
       {authCtx.userData && authCtx.userData.role === "admin" ? (
-        <div className={styles.container}>
+        <div className={styles["category-container"]}>
           <Link to="problems">
             <div className={styles["category-button"]}>
               Change / Delete Uploaded Problems
@@ -38,6 +38,9 @@ const Admin = () => {
           </Link>
           <Link to="scores">
             <div className={styles["category-button"]}>See All User Score</div>
+          </Link>
+          <Link to="batch">
+            <div className={styles["category-button"]}>Start Batch</div>
           </Link>
         </div>
       ) : (

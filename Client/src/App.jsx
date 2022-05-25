@@ -11,6 +11,7 @@ import Register from "./Pages/Register/Register";
 import Admin from "./Pages/Admin/Admin";
 import Problems from "./Pages/Admin/Problems/Problems";
 import Scores from "./Pages/Admin/Scores/Scores";
+import Batch from "./Pages/Admin/Batch/Batch";
 
 import AuthContext from "./Contexts/AuthContext";
 import RequireAuth from "./Helpers/RequireAuth";
@@ -39,6 +40,7 @@ function App() {
         <Route element={<RequireAuth role="admin" />}>
           <Route path="/admin/problems" element={<Problems />} />
           <Route path="/admin/scores" element={<Scores />} />
+          <Route path="/admin/batch" element={<Batch />} />
         </Route>
       </Routes>
     </div>

@@ -1,0 +1,19 @@
+.container {
+  height: 100vh;
+  width: 100vw;;
+}
+
+.go-back-home {
+    width: 150px;
+    height: 100px;
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    background-color: #5e5ff5;
+    color: white;
+    font-weight: bold;
+    border-radius: 30px;
+    padding: 20px;
+    box-shadow: 1px 1px rgba(0, 0, 0, 10);
+  }
+  

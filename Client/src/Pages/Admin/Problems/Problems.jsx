@@ -66,7 +66,7 @@ const Problems = () => {
       axios
         .post("http://localhost:5000/api/admin/problems", formData, {
           headers: {
-            "Content-type": "multipart/form-data",
+            "content-type": "multipart/form-data",
             "auth-token": localStorage.getItem("token"),
           },
         })
@@ -300,6 +300,7 @@ const Problems = () => {
               <p>Input Image</p>
               <input
                 type="file"
+                name="problem"
                 onChange={fileChangedHandler}
                 required
                 accept=".jpg, .png, .jpeg"
@@ -436,6 +437,7 @@ const Problems = () => {
               <p>Input Audio</p>
               <input
                 type="file"
+                name="problem"
                 onChange={fileChangedHandler}
                 required
                 accept=".mp3"
