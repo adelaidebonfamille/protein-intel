@@ -163,7 +163,7 @@ const Profile = () => {
           ref={oldPassword}
         />
 
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">New Password</label>
         <input
           type="password"
           name="NewPassword"
@@ -171,7 +171,7 @@ const Profile = () => {
           ref={password}
         />
 
-        <label htmlFor="confirmPassword">Confirm Password</label>
+        <label htmlFor="confirmPassword">New Confirm Password</label>
         <input
           type="password"
           name="newConfirmPassword"
