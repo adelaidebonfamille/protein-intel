@@ -59,7 +59,7 @@ export const AuthProvider = (props) => {
 
     return {
       error: null,
-      message: "Successfully Logged In, redirecting in 5 seconds",
+      message: "Successfully Logged In, redirecting...",
     };
   };
 

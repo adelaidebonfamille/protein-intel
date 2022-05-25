@@ -40,7 +40,7 @@ const problemFileUpload = multer({
 			ext !== ".jpg" &&
 			ext !== ".png"
 		) {
-			return cb(new Error("Only images or audio are allowed"));
+			return cb(new Error("Only .mp3 and images are allowed"));
 		}
 		cb(null, true);
 	},

@@ -17,7 +17,7 @@ const readAllProblems = async(req, res, next) => {
 const addProblem = async(req, res, next) => {
     const { description, key, type, choice } = req.body;
 
-    const associatedFile = (typeof req.file == 'undefined') ? "" : `/problems/files/${req.file.filename}`
+    const associatedFile = (req.file !== undefined) ? `/problems/files/${req.file.filename}` : '';
 
     const { error } = validation.addProblemValidation({
         description,
@@ -26,6 +26,12 @@ const addProblem = async(req, res, next) => {
         choice
     });
     if (error) return next(error.details[0]);
+
+    for (let c of choice) {
+        if (c === '') {
+            return next(new Error("Each choice must have at least one character"))
+        }
+    }
 
     if (type !== "listening" && type !== "reading" && type !== "structure") {
         return next(new Error("Type must be listening, reading or structure"));
@@ -46,67 +52,67 @@ const addProblem = async(req, res, next) => {
     }
 };
 
-const deleteProblemById = async(req, res, next) => {
-    const { id } = req.params;
-    try {
-        await Problem.findByIdAndDelete(id);
+const deleteProblemById = async (req, res, next) => {
+	const { id } = req.params;
+	try {
+		await Problem.findByIdAndDelete(id);
 
-        res.json({ message: "Problem deleted successfully" });
-    } catch (error) {
-        return next(error);
-    }
+		res.json({ message: "Problem deleted successfully" });
+	} catch (error) {
+		return next(error);
+	}
 };
 
-const updateProblemById = async(req, res, next) => {
-    const { id } = req.params;
-    const { description, key, type } = req.body;
-    const associatedFile = `/problems/files/${req.file.filename}`;
+const updateProblemById = async (req, res, next) => {
+	const { id } = req.params;
+	let file = "";
+	if (req.file !== undefined) {
+		try {
+			const existingProblem = await Problem.findById(id);
+			if (!existingProblem) return next(new Error("Problem not found"));
+			if (existingProblem.associatedFile !== undefined) {
+				file = existingProblem.associatedFile;
+			}
+		} catch (error) {
+			return next(error);
+		}
+	}
 
-    const { error } = validation.addProblemValidation({
-        description,
-        key,
-        type,
-    });
-    if (error) return next(error.details[0]);
+	const { error } = validation.addProblemValidation(req.body);
+	if (error) return next(error.details[0]);
 
-    if (!associatedFile) {
-        associatedFile = "";
-    }
+	if (type !== "listening" && type !== "reading" && type !== "structure") {
+		return next(new Error("Type must be listening, reading or structure"));
+	}
 
-    if (type !== "listening" && type !== "reading" && type !== "structure") {
-        return next(new Error("Type must be listening, reading or structure"));
-    }
+	try {
+		await Problem.findByIdAndUpdate(id, {
+			...req.body,
+			file,
+		});
 
-    try {
-        await Problem.findByIdAndUpdate(id, {
-            description,
-            key,
-            associatedFile,
-            type,
-        });
-
-        res.json({ message: "Problem updated successfully" });
-    } catch (error) {
-        return next(error);
-    }
+		res.json({ message: "Problem updated successfully" });
+	} catch (error) {
+		return next(error);
+	}
 };
 
-const getAllUserScore = async(req, res, next) => {
-    try {
-        const allUserScore = await Test.find({});
-        res.json({
-            message: "All user score delivered successfully",
-            userScore: allUserScore,
-        });
-    } catch (error) {
-        return next(error);
-    }
+const getAllUserScore = async (req, res, next) => {
+	try {
+		const allUserScore = await Test.find({});
+		res.json({
+			message: "All user score delivered successfully",
+			userScore: allUserScore,
+		});
+	} catch (error) {
+		return next(error);
+	}
 };
 
 module.exports = {
-    createProblem: addProblem,
-    updateProblem: updateProblemById,
-    getAllProblems: readAllProblems,
-    deleteProblem: deleteProblemById,
-    getAllScore: getAllUserScore,
+	createProblem: addProblem,
+	updateProblem: updateProblemById,
+	getAllProblems: readAllProblems,
+	deleteProblem: deleteProblemById,
+	getAllScore: getAllUserScore,
 };

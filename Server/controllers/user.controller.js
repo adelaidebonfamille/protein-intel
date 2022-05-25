@@ -2,6 +2,8 @@ const Problem = require("../models/problem.model");
 const Score = require("../models/score.model");
 const User = require("../models/user.model");
 
+const validation = require("../utility/validation");
+
 const getTestProblems = async (req, res, next) => {
 	try {
 		const testProblems = await Problem.find({}, { key: 0 });
@@ -44,20 +46,21 @@ const getTestProblems = async (req, res, next) => {
 };
 
 const updateUserData = async (req, res, next) => {
-	console.log("updateUserData");
 	const nim = req.user.nim;
-	const data = req.body;
 	let kpm = "";
 	if (req.file !== undefined) {
 		kpm = req.file.filename;
 	}
+
+	const { error } = validation.updateUserValidation(req.body);
+	if (error) return next(error.details[0]);
 
 	try {
 		await User.findOneAndUpdate(
 			{ nim },
 			{
 				$set: {
-					...data,
+					...req.body,
 					kpm,
 				},
 			}

@@ -40,6 +40,8 @@ const Profile = () => {
         if (res.data.user.entryYear)
           entryYear.current.value = res.data.user.entryYear;
         if (res.data.user.phone) phone.current.value = res.data.user.phone;
+        if (res.data.user.kpm) setKpmName(res.data.user.kpm.slice(41));
+
         setIsLoading(false);
       });
   }, []);
@@ -138,7 +140,7 @@ const Profile = () => {
           >
             Choose File
           </button>
-          <p>{kpmName}</p>
+          <div className={styles.kpmName}>{kpmName}</div>
           <input
             type="file"
             hidden
@@ -163,7 +165,7 @@ const Profile = () => {
           ref={oldPassword}
         />
 
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">New Password</label>
         <input
           type="password"
           name="NewPassword"
@@ -171,7 +173,7 @@ const Profile = () => {
           ref={password}
         />
 
-        <label htmlFor="confirmPassword">Confirm Password</label>
+        <label htmlFor="confirmPassword">New Confirm Password</label>
         <input
           type="password"
           name="newConfirmPassword"

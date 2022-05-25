@@ -21,21 +21,36 @@ const Navbar = () => {
         <li>
           <Link to={"/"}>Home</Link>
         </li>
-        <li>
-          <Link to={"/exam"}>Start Exam</Link>
-        </li>
-        <li>
-          <a href="https://intel.ilkom.unsri.ac.id/">About Us</a>
-        </li>
+        {authCtx.userData && authCtx.userData.role === "admin" ? (
+          <>
+            <li>
+              <Link to={"/admin/problems"}>Problems</Link>
+            </li>
+            <li>
+              <Link to={"/admin/scores"}>Scores</Link>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <Link to={"/exam"}>Start Exam</Link>
+            </li>
+            <li>
+              <a href="https://intel.ilkom.unsri.ac.id/">About Us</a>
+            </li>
+          </>
+        )}
       </ul>
       <ul className={styles.link2}>
         {authCtx.userData ? (
           <>
-            <li>
-              <Link to={"/profile"}>
-                <div className={styles["btn-secondary"]}>Profile</div>
-              </Link>
-            </li>
+            {authCtx.userData.role === "user" && (
+              <li>
+                <Link to={"/profile"}>
+                  <div className={styles["btn-secondary"]}>Profile</div>
+                </Link>
+              </li>
+            )}
             <li>
               <button
                 className={styles["btn-primary"]}

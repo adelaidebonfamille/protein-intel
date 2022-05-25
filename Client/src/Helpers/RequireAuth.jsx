@@ -4,12 +4,13 @@ import AuthContext from "../Contexts/AuthContext";
 
 const RequireAuth = (props) => {
   const authCtx = useContext(AuthContext);
-  console.log(authCtx.userData);
+  let user;
+  if (authCtx.userData) {
+    user = authCtx.userData;
+  }
 
   const isAuthenticated =
-    authCtx.userData &&
-    authCtx.userData.role === props.role &&
-    authCtx.userData.exp * 1000 > Date.now();
+    user && user.role === props.role && user.exp * 1000 > Date.now();
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 };
