@@ -8,7 +8,7 @@ const Admin = () => {
   const [isError, setIsError] = useState(null);
   const [isMessage, setIsMessage] = useState(null);
   const authCtx = useContext(AuthContext);
-  const onSubmitHandler = async (e) => {
+  const onSubmitHandler = (e) => {
     e.preventDefault();
     authCtx
       .adminLogin(e.target.username.value, e.target.password.value)
