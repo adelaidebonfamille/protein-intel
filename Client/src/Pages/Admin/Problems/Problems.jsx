@@ -78,21 +78,6 @@ const Problems = () => {
     }
   };
 
-  const getFileHandler = (filename) => {
-    try {
-      axios.get(`http://localhost:5000${filename}`, {
-        headers: {
-          "auth-token": localStorage.getItem('token')
-        }
-      })
-      .then((response) => {
-        console.log(response);
-      })
-    } catch (error) {
-      console.log(error);
-    }
- }
-
   return (
     <>
       <Link to="/admin">
@@ -155,11 +140,12 @@ const Problems = () => {
                   <h4>File Used</h4>
                   {problem.type == "listening" ? (
                     <audio controls>
-                      <source src={getFileHandler(problem.associatedFile) }  type="audio/mpeg" />
+                      <source src={ `http://localhost:5000${ problem.associatedFile }` }  type="audio/mpeg" />
                     </audio>
                   ) : (
                     <img
-                      src={ getFileHandler(problem.associatedFile) }
+                      className={styles["image-file"]}
+                      src={ `http://localhost:5000${ problem.associatedFile }` }
                       alt="server failed to retrieve file"
                     />
                   )}
@@ -175,9 +161,11 @@ const Problems = () => {
               </ol>
               <h4>Key</h4>
               {problem.key}
-              <button>Edit Problem</button>
-              <button>Delete Problem</button>
-            </div>
+              <div>
+                <button>Edit Problem</button>
+                <button>Delete Problem</button>
+              </div>
+           </div>
           ))}
         {isAddText && (
           <div>

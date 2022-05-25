@@ -21,7 +21,7 @@ dotenv.config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/problems/files", express.static("/problem-data/files"));
+app.use("/problems/files", express.static("./problem-data/files"));
 
 app.use("/api/auth", authRoutes);
 
