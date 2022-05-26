@@ -1,6 +1,7 @@
 const Problem = require("../models/problem.model");
 const Test = require("../models/test.model");
 const validation = require("../utility/validation");
+const moveDeletedFile = require("../utility/move-deleted-file");
 
 const readAllProblems = async (req, res, next) => {
 	try {
@@ -58,7 +59,15 @@ const addProblem = async (req, res, next) => {
 const deleteProblemById = async (req, res, next) => {
 	const { id } = req.params;
 	try {
-		await Problem.findByIdAndDelete(id);
+		const existedProblem = await Problem.findByIdAndDelete(id);
+
+		if (existedProblem.associatedFile) {
+			try {
+				moveDeletedFile(existedProblem.associatedFile)
+			} catch (error) {
+				return next(error);
+			}
+		}
 
 		res.json({ message: "Problem deleted successfully" });
 	} catch (error) {
