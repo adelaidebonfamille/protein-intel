@@ -40,11 +40,7 @@ const Problems = () => {
         },
       })
       .then((response) => {
-        allFalse();
-
         allProblems.current = response.data.problems;
-
-        setSearch(true);
       })
       .catch((error) => {
         console.log(error);
@@ -55,14 +51,16 @@ const Problems = () => {
   const [categoryShown, setCategoryShown] = useState("");
   const [order, setOrder] = useState(false);
   useEffect(() => {
-    const selectedProblem =
+    let selectedProblem =
       categoryShown == ""
         ? allProblems.current
         : allProblems.current.filter(
             (problem) => problem.type === categoryShown
           );
 
-    if (order) selectedProblem.reverse();
+    if (order) {
+      selectedProblem = selectedProblem.slice().reverse();
+    }
 
     setProblemShown(selectedProblem);
   }, [categoryShown, order, allProblems.current]);
@@ -249,7 +247,15 @@ const Problems = () => {
                 <label htmlFor="order-2">Newest to Oldest</label>
               </>
             ) : (
-              <button onClick={showAllProblemHandler}>Show Problem</button>
+              <button
+                onClick={(e) => {
+                  allFalse();
+                  setSearch(true);
+                  showAllProblemHandler(e);
+                }}
+              >
+                Show Problem
+              </button>
             )}
           </div>
 
