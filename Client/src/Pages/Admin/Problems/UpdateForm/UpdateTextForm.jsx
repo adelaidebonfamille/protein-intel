@@ -3,17 +3,14 @@ import { useState } from "react";
 import styles from "./UpdateTextForm.module.css";
 
 const UpdateTextForm = (props) => {
-  const [type, setType] = useState(props.problem.type);
   const [filename, setFilename] = useState(
     "no file input (not changing the associated file)"
   );
 
-  useEffect(() => {
-    setFilename("no file input (not changing the associated file)");
-    props.fileCancelHandler();
-  }, [type]);
-
-  const changeType = (props.problem.type === 'listening') ? ['Listening'] : ['Reading', 'Structure']
+  const changeType =
+    props.problem.type === "listening"
+      ? ["Listening"]
+      : ["Reading", "Structure"];
   return (
     <form onSubmit={props.handler}>
       <h3>Problem Id: {props.problem.id}</h3>
@@ -51,83 +48,88 @@ const UpdateTextForm = (props) => {
       })}
       <br />
 
-      <p>Associated File</p>
-      {props.problem.associatedFile ? (
-        props.problem.type === "listening" ? (
-          <audio controls>
-            <source
-              src={`http://localhost:5000${props.problem.associatedFile}`}
-              type="audio/mpeg"
-            />
-          </audio>
-        ) : (
-          <img
-            src={`http://localhost:5000${props.problem.associatedFile}`}
-            alt="server failed to retrieve file"
-            className={styles["image-file"]}
-          />
-        )
-      ) : (
-        <p>(this problem doesnt have associated file)</p>
-      )}
-      <br />
-
-      <h4>Change the Associated file to:</h4>
-      {type === "listening" ? (
+      {props.problem.associatedFile !== "" && (
         <>
-          <p>category listening (mp3 file)</p>
-          <input
-            type="file"
-            id="selectedFile"
-            name="problem"
-            onChange={(e) => {
-              props.fileChangeHandler(e);
-              try {
-                setFilename(e.target.files[0].name);
-              } catch {}
+          {props.problem.type === "listening" ? (
+            <>
+              <p>Associated File</p>
+              <audio controls>
+                <source
+                  src={`http://localhost:5000${props.problem.associatedFile}`}
+                  type="audio/mpeg"
+                />
+              </audio>
+              <br />
+            </>
+          ) : (
+            <>
+              <p>Associated File</p>
+              <img
+                src={`http://localhost:5000${props.problem.associatedFile}`}
+                alt="server failed to retrieve file"
+                className={styles["image-file"]}
+              />
+              <br />
+            </>
+          )}
+          <h4>Change the Associated file to:</h4>
+          {props.problem.type === "listening" ? (
+            <>
+              <p>category listening (mp3 file)</p>
+              <input
+                type="file"
+                id="selectedFile"
+                name="problem"
+                onChange={(e) => {
+                  props.fileChangeHandler(e);
+                  try {
+                    setFilename(e.target.files[0].name);
+                  } catch {}
+                }}
+                style={{ display: "none" }}
+                accept=".mp3"
+              />
+            </>
+          ) : (
+            <>
+              <p>category structure/reading (image file)</p>
+              <input
+                type="file"
+                id="selectedFile"
+                name="problem"
+                onChange={(e) => {
+                  props.fileChangeHandler(e);
+                  try {
+                    setFilename(e.target.files[0].name);
+                  } catch {}
+                }}
+                style={{ display: "none" }}
+                accept=".jpg, .png, .jpeg"
+              />
+            </>
+          )}
+          <div className={styles["file-input-name"]}>{filename}</div>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("selectedFile").click();
             }}
-            style={{ display: "none" }}
-            accept=".mp3"
-          />
-        </>
-      ) : (
-        <>
-          <p>category structure/reading (image file)</p>
-          <input
-            type="file"
-            id="selectedFile"
-            name="problem"
-            onChange={(e) => {
-              props.fileChangeHandler(e);
-              try {
-                setFilename(e.target.files[0].name);
-              } catch {}
+          >
+            Choose File
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              props.fileCancelHandler(e);
+              setFilename("no file input (not changing the associated file)");
             }}
-            style={{ display: "none" }}
-            accept=".jpg, .png, .jpeg"
-          />
+            className={styles["cancel-file"]}
+          >
+            Cancel Change File
+          </button>
+          <br />
         </>
       )}
-      <div className={styles["file-input-name"]}>{filename}</div>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          document.getElementById("selectedFile").click();
-        }}
-      >
-        Choose File
-      </button>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          props.fileCancelHandler(e);
-          setFilename("no file input (not changing the associated file)");
-        }}
-        className={styles["cancel-file"]}
-      >
-        Cancel Change File
-      </button>
-      <br />
 
       <p>Question</p>
       <textarea
