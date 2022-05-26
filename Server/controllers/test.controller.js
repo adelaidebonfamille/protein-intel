@@ -8,198 +8,92 @@ const calculateScore = require("../utility/calculate-score");
 
 const startTest = async(req, res, next) => {
     const { nim } = req.user;
-    const { batch } = req.body;
+    const { batchId } = req.body;
 
-    let user;
+    let existingTest;
     try {
-        user = await User.findOne({ nim });
+        existingTest = await Test.findOne({ nim });
     } catch (error) {
         return next(error);
     }
-    if (!user.faculty ||
-        !user.major ||
-        !user.kpm ||
-        !user.entryYear ||
-        !user.phone
-    ) {
-        return next(
-            new Error(
-                "User Profiles are not complete, please complete your profile first"
-            )
-        );
-    }
+    if (existingTest) return next(new Error("You have already started a test"));
 
-    let isBatchExist;
+    let batch;
     try {
-        isBatchExist = await Batch.findOne({ batch });
+        batch = await Batch.findById(batchId);
     } catch (error) {
         return next(error);
     }
-    if (!isBatchExist.isActive) {
-        return next(new Error("Batch not found or inactive"));
-    }
+    if (!batch) return next(new Error("Batch not found"));
 
-    const existingTest = await Test.findOne({ nim });
-    if (existingTest) {
-        return res.json({
-            message: "Test have been started already",
-            test: existingTest,
-        });
-    }
-
-    let allProblems;
+    let problems;
     try {
-        allProblems = await Problem.find({}, { key: 0 });
+        problems = await Problem.find();
     } catch (error) {
         return next(error);
     }
+    if (!problems) return next(new Error("No Problems found"));
 
-    const testAnswers = [];
-    allProblems.forEach((problem) => {
-        testAnswers.push({
-            problemId: problem._id,
-            answer: "",
-        });
+    //group answers by problem type
+    const readingAnswers = problems.filter((problem) => {
+        return problem.type === "reading";
+    });
+    const listeningAnswers = problems.filter((problem) => {
+        return problem.type === "listening";
+    });
+    const structureAnswers = problems.filter((problem) => {
+        return problem.type === "structure";
     });
 
-    //get time 2 hours and 30 minutes from now
-    const time = new Date();
-    time.setHours(time.getHours() + 2);
-    time.setMinutes(time.getMinutes() + 30);
+    //fill in blank answers with empty strings
+    const readingAnswersFilled = readingAnswers.map((problem) => {
+        return { problemId: problem._id, answer: "" };
+    });
+    const listeningAnswersFilled = listeningAnswers.map((problem) => {
+        return { problemId: problem._id, answer: "" };
+    });
+    const structureAnswersFilled = structureAnswers.map((problem) => {
+        return { problemId: problem._id, answer: "" };
+    });
+
+    const testAnswers = {
+        reading: readingAnswersFilled,
+        listening: listeningAnswersFilled,
+        structure: structureAnswersFilled,
+    };
+
+    const testTime = [{
+            testGroup: "reading",
+            time: 60,
+        },
+        {
+            testGroup: "listening",
+            time: 60,
+        },
+        {
+            testGroup: "structure",
+            time: 45,
+        },
+    ];
 
     try {
         const test = new Test({
             nim,
             answers: testAnswers,
-            testTime: time,
+            testTime,
+            batchId,
         });
         await test.save();
-        res.json({ message: "Test started successfully", userTest: test });
     } catch (error) {
         return next(error);
     }
 };
 
-const saveTestAnswer = async(req, res, next) => {
-    const { nim } = req.user;
-    const { testAnswers } = req.body;
+const saveTestAnswer = async(req, res, next) => {};
 
-    let test;
-    try {
-        test = await Test.findOne({ nim });
-    } catch (error) {
-        return next(error);
-    }
+const findTestByNim = async(req, res, next) => {};
 
-    if (!test) {
-        return next(new Error("Test not found"));
-    }
-
-    if (test.testTime < new Date()) {
-        test.isTestOver = true;
-        await test.save();
-    }
-
-    if (test.isTestOver) {
-        try {
-            const score = calculateScore(testAnswers);
-
-            const newScore = new Score({
-                nim,
-                score,
-            });
-
-            await newScore.save();
-
-            res.json({ message: "Test ended successfully", score });
-        } catch (error) {
-            return next(error);
-        }
-        return next(new Error("Test is over"));
-    }
-
-    test.answers = testAnswers;
-
-    try {
-        await test.save();
-        res.json({ message: "Test answer saved successfully" });
-    } catch (error) {
-        return next(error);
-    }
-};
-
-const findTestByNim = async(req, res, next) => {
-    const { nim } = req.user;
-
-    let test;
-    try {
-        test = await Test.findOne({ nim });
-    } catch (error) {
-        return next(error);
-    }
-
-    if (!test) {
-        return next(new Error("Test not found"));
-    }
-
-    if (test.testTime < new Date()) {
-        test.isTestOver = true;
-        test.save();
-    }
-
-    if (test.isTestOver) {
-        try {
-            const score = calculateScore(test.answers);
-
-            const newScore = new Score({
-                nim,
-                score,
-            });
-
-            await newScore.save();
-
-            res.json({ message: "Test ended successfully", score });
-        } catch (error) {
-            return next(error);
-        }
-    }
-
-    res.json({ message: "Test found successfully", test });
-};
-
-const endTestAndCalculateScore = async(req, res, next) => {
-    const { nim } = req.user;
-
-    let test;
-    try {
-        test = await Test.findOne({ nim });
-    } catch (error) {
-        return next(error);
-    }
-
-    test.isTestOver = true;
-
-    try {
-        await test.save();
-        res.json({ message: "Test ended successfully" });
-    } catch (error) {
-        return next(error);
-    }
-
-    const score = calculateScore(test.answers);
-
-    try {
-        const newScore = new Score({
-            nim,
-            score,
-        });
-        await newScore.save();
-
-        res.json({ message: "Score saved successfully", score });
-    } catch (error) {
-        return next(error);
-    }
-};
+const endTestAndCalculateScore = async(req, res, next) => {};
 
 module.exports = {
     startTest: startTest,

@@ -7,11 +7,11 @@ const TestSchema = new mongoose.Schema({
         unique: true,
     },
     answers: {
-        type: Array,
+        type: Object,
         required: true,
     },
     testTime: {
-        type: Date,
+        type: Array,
         required: true,
     },
     isTestOver: {

@@ -3,137 +3,142 @@ const Test = require("../models/test.model");
 const validation = require("../utility/validation");
 const moveDeletedFile = require("../utility/move-deleted-file");
 
-const readAllProblems = async (req, res, next) => {
-	try {
-		const allProblems = await Problem.find();
-		res.json({
-			message: "All problems delivered successfully",
-			problems: allProblems,
-		});
-	} catch (error) {
-		return next(error);
-	}
+const readAllProblems = async(req, res, next) => {
+    try {
+        const allProblems = await Problem.find();
+        res.json({
+            message: "All problems delivered successfully",
+            problems: allProblems,
+        });
+    } catch (error) {
+        return next(error);
+    }
 };
 
-const addProblem = async (req, res, next) => {
-	const { description, key, type, choice } = req.body;
+const addProblem = async(req, res, next) => {
+    const { description, key, type, choice } = req.body;
 
-	const associatedFile =
-		req.file !== undefined ? `/problems/files/${req.file.filename}` : "";
+    const associatedFile =
+        req.file !== undefined ? `/problems/files/${req.file.filename}` : "";
 
-	const { error } = validation.addProblemValidation({
-		description,
-		key,
-		type,
-		choice,
-	});
-	if (error) return next(error.details[0]);
+    const { error } = validation.addProblemValidation({
+        description,
+        key,
+        type,
+        choice,
+    });
+    if (error) return next(error.details[0]);
 
-	for (let c of choice) {
-		if (c === "") {
-			return next(
-				new Error("Each choice must have at least one character")
-			);
-		}
-	}
+    for (let c of choice) {
+        if (c === "") {
+            return next(
+                new Error("Each choice must have at least one character")
+            );
+        }
+    }
 
-	if (type !== "listening" && type !== "reading" && type !== "structure") {
-		return next(new Error("Type must be listening, reading or structure"));
-	}
+    if (type !== "listening" && type !== "reading" && type !== "structure") {
+        return next(new Error("Type must be listening, reading or structure"));
+    }
 
-	try {
-		const problem = new Problem({
-			description,
-			key,
-			associatedFile,
-			type,
-			choice,
-		});
-		await problem.save();
-		res.json({ message: "Problem added successfully" });
-	} catch (error) {
-		return next(error);
-	}
+    try {
+        const problem = new Problem({
+            description,
+            key,
+            associatedFile,
+            type,
+            choice,
+        });
+        await problem.save();
+        res.json({ message: "Problem added successfully" });
+    } catch (error) {
+        return next(error);
+    }
 };
 
-const deleteProblemById = async (req, res, next) => {
-	const { id } = req.params;
-	try {
-		const existedProblem = await Problem.findByIdAndDelete(id);
+const deleteProblemById = async(req, res, next) => {
+    const { id } = req.params;
+    try {
+        const existedProblem = await Problem.findByIdAndDelete(id);
 
-		if (existedProblem.associatedFile) {
-			try {
-				moveDeletedFile(existedProblem.associatedFile)
-			} catch (error) {
-				return next(error);
-			}
-		}
+        if (existedProblem.associatedFile) {
+            try {
+                moveDeletedFile(existedProblem.associatedFile);
+            } catch (error) {
+                return next(error);
+            }
+        }
 
-		res.json({ message: "Problem deleted successfully" });
-	} catch (error) {
-		return next(error);
-	}
+        res.json({ message: "Problem deleted successfully" });
+    } catch (error) {
+        return next(error);
+    }
 };
 
-const updateProblemById = async (req, res, next) => {
-	const { id } = req.params;
+const updateProblemById = async(req, res, next) => {
+    const { id } = req.params;
 
+    try {
+        const existingProblem = await Problem.findById(id);
+        if (!existingProblem) return next(new Error("Problem not found"));
+    } catch (error) {
+        return next(error);
+    }
 
-	try {
-		const existingProblem = await Problem.findById(id);
-		if (!existingProblem) return next(new Error("Problem not found"));
+    const file =
+        req.file !== undefined ?
+        `/problems/files/${req.file.filename}` :
+        existingProblem.associatedFile;
 
-	} catch (error) {
-		return next(error);
-	}
+    const { error } = validation.addProblemValidation(req.body);
+    if (error) return next(error.details[0]);
 
-	const file = (req.file !== undefined)? `/problems/files/${req.file.filename}` : existingProblem.associatedFile;
+    for (let c of req.body.choice) {
+        if (c === "") {
+            return next(
+                new Error("Each choice must have at least one character")
+            );
+        }
+    }
 
-	const { error } = validation.addProblemValidation(req.body);
-	if (error) return next(error.details[0]);
+    if (
+        req.body.type !== "listening" &&
+        req.body.type !== "reading" &&
+        req.body.type !== "structure"
+    ) {
+        return next(new Error("Type must be listening, reading or structure"));
+    }
 
-	for (let c of req.body.choice) {
-		if (c === "") {
-			return next(
-				new Error("Each choice must have at least one character")
-			);
-		}
-	}
+    try {
+        await Problem.findByIdAndUpdate(id, {
+            $set: {
+                ...req.body,
+                associatedFile: file,
+            },
+        });
 
-	if (req.body.type !== "listening" && req.body.type !== "reading" && req.body.type !== "structure") {
-		return next(new Error("Type must be listening, reading or structure"));
-	}
-
-	try {
-		await Problem.findByIdAndUpdate(id, {
-			$set: {
-				...req.body,
-				associatedFile: file,
-			},
-		});
-
-		res.json({ message: "Problem updated successfully" });
-	} catch (error) {
-		return next(error);
-	}
+        res.json({ message: "Problem updated successfully" });
+    } catch (error) {
+        return next(error);
+    }
 };
 
-const getAllUserScore = async (req, res, next) => {
-	try {
-		const allUserScore = await Test.find({});
-		res.json({
-			message: "All user score delivered successfully",
-			userScore: allUserScore,
-		});
-	} catch (error) {
-		return next(error);
-	}
+const getAllUserScore = async(req, res, next) => {
+    try {
+        const allUserScore = await Test.find({});
+        res.json({
+            message: "All user score delivered successfully",
+            userScore: allUserScore,
+        });
+    } catch (error) {
+        return next(error);
+    }
 };
 
 module.exports = {
-	createProblem: addProblem,
-	updateProblem: updateProblemById,
-	getAllProblems: readAllProblems,
-	deleteProblem: deleteProblemById,
-	getAllScore: getAllUserScore,
+    createProblem: addProblem,
+    updateProblem: updateProblemById,
+    getAllProblems: readAllProblems,
+    deleteProblem: deleteProblemById,
+    getAllScore: getAllUserScore,
 };
