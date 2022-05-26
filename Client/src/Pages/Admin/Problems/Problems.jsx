@@ -14,26 +14,16 @@ import { useEffect } from "react";
 const Problems = () => {
   const baseUrl = "http://localhost:5000/api/admin/problems";
 
-  const [search, setSearch] = useState(false);
-  const [isAddText, setIsAddText] = useState(false);
-  const [isAddImage, setIsAddImage] = useState(false);
-  const [isAddAudio, setIsAddAudio] = useState(false);
-  const [isUpdate, setIsUpdate] = useState(false);
-
   const selectedFile = useRef(null);
   const fileChangedHandler = (e) => {
-    e.preventDefault();
     selectedFile.current = e.target.files[0];
-    console.log(selectedFile.current);
   };
-  const fileCanceledHandler = () => {
+  const fileCanceledHandler = (e) => {
     selectedFile.current = null;
-    console.log(selectedFile.current);
   };
 
   const [allProblems, setAllProblems] = useState([]);
   const showAllProblemHandler = async () => {
-    console.log("showAllProblem");
     await axios
       .get(baseUrl, {
         headers: {
@@ -41,7 +31,6 @@ const Problems = () => {
         },
       })
       .then((response) => {
-        console.log(response.data.problems);
         setAllProblems(response.data.problems);
       })
       .catch((error) => {
@@ -53,7 +42,6 @@ const Problems = () => {
   const [categoryShown, setCategoryShown] = useState("");
   const [order, setOrder] = useState(false);
   useEffect(() => {
-    console.log("we listen");
     let selectedProblem =
       categoryShown == ""
         ? allProblems
@@ -116,10 +104,8 @@ const Problems = () => {
 
   const selectedProblem = useRef({});
   const selectProblem = (e) => {
-    allFalse();
     selectedProblem.current = { ...e.target.dataset };
-    console.log(selectedProblem.current);
-    setIsUpdate(true);
+    setMode("update");
   };
 
   const updateProblemHandler = async (e) => {
@@ -148,22 +134,18 @@ const Problems = () => {
         },
       })
       .then((response) => {
-        console.log(response);
+        console.log(response.data.message);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const allFalse = () => {
-    setSearch(false);
+  const [mode, setMode] = useState("");
+  useEffect(() => {
     setCategoryShown("");
     setOrder(false);
-    setIsAddText(false);
-    setIsAddImage(false);
-    setIsAddAudio(false);
-    setIsUpdate(false);
-  };
+  }, [mode]);
 
   return (
     <>
@@ -174,7 +156,7 @@ const Problems = () => {
         <div className={styles["input-container"]}>
           <div className={styles["show-problem-container"]}>
             <h3>Search Problems</h3>
-            {search ? (
+            {mode === "search" ? (
               <>
                 <div>
                   <button onClick={showAllProblemHandler}>
@@ -250,8 +232,7 @@ const Problems = () => {
             ) : (
               <button
                 onClick={() => {
-                  allFalse();
-                  setSearch(true);
+                  setMode("search");
                   showAllProblemHandler();
                 }}
               >
@@ -265,24 +246,21 @@ const Problems = () => {
             <div className={styles.buttons}>
               <button
                 onClick={() => {
-                  allFalse();
-                  setIsAddText(true);
+                  setMode("text");
                 }}
               >
                 Type Text
               </button>
               <button
                 onClick={() => {
-                  allFalse();
-                  setIsAddImage(true);
+                  setMode("image");
                 }}
               >
                 Type Image
               </button>
               <button
                 onClick={() => {
-                  allFalse();
-                  setIsAddAudio(true);
+                  setMode("audio");
                 }}
               >
                 Type Audio
@@ -290,7 +268,7 @@ const Problems = () => {
             </div>
           </div>
         </div>
-        {search &&
+        {mode === "search" &&
           problemShown.map((problem) => (
             <div className={styles.problem} key={problem["_id"]}>
               <h4>Id</h4>
@@ -351,7 +329,7 @@ const Problems = () => {
               </div>
             </div>
           ))}
-        {isUpdate && (
+        {mode === "update" && (
           <div>
             <h3>Update Problem</h3>
             <UpdateTextForm
@@ -362,7 +340,7 @@ const Problems = () => {
             />
           </div>
         )}
-        {isAddText && (
+        {mode === "text" && (
           <div>
             <h3>Add Problem Type Text</h3>
             <TextInputForm handler={addProblemHandler}>
@@ -370,7 +348,7 @@ const Problems = () => {
             </TextInputForm>
           </div>
         )}
-        {isAddImage && (
+        {mode === "image" && (
           <div>
             <h3>Add Problem Type Image</h3>
             <TextInputForm handler={addProblemHandler}>
@@ -379,7 +357,7 @@ const Problems = () => {
             </TextInputForm>
           </div>
         )}
-        {isAddAudio && (
+        {mode === "audio" && (
           <div>
             <h3>Add Problem Type Audio</h3>
             <TextInputForm handler={addProblemHandler}>

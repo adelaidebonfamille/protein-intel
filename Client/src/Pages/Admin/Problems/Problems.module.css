@@ -11,7 +11,11 @@
   padding: 20px;
   box-shadow: 1px 1px rgba(0, 0, 0, 10);
 }
-
+.go-back-home:hover {
+  transform: translate(1px, 1px);
+  transition: transform 0.2s;
+  box-shadow: none;
+}
 .container {
   display: flex;
   flex-direction: column;
