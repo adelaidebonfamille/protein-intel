@@ -9,6 +9,7 @@ import CategoryInput from "./AddForm/CategoryInput";
 import ImageInput from "./ImageInput/ImageInput";
 import AudioInput from "./AudioInput/AudioInput";
 import UpdateTextForm from "./UpdateForm/UpdateTextForm";
+import { useEffect } from "react";
 
 const Problems = () => {
   const baseUrl = "http://localhost:5000/api/admin/problems";
@@ -30,7 +31,7 @@ const Problems = () => {
     console.log(selectedFile.current);
   };
 
-  const [allProblems, setAllProblems] = useState([]);
+  const allProblems = useRef([]);
   const showAllProblemHandler = async () => {
     await axios
       .get(baseUrl, {
@@ -41,7 +42,7 @@ const Problems = () => {
       .then((response) => {
         allFalse();
 
-        setAllProblems(response.data.problems);
+        allProblems.current = response.data.problems;
 
         setSearch(true);
       })
@@ -49,6 +50,22 @@ const Problems = () => {
         console.log(error);
       });
   };
+  const [problemShown, setProblemShown] = useState([]);
+
+  const [categoryShown, setCategoryShown] = useState("");
+  const [order, setOrder] = useState(false);
+  useEffect(() => {
+    const selectedProblem =
+      categoryShown == ""
+        ? allProblems.current
+        : allProblems.current.filter(
+            (problem) => problem.type === categoryShown
+          );
+
+    if (order) selectedProblem.reverse();
+
+    setProblemShown(selectedProblem);
+  }, [categoryShown, order, allProblems.current]);
 
   const addProblemHandler = async (e) => {
     e.preventDefault();
@@ -141,6 +158,8 @@ const Problems = () => {
 
   const allFalse = () => {
     setSearch(false);
+    setCategoryShown("");
+    setOrder(false);
     setIsAddText(false);
     setIsAddImage(false);
     setIsAddAudio(false);
@@ -155,16 +174,87 @@ const Problems = () => {
       <div className={styles.container}>
         <div className={styles["input-container"]}>
           <div className={styles["show-problem-container"]}>
-            <p>Search Problems</p>
-            <input
-              type="button"
-              value="Show Problem"
-              onClick={showAllProblemHandler}
-            />
+            <h3>Search Problems</h3>
+            {search ? (
+              <>
+                <div>
+                  <button onClick={showAllProblemHandler}>
+                    Reload Show Problem
+                  </button>
+                </div>
+
+                <p>Problem Category</p>
+                <input
+                  type="radio"
+                  id="category-search-0"
+                  name="category-search"
+                  required
+                  defaultChecked
+                  onChange={() => {
+                    setCategoryShown("");
+                  }}
+                />
+                <label htmlFor="category-search-0">All Category</label>
+                <input
+                  type="radio"
+                  id="category-search-1"
+                  name="category-search"
+                  required
+                  onChange={() => {
+                    setCategoryShown("reading");
+                  }}
+                />
+                <label htmlFor="category-search-1">Reading</label>
+                <input
+                  type="radio"
+                  id="category-search-2"
+                  name="category-search"
+                  required
+                  onChange={() => {
+                    setCategoryShown("structure");
+                  }}
+                />
+                <label htmlFor="category-search-2">Structure</label>
+                <input
+                  type="radio"
+                  id="category-search-3"
+                  name="category-search"
+                  required
+                  onChange={() => {
+                    setCategoryShown("listening");
+                  }}
+                />
+                <label htmlFor="category-search-3">Listening</label>
+                <p>Show Order</p>
+                <input
+                  type="radio"
+                  id="order-1"
+                  name="order"
+                  required
+                  defaultChecked
+                  onChange={() => {
+                    setOrder(false);
+                  }}
+                />
+                <label htmlFor="order-1">Oldest to Newest</label>
+                <input
+                  type="radio"
+                  id="order-2"
+                  name="order"
+                  required
+                  onChange={() => {
+                    setOrder(true);
+                  }}
+                />
+                <label htmlFor="order-2">Newest to Oldest</label>
+              </>
+            ) : (
+              <button onClick={showAllProblemHandler}>Show Problem</button>
+            )}
           </div>
 
           <div className={styles["add-problems"]}>
-            Add Problems
+            <h3>Add Problems</h3>
             <div className={styles.buttons}>
               <button
                 onClick={() => {
@@ -193,9 +283,8 @@ const Problems = () => {
             </div>
           </div>
         </div>
-
         {search &&
-          allProblems.map((problem) => (
+          problemShown.map((problem) => (
             <div className={styles.problem} key={problem["_id"]}>
               <h4>Id</h4>
               <p>{problem["_id"]}</p>
