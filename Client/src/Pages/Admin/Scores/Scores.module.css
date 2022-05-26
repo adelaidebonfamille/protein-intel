@@ -1,8 +1,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
 }
 
 .go-back-home {
@@ -18,4 +16,3 @@
   padding: 20px;
   box-shadow: 1px 1px rgba(0, 0, 0, 10);
 }
-

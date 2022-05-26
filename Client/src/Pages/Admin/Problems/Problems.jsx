@@ -4,78 +4,147 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 
-const Problems = () => {
-  const [search, setSearch] = useState(false);
+import TextInputForm from "./AddForm/TextInputForm";
+import CategoryInput from "./AddForm/CategoryInput";
+import ImageInput from "./ImageInput/ImageInput";
+import AudioInput from "./AudioInput/AudioInput";
+import UpdateTextForm from "./UpdateForm/UpdateTextForm";
 
+const Problems = () => {
+  const baseUrl = "http://localhost:5000/api/admin/problems";
+
+  const [search, setSearch] = useState(false);
   const [isAddText, setIsAddText] = useState(false);
   const [isAddImage, setIsAddImage] = useState(false);
   const [isAddAudio, setIsAddAudio] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const selectedFile = useRef(null);
   const fileChangedHandler = (e) => {
     e.preventDefault();
     selectedFile.current = e.target.files[0];
+    console.log(selectedFile.current);
+  };
+  const fileCanceledHandler = () => {
+    selectedFile.current = null;
+    console.log(selectedFile.current);
   };
 
   const [allProblems, setAllProblems] = useState([]);
-  const searchHandler = async (e) => {
-    e.preventDefault();
+  const showAllProblemHandler = async () => {
+    await axios
+      .get(baseUrl, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        allFalse();
 
-    if (e.target.searchId.value === "") {
-      await axios
-        .get("http://localhost:5000/api/admin/problems", {
-          headers: {
-            "auth-token": localStorage.getItem("token"),
-          },
-        })
-        .then((response) => {
-          setIsAddText(false);
-          setIsAddImage(false);
-          setIsAddAudio(false);
+        setAllProblems(response.data.problems);
 
-          setAllProblems(response.data.problems);
-
-          setSearch(true);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-    }
+        setSearch(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const addProblemHandler = async (e) => {
     e.preventDefault();
 
-    try {
-      const formData = new FormData();
+    const formData = new FormData();
 
-      formData.append("description", e.target.description.value);
-      formData.append("key", e.target.key.value);
-      formData.append("type", e.target.type.value);
+    formData.append("description", e.target.description.value);
+    formData.append("key", e.target.key.value);
+    formData.append("type", e.target.type.value);
 
-      for (let i = 1; i <= 5; i++) {
-        formData.append("choice[]", e.target[`choice-${i}`].value);
-      }
-
-      if (selectedFile.current) {
-        formData.append("problem", selectedFile.current);
-        console.log(selectedFile.current);
-      }
-
-      axios
-        .post("http://localhost:5000/api/admin/problems", formData, {
-          headers: {
-            "content-type": "multipart/form-data",
-            "auth-token": localStorage.getItem("token"),
-          },
-        })
-        .then((response) => {
-          console.log("respon: " + response.data.message);
-        });
-    } catch (error) {
-      console.log(error);
+    for (let i = 1; i <= 5; i++) {
+      formData.append("choice[]", e.target[`choice-${i}`].value);
     }
+
+    if (selectedFile.current) {
+      formData.append("problem", selectedFile.current);
+    }
+
+    axios
+      .post(baseUrl, formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+          "auth-token": localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const deleteProblemHandler = async (e) => {
+    axios
+      .delete(`${baseUrl}/${e.target.dataset.id}`, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data.message);
+        showAllProblemHandler();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const selectedProblem = useRef({});
+  const selectProblem = (e) => {
+    allFalse();
+    selectedProblem.current = { ...e.target.dataset };
+    console.log(selectedProblem.current);
+    setIsUpdate(true);
+  };
+
+  const updateProblemHandler = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append("description", e.target.description.value);
+    formData.append("key", e.target.key.value);
+    formData.append("type", e.target.type.value);
+
+    for (let i = 1; i <= 5; i++) {
+      formData.append("choice[]", e.target[`choice-${i}`].value);
+    }
+
+    if (selectedFile.current) {
+      formData.append("problem", selectedFile.current);
+    }
+
+    //https://stackoverflow.com/a/54020234/13673444
+    axios
+      .patch(`${baseUrl}/${e.target.id.value}`, formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+          "auth-token": localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const allFalse = () => {
+    setSearch(false);
+    setIsAddText(false);
+    setIsAddImage(false);
+    setIsAddAudio(false);
+    setIsUpdate(false);
   };
 
   return (
@@ -85,40 +154,37 @@ const Problems = () => {
       </Link>
       <div className={styles.container}>
         <div className={styles["input-container"]}>
-          <form onSubmit={searchHandler}>
-            <p>Search Problems Id (empty means show all)</p>
-            <input type="search" name="searchId" />
-            <button type="submit">Search</button>
-          </form>
+          <div className={styles["show-problem-container"]}>
+            <p>Search Problems</p>
+            <input
+              type="button"
+              value="Show Problem"
+              onClick={showAllProblemHandler}
+            />
+          </div>
+
           <div className={styles["add-problems"]}>
             Add Problems
             <div className={styles.buttons}>
               <button
                 onClick={() => {
-                  setSearch(false);
+                  allFalse();
                   setIsAddText(true);
-                  setIsAddImage(false);
-                  setIsAddAudio(false);
-                  selectedFile.current = null;
                 }}
               >
                 Type Text
               </button>
               <button
                 onClick={() => {
-                  setSearch(false);
-                  setIsAddText(false);
+                  allFalse();
                   setIsAddImage(true);
-                  setIsAddAudio(false);
                 }}
               >
                 Type Image
               </button>
               <button
                 onClick={() => {
-                  setSearch(false);
-                  setIsAddText(false);
-                  setIsAddImage(false);
+                  allFalse();
                   setIsAddAudio(true);
                 }}
               >
@@ -130,22 +196,25 @@ const Problems = () => {
 
         {search &&
           allProblems.map((problem) => (
-            <div className={styles.problem} key={problem["_id"].toString()}>
+            <div className={styles.problem} key={problem["_id"]}>
               <h4>Id</h4>
-              <p>{problem["_id"].toString()}</p>
-              <h4>Type</h4>
+              <p>{problem["_id"]}</p>
+              <h4>Question Category</h4>
               <p>{problem.type}</p>
               {problem.associatedFile && (
                 <>
                   <h4>File Used</h4>
                   {problem.type == "listening" ? (
                     <audio controls>
-                      <source src={ `http://localhost:5000${ problem.associatedFile }` }  type="audio/mpeg" />
+                      <source
+                        src={`http://localhost:5000${problem.associatedFile}`}
+                        type="audio/mpeg"
+                      />
                     </audio>
                   ) : (
                     <img
                       className={styles["image-file"]}
-                      src={ `http://localhost:5000${ problem.associatedFile }` }
+                      src={`http://localhost:5000${problem.associatedFile}`}
                       alt="server failed to retrieve file"
                     />
                   )}
@@ -162,391 +231,65 @@ const Problems = () => {
               <h4>Key</h4>
               {problem.key}
               <div>
-                <button>Edit Problem</button>
-                <button>Delete Problem</button>
+                <input
+                  type="button"
+                  value="Edit Problem"
+                  onClick={selectProblem}
+                  data-id={problem["_id"]}
+                  data-type={problem.type}
+                  data-associated-file={problem.associatedFile}
+                  data-description={problem.description}
+                  data-choice-1={problem.choice[0]}
+                  data-choice-2={problem.choice[1]}
+                  data-choice-3={problem.choice[2]}
+                  data-choice-4={problem.choice[3]}
+                  data-choice-5={problem.choice[4]}
+                  data-key={problem.key}
+                />
+                <input
+                  type="button"
+                  value="Delete Problem"
+                  data-id={problem["_id"]}
+                  onClick={deleteProblemHandler}
+                />
               </div>
-           </div>
+            </div>
           ))}
+        {isUpdate && (
+          <div>
+            <h3>Update Problem</h3>
+            <UpdateTextForm
+              handler={updateProblemHandler}
+              fileChangeHandler={fileChangedHandler}
+              fileCancelHandler={fileCanceledHandler}
+              problem={selectedProblem.current}
+            />
+          </div>
+        )}
         {isAddText && (
           <div>
             <h3>Add Problem Type Text</h3>
-            <form onSubmit={addProblemHandler}>
-              <p>Question</p>
-              <textarea
-                name="description"
-                id=""
-                cols="60"
-                rows="10"
-                required
-              ></textarea>
-              <p>Options</p>
-              <div className={styles["text-inputs"]}>
-                A{" "}
-                <textarea
-                  name="choice-1"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                B{" "}
-                <textarea
-                  name="choice-2"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                C{" "}
-                <textarea
-                  name="choice-3"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                D{" "}
-                <textarea
-                  name="choice-4"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                E{" "}
-                <textarea
-                  name="choice-5"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-              </div>
-              <p>Right Answer</p>
-              <div className={styles.keys}>
-                <input
-                  type="radio"
-                  id="answer-type1"
-                  name="key"
-                  value="A"
-                  required
-                />
-                <label htmlFor="answer-type1">A</label>
-
-                <input
-                  type="radio"
-                  id="answer-type2"
-                  name="key"
-                  value="B"
-                  required
-                />
-                <label htmlFor="answer-type2">B</label>
-
-                <input
-                  type="radio"
-                  id="answer-type3"
-                  name="key"
-                  value="C"
-                  required
-                />
-                <label htmlFor="answer-type3">C</label>
-
-                <input
-                  type="radio"
-                  id="answer-type4"
-                  name="key"
-                  value="D"
-                  required
-                />
-                <label htmlFor="answer-type4">D</label>
-
-                <input
-                  type="radio"
-                  id="answer-type5"
-                  name="key"
-                  value="E"
-                  required
-                />
-                <label htmlFor="answer-type5">E</label>
-              </div>
-              <br />
-              <p>Question Category</p>
-              <p>
-                <input
-                  type="radio"
-                  id="problem-type1"
-                  name="type"
-                  value="reading"
-                  required
-                />
-                <label htmlFor="problem-type1">Reading</label>
-              </p>
-              <p>
-                <input
-                  type="radio"
-                  id="problem-type2"
-                  name="type"
-                  value="structure"
-                  required
-                />
-                <label htmlFor="problem-type2">Structure</label>
-              </p>
-              <br />
-              <button type="submit">Add Problem</button>
-            </form>
+            <TextInputForm handler={addProblemHandler}>
+              <CategoryInput categories={["Reading", "Structure"]} />
+            </TextInputForm>
           </div>
         )}
         {isAddImage && (
           <div>
             <h3>Add Problem Type Image</h3>
-            <form onSubmit={addProblemHandler}>
-              <p>Input Image</p>
-              <input
-                type="file"
-                name="problem"
-                onChange={fileChangedHandler}
-                required
-                accept=".jpg, .png, .jpeg"
-              />
-              <p>Question</p>
-              <textarea
-                name="description"
-                id=""
-                cols="60"
-                rows="10"
-                required
-              ></textarea>
-              <p>Options</p>
-              <div className={styles["text-inputs"]}>
-                A{" "}
-                <textarea
-                  name="choice-1"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                B{" "}
-                <textarea
-                  name="choice-2"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                C{" "}
-                <textarea
-                  name="choice-3"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                D{" "}
-                <textarea
-                  name="choice-4"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                E{" "}
-                <textarea
-                  name="choice-5"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-              </div>
-              <p>Right Answer</p>
-              <div className={styles.keys}>
-                <input
-                  type="radio"
-                  id="answer-type1"
-                  name="key"
-                  value="A"
-                  required
-                />
-                <label htmlFor="answer-type1">A</label>
-
-                <input
-                  type="radio"
-                  id="answer-type2"
-                  name="key"
-                  value="B"
-                  required
-                />
-                <label htmlFor="answer-type2">B</label>
-
-                <input
-                  type="radio"
-                  id="answer-type3"
-                  name="key"
-                  value="C"
-                  required
-                />
-                <label htmlFor="answer-type3">C</label>
-
-                <input
-                  type="radio"
-                  id="answer-type4"
-                  name="key"
-                  value="D"
-                  required
-                />
-                <label htmlFor="answer-type4">D</label>
-
-                <input
-                  type="radio"
-                  id="answer-type5"
-                  name="key"
-                  value="E"
-                  required
-                />
-                <label htmlFor="answer-type5">E</label>
-              </div>
-              <br />
-              <p>Question Category</p>
-              <p>
-                <input
-                  type="radio"
-                  id="problem-type1"
-                  name="type"
-                  value="reading"
-                  required
-                />
-                <label htmlFor="problem-type1">Reading</label>
-              </p>
-              <p>
-                <input
-                  type="radio"
-                  id="problem-type2"
-                  name="type"
-                  value="structure"
-                  required
-                />
-                <label htmlFor="problem-type2">Structure</label>
-              </p>
-              <br />
-              <button type="submit">Add Problem</button>
-            </form>
+            <TextInputForm handler={addProblemHandler}>
+              <CategoryInput categories={["Reading", "Structure"]} />
+              <ImageInput fileChangeHandler={fileChangedHandler} />
+            </TextInputForm>
           </div>
         )}
         {isAddAudio && (
           <div>
             <h3>Add Problem Type Audio</h3>
-            <form onSubmit={addProblemHandler}>
-              <p>Input Audio</p>
-              <input
-                type="file"
-                name="problem"
-                onChange={fileChangedHandler}
-                required
-                accept=".mp3"
-              />
-              <p>Question</p>
-              <textarea
-                name="description"
-                id=""
-                cols="60"
-                rows="10"
-                required
-              ></textarea>
-              <p>Options</p>
-              <div className={styles["text-inputs"]}>
-                A{" "}
-                <textarea
-                  name="choice-1"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                B{" "}
-                <textarea
-                  name="choice-2"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                C{" "}
-                <textarea
-                  name="choice-3"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                D{" "}
-                <textarea
-                  name="choice-4"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-                E{" "}
-                <textarea
-                  name="choice-5"
-                  id=""
-                  cols="60"
-                  rows="2"
-                  required
-                ></textarea>
-              </div>
-              <p>Right Answer</p>
-              <div className={styles.keys}>
-                <input
-                  type="radio"
-                  id="answer-type1"
-                  name="key"
-                  value="A"
-                  required
-                />
-                <label htmlFor="answer-type1">A</label>
-
-                <input
-                  type="radio"
-                  id="answer-type2"
-                  name="key"
-                  value="B"
-                  required
-                />
-                <label htmlFor="answer-type2">B</label>
-
-                <input
-                  type="radio"
-                  id="answer-type3"
-                  name="key"
-                  value="C"
-                  required
-                />
-                <label htmlFor="answer-type3">C</label>
-
-                <input
-                  type="radio"
-                  id="answer-type4"
-                  name="key"
-                  value="D"
-                  required
-                />
-                <label htmlFor="answer-type4">D</label>
-
-                <input
-                  type="radio"
-                  id="answer-type5"
-                  name="key"
-                  value="E"
-                  required
-                />
-                <label htmlFor="answer-type5">E</label>
-              </div>
-              <br />
+            <TextInputForm handler={addProblemHandler}>
               <input type="hidden" name="type" value="listening" />
-              <button type="submit">Add Problem</button>
-            </form>
+              <AudioInput fileChangeHandler={fileChangedHandler} />
+            </TextInputForm>
           </div>
         )}
       </div>

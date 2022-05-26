@@ -68,13 +68,14 @@ const deleteProblemById = async (req, res, next) => {
 
 const updateProblemById = async (req, res, next) => {
 	const { id } = req.params;
+
 	let file = "";
 	if (req.file !== undefined) {
 		try {
 			const existingProblem = await Problem.findById(id);
 			if (!existingProblem) return next(new Error("Problem not found"));
 			if (existingProblem.associatedFile !== undefined) {
-				file = existingProblem.associatedFile;
+				file = `/problems/files/${req.file.filename}`; 
 			}
 		} catch (error) {
 			return next(error);
@@ -84,7 +85,15 @@ const updateProblemById = async (req, res, next) => {
 	const { error } = validation.addProblemValidation(req.body);
 	if (error) return next(error.details[0]);
 
-	if (type !== "listening" && type !== "reading" && type !== "structure") {
+	for (let c of req.body.choice) {
+		if (c === "") {
+			return next(
+				new Error("Each choice must have at least one character")
+			);
+		}
+	}
+
+	if (req.body.type !== "listening" && req.body.type !== "reading" && req.body.type !== "structure") {
 		return next(new Error("Type must be listening, reading or structure"));
 	}
 

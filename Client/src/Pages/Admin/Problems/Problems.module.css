@@ -64,5 +64,6 @@
 }
 
 .image-file {
-  width: 800px;
+  min-width: 400px;
+  max-width: 800px;
 }

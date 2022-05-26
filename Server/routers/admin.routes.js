@@ -12,7 +12,7 @@ router.post(
 
 router.delete("/problems/:id", adminController.deleteProblem);
 
-router.patch("/problems/:id", adminController.updateProblem);
+router.patch("/problems/:id", fileUploadMiddleware.problemUpload, adminController.updateProblem);
 
 router.get("/scores", adminController.getAllScore);
 

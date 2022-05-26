@@ -1,0 +1,28 @@
+.text-inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-inputs textarea {
+  margin-bottom: 10px;
+}
+
+.keys label {
+  margin-right: 30px;
+}
+
+.image-file {
+  min-width: 400px;
+  max-width: 800px;
+}
+
+.file-input-name {
+  color: #5e5ff5;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cancel-file {
+  margin-left: 60px;
+}
