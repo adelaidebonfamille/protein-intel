@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Admin.module.css";
 import AuthContext from "../../Contexts/AuthContext";
 
@@ -7,6 +7,7 @@ const Admin = () => {
   const [isError, setIsError] = useState(null);
   const [isMessage, setIsMessage] = useState(null);
   const authCtx = useContext(AuthContext);
+  const navigate = useNavigate();
   const onSubmitHandler = (e) => {
     e.preventDefault();
     authCtx

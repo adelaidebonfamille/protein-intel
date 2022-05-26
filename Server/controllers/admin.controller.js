@@ -1,6 +1,7 @@
 const Problem = require("../models/problem.model");
 const Test = require("../models/test.model");
 const validation = require("../utility/validation");
+const moveDeletedFile = require("../utility/move-deleted-file");
 
 const readAllProblems = async (req, res, next) => {
 	try {
@@ -58,7 +59,15 @@ const addProblem = async (req, res, next) => {
 const deleteProblemById = async (req, res, next) => {
 	const { id } = req.params;
 	try {
-		await Problem.findByIdAndDelete(id);
+		const existedProblem = await Problem.findByIdAndDelete(id);
+
+		if (existedProblem.associatedFile) {
+			try {
+				moveDeletedFile(existedProblem.associatedFile)
+			} catch (error) {
+				return next(error);
+			}
+		}
 
 		res.json({ message: "Problem deleted successfully" });
 	} catch (error) {
@@ -68,23 +77,30 @@ const deleteProblemById = async (req, res, next) => {
 
 const updateProblemById = async (req, res, next) => {
 	const { id } = req.params;
-	let file = "";
-	if (req.file !== undefined) {
-		try {
-			const existingProblem = await Problem.findById(id);
-			if (!existingProblem) return next(new Error("Problem not found"));
-			if (existingProblem.associatedFile !== undefined) {
-				file = existingProblem.associatedFile;
-			}
-		} catch (error) {
-			return next(error);
-		}
+
+
+	try {
+		const existingProblem = await Problem.findById(id);
+		if (!existingProblem) return next(new Error("Problem not found"));
+
+	} catch (error) {
+		return next(error);
 	}
+
+	const file = (req.file !== undefined)? `/problems/files/${req.file.filename}` : existingProblem.associatedFile;
 
 	const { error } = validation.addProblemValidation(req.body);
 	if (error) return next(error.details[0]);
 
-	if (type !== "listening" && type !== "reading" && type !== "structure") {
+	for (let c of req.body.choice) {
+		if (c === "") {
+			return next(
+				new Error("Each choice must have at least one character")
+			);
+		}
+	}
+
+	if (req.body.type !== "listening" && req.body.type !== "reading" && req.body.type !== "structure") {
 		return next(new Error("Type must be listening, reading or structure"));
 	}
 
