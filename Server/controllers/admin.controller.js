@@ -69,18 +69,16 @@ const deleteProblemById = async (req, res, next) => {
 const updateProblemById = async (req, res, next) => {
 	const { id } = req.params;
 
-	let file = "";
-	if (req.file !== undefined) {
-		try {
-			const existingProblem = await Problem.findById(id);
-			if (!existingProblem) return next(new Error("Problem not found"));
-			if (existingProblem.associatedFile !== undefined) {
-				file = `/problems/files/${req.file.filename}`; 
-			}
-		} catch (error) {
-			return next(error);
-		}
+
+	try {
+		const existingProblem = await Problem.findById(id);
+		if (!existingProblem) return next(new Error("Problem not found"));
+
+	} catch (error) {
+		return next(error);
 	}
+
+	const file = (req.file !== undefined)? `/problems/files/${req.file.filename}` : existingProblem.associatedFile;
 
 	const { error } = validation.addProblemValidation(req.body);
 	if (error) return next(error.details[0]);

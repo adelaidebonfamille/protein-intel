@@ -143,6 +143,7 @@ const Problems = () => {
 
   const [mode, setMode] = useState("");
   useEffect(() => {
+    selectedFile.current = null;
     setCategoryShown("");
     setOrder(false);
   }, [mode]);
