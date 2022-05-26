@@ -31,8 +31,9 @@ const Problems = () => {
     console.log(selectedFile.current);
   };
 
-  const allProblems = useRef([]);
+  const [allProblems, setAllProblems] = useState([]);
   const showAllProblemHandler = async () => {
+    console.log("showAllProblem");
     await axios
       .get(baseUrl, {
         headers: {
@@ -40,7 +41,8 @@ const Problems = () => {
         },
       })
       .then((response) => {
-        allProblems.current = response.data.problems;
+        console.log(response.data.problems);
+        setAllProblems(response.data.problems);
       })
       .catch((error) => {
         console.log(error);
@@ -51,19 +53,18 @@ const Problems = () => {
   const [categoryShown, setCategoryShown] = useState("");
   const [order, setOrder] = useState(false);
   useEffect(() => {
+    console.log("we listen");
     let selectedProblem =
       categoryShown == ""
-        ? allProblems.current
-        : allProblems.current.filter(
-            (problem) => problem.type === categoryShown
-          );
+        ? allProblems
+        : allProblems.filter((problem) => problem.type === categoryShown);
 
     if (order) {
       selectedProblem = selectedProblem.slice().reverse();
     }
 
     setProblemShown(selectedProblem);
-  }, [categoryShown, order, allProblems.current]);
+  }, [categoryShown, order, allProblems]);
 
   const addProblemHandler = async (e) => {
     e.preventDefault();
@@ -248,10 +249,10 @@ const Problems = () => {
               </>
             ) : (
               <button
-                onClick={(e) => {
+                onClick={() => {
                   allFalse();
                   setSearch(true);
-                  showAllProblemHandler(e);
+                  showAllProblemHandler();
                 }}
               >
                 Show Problem
