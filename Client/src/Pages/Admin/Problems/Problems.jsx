@@ -135,6 +135,7 @@ const Problems = () => {
       })
       .then((response) => {
         console.log(response.data.message);
+        showAllProblemHandler().then(setMode("search"));
       })
       .catch((error) => {
         console.log(error);
@@ -144,8 +145,11 @@ const Problems = () => {
   const [mode, setMode] = useState("");
   useEffect(() => {
     selectedFile.current = null;
+    selectedProblem.current = null;
     setCategoryShown("");
     setOrder(false);
+
+    window.scrollTo[(0, 0)];
   }, [mode]);
 
   return (
@@ -233,8 +237,7 @@ const Problems = () => {
             ) : (
               <button
                 onClick={() => {
-                  setMode("search");
-                  showAllProblemHandler();
+                  showAllProblemHandler().then(setMode("search"));
                 }}
               >
                 Show Problem
@@ -344,7 +347,11 @@ const Problems = () => {
         {mode === "text" && (
           <div>
             <h3>Add Problem Type Text</h3>
-            <TextInputForm handler={addProblemHandler}>
+            <TextInputForm
+              handler={(e) => {
+                addProblemHandler(e).then(setMode(""));
+              }}
+            >
               <CategoryInput categories={["Reading", "Structure"]} />
             </TextInputForm>
           </div>
@@ -352,7 +359,11 @@ const Problems = () => {
         {mode === "image" && (
           <div>
             <h3>Add Problem Type Image</h3>
-            <TextInputForm handler={addProblemHandler}>
+            <TextInputForm
+              handler={(e) => {
+                addProblemHandler(e).then(setMode(""));
+              }}
+            >
               <CategoryInput categories={["Reading", "Structure"]} />
               <ImageInput fileChangeHandler={fileChangedHandler} />
             </TextInputForm>
@@ -361,7 +372,11 @@ const Problems = () => {
         {mode === "audio" && (
           <div>
             <h3>Add Problem Type Audio</h3>
-            <TextInputForm handler={addProblemHandler}>
+            <TextInputForm
+              handler={(e) => {
+                addProblemHandler(e).then(setMode(""));
+              }}
+            >
               <input type="hidden" name="type" value="listening" />
               <AudioInput fileChangeHandler={fileChangedHandler} />
             </TextInputForm>
