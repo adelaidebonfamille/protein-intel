@@ -7,6 +7,8 @@ const UpdateTextForm = (props) => {
     "no file input (not changing the associated file)"
   );
 
+  const [type, setType] = useState(props.problem.type);
+
   const changeType =
     props.problem.type === "listening"
       ? ["Listening"]
