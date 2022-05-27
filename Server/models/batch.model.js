@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const bacthSchema = new mongoose.Schema({
+const batchSchema = new mongoose.Schema({
 	batch: {
 		type: String,
 		required: true,
@@ -13,4 +13,4 @@ const bacthSchema = new mongoose.Schema({
 	},
 });
 
-module.exports = mongoose.model("Batch", bacthSchema);
+module.exports = mongoose.model("Batch", batchSchema);
