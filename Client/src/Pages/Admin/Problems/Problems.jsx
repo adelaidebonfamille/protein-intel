@@ -145,9 +145,12 @@ const Problems = () => {
   const [mode, setMode] = useState("");
   useEffect(() => {
     selectedFile.current = null;
-    selectedProblem.current = null;
     setCategoryShown("");
     setOrder(false);
+
+    if (mode !== 'search' || mode !== 'update') {
+      selectedProblem.current = null;
+    }
 
     window.scrollTo[(0, 0)];
   }, [mode]);

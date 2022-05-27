@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useState } from "react";
 import styles from "./UpdateTextForm.module.css";
 
@@ -6,8 +5,6 @@ const UpdateTextForm = (props) => {
   const [filename, setFilename] = useState(
     "no file input (not changing the associated file)"
   );
-
-  const [type, setType] = useState(props.problem.type);
 
   const changeType =
     props.problem.type === "listening"
