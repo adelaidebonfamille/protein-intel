@@ -10,10 +10,6 @@ const User = require("../models/user.model");
 const userRegister = async(req, res, next) => {
     const { nim, password, confirmPassword, name, email } = req.body;
 
-    if (!/^\d{14}$/.test(nim)) {
-        return next(new Error("each character in NIM must be a number"));
-    }
-
     //check if password and confirmPassword are the same
     if (password !== confirmPassword) {
         return next(
@@ -28,6 +24,10 @@ const userRegister = async(req, res, next) => {
         email,
     });
     if (error) return next(error.details[0]);
+
+    if (!/^\d{14}$/.test(nim)) {
+        return next(new Error("each character in NIM must be a number"));
+    }
 
     let existingUserByNim;
     try {
