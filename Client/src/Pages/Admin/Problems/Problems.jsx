@@ -105,6 +105,7 @@ const Problems = () => {
   const selectedProblem = useRef({});
   const selectProblem = (e) => {
     selectedProblem.current = { ...e.target.dataset };
+    console.log(selectedProblem.current)
     setMode("update");
   };
 
@@ -148,7 +149,7 @@ const Problems = () => {
     setCategoryShown("");
     setOrder(false);
 
-    if (mode !== 'search' || mode !== 'update') {
+    if (mode !== "search" && mode !== "update") {
       selectedProblem.current = null;
     }
 
@@ -355,7 +356,7 @@ const Problems = () => {
                 addProblemHandler(e).then(setMode(""));
               }}
             >
-              <CategoryInput categories={["Reading", "Structure"]} />
+              <CategoryInput categories={["Reading", "Structure", "Listening"]} />
             </TextInputForm>
           </div>
         )}
