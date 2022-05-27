@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 
-import TextInputForm from "./AddForm/TextInputForm";
-import CategoryInput from "./AddForm/CategoryInput";
+import TextInputForm from "./FormInput/TextInputForm";
+import CategoryInput from "./FormInput/CategoryInput";
 import ImageInput from "./ImageInput/ImageInput";
 import AudioInput from "./AudioInput/AudioInput";
 import UpdateTextForm from "./UpdateForm/UpdateTextForm";
@@ -302,11 +302,14 @@ const Problems = () => {
                 </>
               )}
               <h4>Question</h4>
-              <p>{problem.description}</p>
+              <pre>{problem.description}</pre>
               <h4>Choice</h4>
               <ol type="A">
                 {problem.choice.map((choice, index) => (
-                  <li key={index}>{choice}</li>
+                  <li key={index}>
+                    {" "}
+                    <pre>{choice}</pre>{" "}
+                  </li>
                 ))}
               </ol>
               <h4>Key</h4>
@@ -380,7 +383,15 @@ const Problems = () => {
                 addProblemHandler(e).then(setMode(""));
               }}
             >
-              <input type="hidden" name="type" value="listening" />
+              <input
+                type="radio"
+                id="problem-type-listening"
+                name="type"
+                value="listening"
+                defaultChecked
+                required
+              />
+              <label htmlFor="problem-type-listening">Listening</label>
               <AudioInput fileChangeHandler={fileChangedHandler} />
             </TextInputForm>
           </div>
