@@ -76,8 +76,9 @@ const startTest = async(req, res, next) => {
         },
     ];
 
+    let test;
     try {
-        const test = new Test({
+        test = new Test({
             nim,
             answers: testAnswers,
             testTime,
@@ -87,11 +88,54 @@ const startTest = async(req, res, next) => {
     } catch (error) {
         return next(error);
     }
+
+    res.json({ test, message: "Test started" });
 };
 
-const saveTestAnswer = async(req, res, next) => {};
+const saveTestAnswer = async(req, res, next) => {
+    const { nim } = req.user;
+    const { testType, testAnswers } = req.body;
 
-const findTestByNim = async(req, res, next) => {};
+    //check test type
+    if (
+        testType !== "reading" &&
+        testType !== "listening" &&
+        testType !== "structure"
+    ) {
+        return next(
+            new Error("Test type must be reading, listening or structure")
+        );
+    }
+
+    let test;
+    try {
+        test = await Test.findOne({ nim });
+    } catch (error) {
+        return next(error);
+    }
+    if (!test) return next(new Error("Test not found"));
+
+    test.answers[testType] = testAnswers;
+
+    try {
+        await test.save();
+    } catch (error) {
+        return next(error);
+    }
+
+    res.json({ test, message: "Test answer saved" });
+};
+
+const findTestByNim = async(req, res, next) => {
+    const { nim } = req.user;
+    try {
+        const test = await Test.findOne({ nim });
+        if (!test) return next(new Error("Test not found"));
+        res.json({ test, message: "Test found" });
+    } catch (error) {
+        return next(error);
+    }
+};
 
 const endTestAndCalculateScore = async(req, res, next) => {};
 
