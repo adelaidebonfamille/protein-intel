@@ -4,8 +4,6 @@ const Score = require("../models/score.model");
 const Batch = require("../models/batch.model");
 const User = require("../models/user.model");
 
-const calculateScore = require("../utility/calculate-score");
-
 const startTest = async(req, res, next) => {
     const { nim } = req.user;
     const { batchId } = req.body;
@@ -137,7 +135,83 @@ const findTestByNim = async(req, res, next) => {
     }
 };
 
-const endTestAndCalculateScore = async(req, res, next) => {};
+const endTestAndCalculateScore = async(req, res, next) => {
+    const { nim } = req.user;
+
+    let test;
+    try {
+        test = await Test.findOne({ nim });
+        if (!test) return next(new Error("Test not found"));
+        test.isTestOver = true;
+        await test.save();
+    } catch (error) {
+        return next(error);
+    }
+
+    let Problems;
+    try {
+        Problems = await Problem.find();
+    } catch (error) {
+        return next(error);
+    }
+    if (!Problems) return next(new Error("No Problems found"));
+
+    let userScore = {
+        reading: [],
+        listening: [],
+        structure: [],
+    };
+    for (const answerGroup in test.answers) {
+        answerGroup.forEach((answerData) => {
+            const answer = answerData.answer;
+            const problemId = answerData.problemId;
+            const problem = Problems.find((problem) => {
+                return problem._id.toString() === problemId.toString();
+            });
+            if (!problem) return next(new Error("Problem not found"));
+            //
+            const correctAnswer = problem.key;
+            const userAnswer = answer;
+            const isCorrect = correctAnswer === userAnswer;
+            const score = isCorrect ? 1 : 0;
+            userScore[answerGroup].push(score);
+        });
+    }
+
+    //calculate total score and answer group score
+    let totalScore = 0;
+    let answerGroupScore = {
+        reading: 0,
+        listening: 0,
+        structure: 0,
+    };
+    for (const answerGroup in userScore) {
+        let correct = 0;
+        const total = userScore[answerGroup].length;
+
+        userScore[answerGroup].forEach((score) => {
+            correct += score;
+        });
+
+        answerGroupScore[answerGroup] = correct / total;
+    }
+    totalScore =
+        (answerGroupScore.reading +
+            answerGroupScore.listening +
+            answerGroupScore.structure) /
+        3;
+
+    try {
+        const score = new Score({
+            nim,
+            totalScore,
+            ...answerGroupScore,
+        });
+        await score.save();
+    } catch (error) {
+        return next(error);
+    }
+};
 
 module.exports = {
     startTest: startTest,
