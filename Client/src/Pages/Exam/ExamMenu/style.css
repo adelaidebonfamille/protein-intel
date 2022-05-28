@@ -86,7 +86,7 @@ body {
 }
 .radio-item:hover {
   transform: scale(1.02);
-  transition: scale .2s;
+  transition: scale 0.2s;
 }
 
 .end {
@@ -106,5 +106,5 @@ body {
   background-color: white;
   color: red;
   border: 2px solid red;
-  transition: .2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
