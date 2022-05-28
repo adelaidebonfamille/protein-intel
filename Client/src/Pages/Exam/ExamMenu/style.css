@@ -87,15 +87,11 @@ body {
 }
 .radio-item:hover {
   transform: scale(1.02);
-<<<<<<< HEAD
   transition: scale 0.2s ease-in-out;
 }
 .radio-item:hover label {
   background: #4646c0;
   transition: background 0.2s ease-in-out;
-=======
-  transition: scale 0.2s;
->>>>>>> 3840bab43b2adae35095d0129406aaf762839b3a
 }
 
 .end {
