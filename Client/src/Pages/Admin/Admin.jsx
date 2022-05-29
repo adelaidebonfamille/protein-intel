@@ -19,10 +19,6 @@ const Admin = () => {
         } else {
           setIsMessage(res.message);
           setIsError(null);
-          //redirect to login page after 5 second
-          setTimeout(() => {
-            navigate("/admin");
-          }, 3000);
         }
       });
   };
