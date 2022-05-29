@@ -365,4 +365,7 @@ module.exports = {
     saveTest: saveTestAnswer,
     findTest: findTestByNim,
     endTest: endTestAndCalculateScore,
+    startSubTest: startSubTest,
+    continueSubTest: continueSubTest,
+    endSubTest: endSubTest,
 };

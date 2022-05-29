@@ -9,4 +9,10 @@ router.get("/", testController.findTest);
 
 router.post("/end", testController.endTest);
 
+router.post("/subtest", testController.startSubTest);
+
+router.patch("/subtest", testController.saveSubTest);
+
+router.post("/subtest/end", testController.endSubTest);
+
 module.exports = router;
