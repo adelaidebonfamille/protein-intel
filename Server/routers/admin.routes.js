@@ -16,4 +16,12 @@ router.patch("/problems/:id", fileUploadMiddleware.problemUpload, adminControlle
 
 router.get("/scores", adminController.getAllScore);
 
+router.get("/batch", adminController.getAllBatch);
+
+router.post("/batch", adminController.createBatch);
+
+router.delete("/batch/:id", adminController.deleteBatch);
+
+router.patch("/batch/:id", adminController.updateBatch);
+
 module.exports = router;

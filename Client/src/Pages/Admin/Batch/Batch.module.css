@@ -1,4 +1,11 @@
 .container {
+  width: 100%;
+}
+
+.batch {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .go-back-home {
@@ -14,8 +21,38 @@
   padding: 20px;
   box-shadow: 1px 1px rgba(0, 0, 0, 10);
 }
+
 .go-back-home:hover {
   transform: translate(1px, 1px);
   transition: transform 0.2s;
   box-shadow: none;
+}
+
+.body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-batch {
+  display: block;
+}
+
+.batch-display {
+  background-color: bisque;
+  margin-bottom: 1rem;
+}
+
+.active {
+  color: green;
+}
+
+.inactive {
+  color: red;
+}
+
+button {
+  margin-right: 1rem;
 }

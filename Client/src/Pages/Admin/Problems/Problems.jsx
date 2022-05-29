@@ -71,7 +71,7 @@ const Problems = () => {
       formData.append("problem", selectedFile.current);
     }
 
-    axios
+    await axios
       .post(baseUrl, formData, {
         headers: {
           "content-type": "multipart/form-data",
@@ -87,7 +87,7 @@ const Problems = () => {
   };
 
   const deleteProblemHandler = async (e) => {
-    axios
+    await axios
       .delete(`${baseUrl}/${e.target.dataset.id}`, {
         headers: {
           "auth-token": localStorage.getItem("token"),
@@ -125,8 +125,7 @@ const Problems = () => {
       formData.append("problem", selectedFile.current);
     }
 
-    //https://stackoverflow.com/a/54020234/13673444
-    axios
+    await axios
       .patch(`${baseUrl}/${e.target.id.value}`, formData, {
         headers: {
           "content-type": "multipart/form-data",
@@ -135,7 +134,6 @@ const Problems = () => {
       })
       .then((response) => {
         console.log(response.data.message);
-        showAllProblemHandler().then(setMode("search"));
       })
       .catch((error) => {
         console.log(error);
@@ -152,7 +150,7 @@ const Problems = () => {
       selectedProblem.current = null;
     }
 
-    window.scrollTo[(0, 0)];
+    window.scrollTo( 0, 0 );
   }, [mode]);
 
   return (
@@ -343,7 +341,11 @@ const Problems = () => {
           <div>
             <h3>Update Problem</h3>
             <UpdateTextForm
-              handler={updateProblemHandler}
+              handler={(e) => {
+                updateProblemHandler(e)
+                  .then(setTimeout(showAllProblemHandler, 100))
+                  .then(setMode("search"));
+              }}
               fileChangeHandler={fileChangedHandler}
               fileCancelHandler={fileCanceledHandler}
               problem={selectedProblem.current}

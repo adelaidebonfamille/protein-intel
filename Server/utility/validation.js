@@ -32,6 +32,14 @@ const addProblemValidation = (data) => {
     return schema.validate(data);
 };
 
+const addBatchValidation = (data) => {
+    const schema = Joi.object({
+        batch: Joi.string().required(),
+        isActive: Joi.boolean().required(),
+    });
+    return schema.validate(data);
+};
+
 const updateUserValidation = (data) => {
     const schema = Joi.object({
         faculty: Joi.string().required(),
@@ -47,4 +55,5 @@ module.exports = {
     loginValidation,
     addProblemValidation,
     updateUserValidation,
+    addBatchValidation,
 };

@@ -1,5 +1,6 @@
 const Problem = require("../models/problem.model");
 const Test = require("../models/test.model");
+const Batch = require("../models/batch.model")
 const validation = require("../utility/validation");
 const moveDeletedFile = require("../utility/move-deleted-file");
 
@@ -140,10 +141,76 @@ const getAllUserScore = async(req, res, next) => {
     }
 };
 
+const getAllBatch = async(req, res, next) => {
+    try {
+        const allBatch = await Batch.find({});
+        res.json({
+            message: "All batch delivered successfully",
+            batch: allBatch,
+        });
+    } catch (error) {
+        return next(error);
+    }
+}
+
+const createBatch = async(req, res, next) => {
+    const { batch } = req.body;
+    const isActive = false;
+
+    const { error } = validation.addBatchValidation({ batch, isActive });
+    if (error) return next(error.details[0]);
+
+    try {
+        const newBatch = new Batch({
+            batch,
+            isActive,
+        });
+
+        await newBatch.save();
+        res.json({ message: "Batch created successfully" });
+    } catch (error) {
+        return next(error);
+    }
+}
+
+const updateBatchById = async(req, res, next) => {
+    const { id } = req.params;
+
+    const { error } = validation.addBatchValidation({ ...req.body });
+    if (error) return next(error.details[0]);
+
+    try {
+        await Batch.findByIdAndUpdate(id, {
+            $set: {
+                ...req.body,
+            },
+        });
+
+        res.json({ message: "Batch updated successfully" });
+    } catch (error) {
+        return next(error);
+    }
+}
+
+const deleteBatchById = async(req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        await Batch.findByIdAndDelete(id);
+        res.json({ message: "Batch deleted successfully" });
+    } catch (error) {
+        return next(error);
+    }
+}
+
 module.exports = {
     createProblem: addProblem,
     updateProblem: updateProblemById,
     getAllProblems: readAllProblems,
     deleteProblem: deleteProblemById,
     getAllScore: getAllUserScore,
+    getAllBatch: getAllBatch,
+    updateBatch: updateBatchById,
+    createBatch: createBatch,
+    deleteBatch: deleteBatchById,
 };

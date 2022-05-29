@@ -27,22 +27,27 @@
   padding: 20px;
   margin-bottom: 15px;
 }
+
 .content .title:hover {
   color: #5e5ff5;
   transform: scale(1.1) translateX(-10px) rotate(-5deg) translateY(5px);
   transition: 2s ease;
 }
+
 .content span {
   color: #5e5ff5;
 }
+
 .content h1 {
   margin-bottom: 16px;
   font-size: 30px;
 }
+
 .content h2 {
   margin-bottom: 10px;
   font-size: 16px;
 }
+
 .content a {
   display: inline-block;
   width: 160px;

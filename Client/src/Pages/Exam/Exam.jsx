@@ -4,9 +4,9 @@ import styles from "./Exam.module.css";
 import OngoingExam from "./OngoingExam/OngoingExam";
 
 const Exam = () => {
-  const [isStarted, setIsStarted] = useState(false);
+  const [isNotStarted, setIsNotStarted] = useState(true);
 
-  return !isStarted ? (
+  return isNotStarted ? (
     <div className={styles.container}>
       <div className={styles.content}>
         <div className={styles.title}>
@@ -18,7 +18,7 @@ const Exam = () => {
         <Link
           to="/exam"
           onClick={() => {
-            setIsStarted(true);
+            setIsNotStarted(false);
           }}
         >
           Start test
