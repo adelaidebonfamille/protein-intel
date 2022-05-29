@@ -77,16 +77,19 @@ const startTest = async(req, res, next) => {
             testGroup: "reading",
             time: 60, //minutes
             timeLeft: null,
+            isOver: false,
         },
         {
             testGroup: "listening",
             time: 60, //minutes
             timeLeft: null,
+            isOver: false,
         },
         {
             testGroup: "structure",
             time: 45, //minutes
             timeLeft: null,
+            isOver: false,
         },
     ];
 
@@ -106,7 +109,133 @@ const startTest = async(req, res, next) => {
     res.json({ test, message: "Test started" });
 };
 
-const startSubTest = async(req, res, next) => {};
+const startSubTest = async(req, res, next) => {
+    const { nim } = req.user;
+    const { testGroup } = req.body;
+
+    //check test type
+    const testTypes = ["reading", "listening", "structure"];
+    if (!testTypes.includes(testGroup))
+        return next(new Error("Invalid test type"));
+
+    let test;
+    try {
+        test = await Test.findOne({ nim });
+    } catch (error) {
+        return next(error);
+    }
+    if (!test) return next(new Error("Test not found"));
+
+    //check if test is over
+    if (test.isTestOver) return next(new Error("Test is over"));
+
+    //check if sub test is over
+    if (test.testTime[testGroup].isOver)
+        return next(new Error("Sub test is over"));
+    if (test.testTime[testGroup].timeLeft !== null)
+        return next(new Error("Sub test already started"));
+
+    //start sub test
+    test.testTime[testGroup].timeLeft = new Date(
+        Date.now() + test.testTime[testGroup].time * 60 * 1000
+    );
+
+    try {
+        await test.save();
+    } catch (error) {
+        return next(error);
+    }
+
+    res.json({
+        message: "Sub test started",
+        subTest: test.answers[testGroup],
+    });
+};
+
+const continueSubTest = async(req, res, next) => {
+    const { nim } = req.user;
+    const { testGroup } = req.body;
+
+    //check test type
+    const testTypes = ["reading", "listening", "structure"];
+    if (!testTypes.includes(testGroup))
+        return next(new Error("Invalid test type"));
+
+    let test;
+    try {
+        test = await Test.findOne({ nim });
+    } catch (error) {
+        return next(error);
+    }
+    if (!test) return next(new Error("Test not found"));
+    if (test.isTestOver) return next(new Error("Test is over"));
+
+    //check if sub test alredy started
+    if (test.testTime[testGroup].timeLeft === null) {
+        return next(new Error("Sub test not started"));
+    }
+
+    //check if sub test is over
+    if (test.testTime[testGroup].timeLeft < Date.now()) {
+        test.testTime[testGroup].isOver = true;
+
+        try {
+            await test.save();
+        } catch (error) {
+            return next(error);
+        }
+        return next(new Error("Sub test is over"));
+    }
+    if (test.testTime[testGroup].isOver)
+        return next(new Error("Sub test is over"));
+    if (test.testTime[testGroup].timeLeft === null)
+        return next(new Error("Sub test not yet started"));
+
+    res.json({
+        message: "Sub test continued",
+        subTest: test.answers[testGroup],
+    });
+};
+
+const endSubTest = async(req, res, next) => {
+    const { nim } = req.user;
+    const { testGroup, answers } = req.body;
+
+    //check test type
+    const testTypes = ["reading", "listening", "structure"];
+    if (!testTypes.includes(testGroup))
+        return next(new Error("Invalid test type"));
+
+    let test;
+    try {
+        test = await Test.findOne({ nim });
+    } catch (error) {
+        return next(error);
+    }
+    if (!test) return next(new Error("Test not found"));
+    if (test.isTestOver) return next(new Error("Test is over"));
+
+    //check if sub test alredy started
+    if (test.testTime[testGroup].timeLeft === null) {
+        return next(new Error("Sub test not started"));
+    }
+    //check if sub test is over
+    if (test.testTime[testGroup].timeLeft < Date.now()) {
+        return next(new Error("Sub test is over"));
+    }
+
+    //end sub test
+    test.testTime[testGroup].timeLeft = null;
+    test.testTime[testGroup].time = null;
+    test.answers[testGroup] = answers;
+
+    try {
+        await test.save();
+    } catch (error) {
+        return next(error);
+    }
+    res.json({ message: "Sub test ended" });
+};
 
 const saveTestAnswer = async(req, res, next) => {
     const { nim } = req.user;
@@ -139,7 +268,7 @@ const saveTestAnswer = async(req, res, next) => {
         return next(error);
     }
 
-    res.json({ test, message: "Test answer saved" });
+    res.json({ message: "Test answer saved" });
 };
 
 const findTestByNim = async(req, res, next) => {
