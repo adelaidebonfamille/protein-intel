@@ -4,9 +4,22 @@ const Score = require("../models/score.model");
 const Batch = require("../models/batch.model");
 const User = require("../models/user.model");
 
+const validation = require("../utility/validation");
+
 const startTest = async(req, res, next) => {
     const { nim } = req.user;
     const { batchId } = req.body;
+
+    let user;
+    try {
+        user = await User.findOne({ nim });
+    } catch (error) {
+        return next(error);
+    }
+    if (!user) return next(new Error("User not found"));
+
+    const { error } = validation.startTestValidation(user);
+    if (error) return next(error);
 
     let existingTest;
     try {
@@ -62,15 +75,18 @@ const startTest = async(req, res, next) => {
 
     const testTime = [{
             testGroup: "reading",
-            time: 60,
+            time: 60, //minutes
+            timeLeft: null,
         },
         {
             testGroup: "listening",
-            time: 60,
+            time: 60, //minutes
+            timeLeft: null,
         },
         {
             testGroup: "structure",
-            time: 45,
+            time: 45, //minutes
+            timeLeft: null,
         },
     ];
 
@@ -89,6 +105,8 @@ const startTest = async(req, res, next) => {
 
     res.json({ test, message: "Test started" });
 };
+
+const startSubTest = async(req, res, next) => {};
 
 const saveTestAnswer = async(req, res, next) => {
     const { nim } = req.user;
