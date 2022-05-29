@@ -70,7 +70,7 @@ const userLogin = async(req, res, next) => {
         email,
         password,
     });
-    if (error) return next(error.details[0].message);
+    if (error) return next(error.details[0]);
 
     let user;
     try {
