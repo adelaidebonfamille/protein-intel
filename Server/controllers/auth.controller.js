@@ -121,7 +121,17 @@ const adminLogin = (req, res, next) => {
     });
 };
 
-const forgotPassword = async(req, res, next) => {};
+const forgotPassword = async(req, res, next) => {
+    const { email } = req.body;
+
+    let user;
+    try {
+        user = await User.findOne({ email });
+    } catch (err) {
+        return next(err);
+    }
+    if (!user) return next(new Error("User not found"));
+};
 
 module.exports = {
     register: userRegister,
