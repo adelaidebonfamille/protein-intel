@@ -3,6 +3,9 @@ import { Route, Routes } from "react-router-dom";
 
 import styles from "./App.module.css";
 
+import AuthContext from "./Contexts/AuthContext";
+import RequireAuth from "./Helpers/RequireAuth";
+
 import Navbar from "./Components/Navbar/Navbar";
 import Home from "./Pages/Home/Home";
 import Login from "./Pages/Login/Login";
@@ -13,9 +16,8 @@ import Admin from "./Pages/Admin/Admin";
 import Problems from "./Pages/Admin/Problems/Problems";
 import Scores from "./Pages/Admin/Scores/Scores";
 import Batch from "./Pages/Admin/Batch/Batch";
-
-import AuthContext from "./Contexts/AuthContext";
-import RequireAuth from "./Helpers/RequireAuth";
+import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -45,6 +47,9 @@ function App() {
           <Route path="/admin/scores" element={<Scores />} />
           <Route path="/admin/batch" element={<Batch />} />
         </Route>
+
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </div>
   );

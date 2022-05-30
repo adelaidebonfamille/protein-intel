@@ -83,9 +83,3 @@
   color: #5e5ff5;
   font: bold;
 }
-
-@media screen and (max-width: 768px) {
-  .nav {
-    display: none;
-  }
-}

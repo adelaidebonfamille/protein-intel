@@ -33,7 +33,8 @@ const Batch = () => {
       )
       .then((res) => {
         console.log(res.data.message);
-        if (!res.data.message) console.log("Mohon gunakan nama batch yang berbeda");
+        if (!res.data.message)
+          console.log("Mohon gunakan nama batch yang berbeda");
       })
       .catch((err) => {
         console.log(err);
@@ -108,9 +109,7 @@ const Batch = () => {
           allBatch?.map((batch) => (
             <div key={batch["_id"]} className={styles["batch-display"]}>
               <h4>Batch id: {batch["_id"]}</h4>
-              <p>
-                Batch name: {batch.batch}
-              </p>
+              <p>Batch name: {batch.batch}</p>
               <div
                 className={
                   batch.isActive ? styles["active"] : styles["inactive"]
