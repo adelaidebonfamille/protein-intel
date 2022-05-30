@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 const validation = require("../utility/validation");
 
 const generateToken = require("../utility/generate-token");
+const generateLink = require("../utility/generate-reset-password-link");
+const emailSender = require("../utility/email-sender");
 
 const User = require("../models/user.model");
 
@@ -131,10 +133,24 @@ const forgotPassword = async(req, res, next) => {
         return next(err);
     }
     if (!user) return next(new Error("User not found"));
+
+    const resetPasswordToken = generateLink({ email: user.email, password: user.password },
+        `${process.env.JWT_SECRET}${user.password}`
+    );
+    const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password/${user._id}/${resetPasswordToken}`;
+
+    emailSender({
+        to: user.email,
+        subject: "Reset Password",
+        html: `<p>Click <a href="${resetPasswordLink}">here</a> to reset your password</p>`,
+    });
+
+    res.json({ message: "Reset Password Link has been sent to your email" });
 };
 
 module.exports = {
     register: userRegister,
     login: userLogin,
     admin: adminLogin,
+    forgotPassword,
 };
