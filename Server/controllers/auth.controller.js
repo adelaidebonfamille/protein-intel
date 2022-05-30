@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const validation = require("../utility/validation");
 
 const generateToken = require("../utility/generate-token");
-const generateLink = require("../utility/generate-reset-password-link");
+const resetPassword = require("../utility/generate-reset-password-link");
 const emailSender = require("../utility/email-sender");
 
 const User = require("../models/user.model");
@@ -134,7 +134,7 @@ const forgotPassword = async(req, res, next) => {
     }
     if (!user) return next(new Error("User not found"));
 
-    const resetPasswordToken = generateLink({ email: user.email, password: user.password },
+    const resetPasswordToken = resetPassword.generateLink({ email: user.email, password: user.password },
         `${process.env.JWT_SECRET}${user.password}`
     );
     const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password/${user._id}/${resetPasswordToken}`;
@@ -146,6 +146,40 @@ const forgotPassword = async(req, res, next) => {
     });
 
     res.json({ message: "Reset Password Link has been sent to your email" });
+};
+
+const resetPassword = async(req, res, next) => {
+    const { password, confirmPassword } = req.body;
+    const { id, token } = req.params;
+
+    validation.passwordChangeValidation({ password, confirmPassword });
+
+    let user;
+    try {
+        user = await User.findById(id);
+    } catch (err) {
+        return next(err);
+    }
+    if (!user) return next(new Error("User not found"));
+
+    let isVerified;
+    try {
+        isVerified = resetPassword.verifyLink(token, `${process.env.JWT_SECRET}${user.password}`);
+    } catch (err) {
+        return next(err);
+    }
+    if (!isVerified) return next(new Error("Link is invalid"));
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    user.password = hashedPassword;
+
+    try {
+        await user.save();
+        res.json({ message: "Password changed successfully" });
+    } catch (err) {
+        return next(err);
+    }
 };
 
 module.exports = {

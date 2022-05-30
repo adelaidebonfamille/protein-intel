@@ -7,4 +7,16 @@ const generateLink = (data, customString) => {
     return token;
 };
 
-module.exports = generateLink;
+const verifyGeneratedToken = (token, customString) => {
+    try {
+        const verified = jwt.verify(token, customString);
+        return verified;
+    } catch (error) {
+        return error;
+    }
+};
+
+module.exports = {
+    generateLink,
+    verifyGeneratedToken,
+};
