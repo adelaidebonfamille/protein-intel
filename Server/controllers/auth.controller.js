@@ -121,6 +121,8 @@ const adminLogin = (req, res, next) => {
     });
 };
 
+const forgotPassword = async(req, res, next) => {};
+
 module.exports = {
     register: userRegister,
     login: userLogin,

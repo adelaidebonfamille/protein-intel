@@ -11,7 +11,7 @@ router.post("/end", testController.endTest);
 
 router.post("/subtest", testController.startSubTest);
 
-router.patch("/subtest", testController.saveSubTest);
+router.patch("/subtest", testController.continueSubTest);
 
 router.post("/subtest/end", testController.endSubTest);
 
