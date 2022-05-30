@@ -150,7 +150,7 @@ const Problems = () => {
       selectedProblem.current = null;
     }
 
-    window.scrollTo( 0, 0 );
+    window.scrollTo(0, 0);
   }, [mode]);
 
   return (
