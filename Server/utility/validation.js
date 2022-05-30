@@ -65,10 +65,19 @@ const startTestValidation = (data) => {
     return schema.validate(data);
 };
 
+const passwordChangeValidation = (data) => {
+    const schema = Joi.object({
+        password: Joi.string().required().min(6).max(255),
+        confirmPassword: Joi.ref("password"),
+    });
+    return schema.validate(data);
+};
+
 module.exports = {
     registerValidation,
     loginValidation,
     addProblemValidation,
     updateUserValidation,
     addBatchValidation,
+    passwordChangeValidation,
 };
