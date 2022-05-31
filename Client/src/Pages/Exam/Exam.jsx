@@ -27,13 +27,14 @@ const Exam = () => {
   };
 
   const selectedBatch = useRef({});
-  const selectBatch = async () => {};
+  const selectBatch = async (e) => {
+    selectedBatch.current = e.target.dataset.id;
+  };
 
   useEffect(() => {
     const getInfo = async () => {
       await axios
         .get("http://localhost:5000/api/test", {
-          params: { nim: authCtx.userData.nim },
           headers: { "auth-token": localStorage.getItem("token") },
         })
         .then(async (res) => {
@@ -42,7 +43,7 @@ const Exam = () => {
           if (Object.keys(test).length == 0) {
             await getAllActiveBatch();
           }
-        })
+        });
     };
 
     getInfo();
@@ -59,7 +60,7 @@ const Exam = () => {
             {allActiveBatch.map((batch) => (
               <div className={styles.batch} key={batch["_id"]}>
                 {batch.batch}
-                <button onClick={selectBatch}>SelectBatch</button>
+                <button data-id={batch["_id"]} onClick={selectBatch}>Select Batch</button>
               </div>
             ))}
           </div>

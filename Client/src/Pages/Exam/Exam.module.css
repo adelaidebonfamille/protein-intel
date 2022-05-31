@@ -16,21 +16,21 @@
 }
 
 .batches {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .batch {
-    display: flex;
-    background-color: white;
-    min-width: 360px;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    margin: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  background-color: white;
+  min-width: 360px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 .batch button {
   display: inline-block;
@@ -45,6 +45,6 @@
 .batch button:hover {
   background-color: white;
   color: #5e5ff5;
-  transition: .2s ease;
+  transition: 0.2s ease;
   transform: scale(1.01);
 }

@@ -272,7 +272,7 @@ const saveTestAnswer = async(req, res, next) => {
 };
 
 const findTestByNim = async(req, res, next) => {
-    const { nim } = req.body;
+    const { nim } = req.user;
     try {
         const test = await Test.findOne({ nim });
         if (!test) return next(new Error("Test not found"));
