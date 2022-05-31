@@ -3,7 +3,13 @@ import { Link } from "react-router-dom";
 
 const StartExam = (props) => {
   return (
-    <div classNddame={styles.container}>
+    <div className={styles.container}>
+      <span className={styles["change-batch"]}>
+        <p>Batch selected: {props.batchName}</p>
+        <a href="javascript:void(0)" onClick={props.deleteBatch}>
+          Ganti Batch
+        </a>
+      </span>
       <div className={styles.content}>
         <div className={styles.title}>
           <h1>

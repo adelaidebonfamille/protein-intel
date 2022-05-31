@@ -1,13 +1,12 @@
-import { useEffect, useState, useRef, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import AuthContext from "../../Contexts/AuthContext";
 import styles from "./Exam.module.css";
 import OngoingExam from "./OngoingExam/OngoingExam";
 import StartExam from "./StartExam/StartExam";
+import ChooseBatch from "./ChooseBatch/ChooseBatch";
 
 const Exam = () => {
-  const authCtx = useContext(AuthContext);
-
   const [isNotStarted, setIsNotStarted] = useState(true);
 
   const [test, setTest] = useState({});
@@ -26,9 +25,15 @@ const Exam = () => {
       });
   };
 
-  const selectedBatch = useRef({});
-  const selectBatch = async (e) => {
-    selectedBatch.current = e.target.dataset.id;
+  const [selectedBatch, setSelectedBatch] = useState({});
+  const selectBatch = (e) => {
+    setSelectedBatch({
+      batchId: e.target.dataset.id,
+      batchName: e.target.dataset.batchName,
+    });
+  };
+  const deleteBatch = () => {
+    setSelectedBatch({});
   };
 
   useEffect(() => {
@@ -51,20 +56,12 @@ const Exam = () => {
 
   return (
     <>
-      {Object.keys(test).length == 0 ? (
-        <div className={styles.container}>
-          <div>
-            <h3>Select Active Batch</h3>
-          </div>
-          <div className={styles.batches}>
-            {allActiveBatch.map((batch) => (
-              <div className={styles.batch} key={batch["_id"]}>
-                {batch.batch}
-                <button data-id={batch["_id"]} onClick={selectBatch}>Select Batch</button>
-              </div>
-            ))}
-          </div>
-        </div>
+      {Object.keys(test).length == 0 &&
+      Object.keys(selectedBatch).length == 0 ? (
+        <ChooseBatch
+          allActiveBatch={allActiveBatch}
+          selectBatch={selectBatch}
+        />
       ) : (
         <>
           {isNotStarted ? (
@@ -72,6 +69,8 @@ const Exam = () => {
               startHandler={() => {
                 setIsNotStarted(false);
               }}
+              batchName={selectedBatch.batchName}
+              deleteBatch={deleteBatch}
             />
           ) : (
             <OngoingExam />

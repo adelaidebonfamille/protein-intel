@@ -9,6 +9,7 @@
 .container {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: rgb(227, 227, 227);
@@ -21,6 +22,20 @@
   border-radius: 5px;
   width: 500px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.change-batch p {
+  display: block;
+  margin-right: 1rem;
+}
+.change-batch a {
+  display: block;
+}
+.container .change-batch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .content .title {
