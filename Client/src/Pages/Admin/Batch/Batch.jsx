@@ -56,6 +56,9 @@ const Batch = () => {
       .then((res) => {
         console.log(res.data.message);
       })
+      .then(() => {
+        getAllBatch();
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -68,6 +71,9 @@ const Batch = () => {
       })
       .then((res) => {
         console.log(res.data.message);
+      })
+      .then(() => {
+        getAllBatch();
       })
       .catch((err) => {
         console.log(err);
@@ -121,18 +127,11 @@ const Batch = () => {
                 data-batch={batch.batch}
                 data-batch-id={batch["_id"]}
                 data-is-active={batch.isActive}
-                onClick={(e) => {
-                  updateBatchById(e).then(setTimeout(getAllBatch, 100));
-                }}
+                onClick={updateBatchById}
               >
                 {batch.isActive ? "Inactivate Batch" : "Activate Batch"}
               </button>
-              <button
-                data-batch-id={batch["_id"]}
-                onClick={(e) => {
-                  deleteBatchById(e).then(()=>{setTimeout(getAllBatch, 100)});
-                }}
-              >
+              <button data-batch-id={batch["_id"]} onClick={deleteBatchById}>
                 Delete Batch
               </button>
             </div>

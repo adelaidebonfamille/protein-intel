@@ -63,7 +63,20 @@
   font-size: 16px;
 }
 
-.content a {
+.change-batch button {
+  display: inline-block;
+  background-color: transparent;
+  color: #5e5ff5;
+  border: none;
+}
+
+.change-batch button:hover {
+  color: #2c2cf5;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.content button {
   display: inline-block;
   width: 160px;
   padding: 5px;
@@ -73,7 +86,7 @@
   color: white;
 }
 
-.content a:hover {
+.content button:hover {
   background-color: white;
   color: #5e5ff5;
   transition: 1s ease;

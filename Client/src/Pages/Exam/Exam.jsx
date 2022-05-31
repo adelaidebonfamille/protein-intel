@@ -1,12 +1,14 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import AuthContext from "../../Contexts/AuthContext";
-import styles from "./Exam.module.css";
-import OngoingExam from "./OngoingExam/OngoingExam";
+import SubTestMenu from "./SubTestMenu/SubTestMenu";
 import StartExam from "./StartExam/StartExam";
 import ChooseBatch from "./ChooseBatch/ChooseBatch";
 
 const Exam = () => {
+  const authCtx = useContext(AuthContext);
+  const baseUrl = "http://localhost:5000/api/test";
+
   const [isNotStarted, setIsNotStarted] = useState(true);
 
   const [test, setTest] = useState({});
@@ -14,7 +16,7 @@ const Exam = () => {
   const [allActiveBatch, setAllActiveBatch] = useState([]);
   const getAllActiveBatch = async () => {
     await axios
-      .get("http://localhost:5000/api/test/batch", {
+      .get(`${baseUrl}/batch`, {
         headers: { "auth-token": localStorage.getItem("token") },
       })
       .then((res) => {
@@ -36,10 +38,34 @@ const Exam = () => {
     setSelectedBatch({});
   };
 
+  const startTest = async (e) => {
+    await axios
+      .post(
+        baseUrl,
+        {
+          nim: e.target.dataset.nim,
+          batchId: e.target.dataset.batchId,
+        },
+        {
+          headers: { "auth-token": localStorage.getItem("token") },
+        }
+      )
+      .then((res) => {
+        setTest(res.data.test);
+        console.log(res.data.message);
+      })
+      .then(() => {
+        setIsNotStarted(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     const getInfo = async () => {
       await axios
-        .get("http://localhost:5000/api/test", {
+        .get(baseUrl, {
           headers: { "auth-token": localStorage.getItem("token") },
         })
         .then(async (res) => {
@@ -48,6 +74,9 @@ const Exam = () => {
           if (Object.keys(test).length == 0) {
             await getAllActiveBatch();
           }
+        })
+        .catch((error) => {
+          console.log(error);
         });
     };
 
@@ -65,15 +94,22 @@ const Exam = () => {
       ) : (
         <>
           {isNotStarted ? (
-            <StartExam
-              startHandler={() => {
-                setIsNotStarted(false);
-              }}
-              batchName={selectedBatch.batchName}
-              deleteBatch={deleteBatch}
-            />
+            Object.keys(selectedBatch).length == 0 ? (
+              <StartExam
+                startHandler={() => {
+                  setIsNotStarted(false);
+                }}
+              />
+            ) : (
+              <StartExam
+                startHandler={startTest}
+                batch={selectedBatch}
+                nim={authCtx.userData.nim}
+                deleteBatch={deleteBatch}
+              />
+            )
           ) : (
-            <OngoingExam />
+            <SubTestMenu test={test} />
           )}
         </>
       )}

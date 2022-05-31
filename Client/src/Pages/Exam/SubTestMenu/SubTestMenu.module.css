@@ -27,42 +27,52 @@
 
 .container .small-container .small-container2 {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
   margin-top: 50px;
+  margin-left: 14px;
 }
 
-.container .small-container .p p {
+.container .small-container p {
   display: flex;
+  align-items: center;
   justify-content: left;
-  float: left;
-  margin-bottom: 15px;
+  margin-bottom: auto;
 }
 
-.container .small-container .button {
-  text-align: right;
+.subtest-container {
+  display: flex;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
-.container .small-container .button button {
-  margin-bottom: 10px;
+
+/* .container .small-container .button { */
+/* text-align: right; */
+/* } */
+
+.container .small-container button {
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease 0s;
 }
-.container .small-container .button button:hover {
+.container .small-container button:hover {
   background-color: black;
   color: #fff;
 }
-.container .small-container .button .button1 {
+.container .small-container .button1 {
   background-color: rgb(0, 175, 0);
   color: #fff;
   padding: 5px 30px;
 }
-.container .small-container .button .button2 {
+.container .small-container .button2 {
   background-color: rgb(255, 230, 0);
   color: #fff;
   padding: 5px 8px;
 }
-.container .small-container .button .button3 {
+.container .small-container .button3 {
   background-color: red;
   color: #fff;
   padding: 5px 20px;
@@ -71,11 +81,9 @@
   display: flex;
   justify-content: center;
   margin-top: 50px;
-}
-.container .small-container .end .small-end {
   text-align: left;
 }
-.small-end button {
+.end button {
   padding: 5px 120px;
   margin-bottom: 5px;
   font-size: 15px;
@@ -85,13 +93,13 @@
   cursor: pointer;
   transition: all 0.3s ease 0s;
 }
-.small-end button:hover {
+.end button:hover {
   background-color: black;
   color: white;
 }
-.small-end input {
+.end input {
   cursor: pointer;
 }
-.small-end label {
-  font-size: 14.5px;
+.end p {
+  color: grey;
 }

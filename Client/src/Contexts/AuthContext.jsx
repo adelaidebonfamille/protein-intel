@@ -12,8 +12,7 @@ const AuthContext = React.createContext({
   userData: {},
 });
 
-const BASE_URL =
-  "http://localhost:5000/api/auth" || `${process.env.API_URL}/auth`;
+const BASE_URL = "http://localhost:5000/api/auth";
 
 export const AuthProvider = (props) => {
   const [userData, setUserData] = useState(null);

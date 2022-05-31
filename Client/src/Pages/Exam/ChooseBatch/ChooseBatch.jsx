@@ -18,6 +18,9 @@ const ChooseBatch = (props) => (
           </button>
         </div>
       ))}
+      {props.allActiveBatch.length == 0 && (
+        <p>Connection Error, or there are no available batch</p>
+      )}
     </div>
   </div>
 );

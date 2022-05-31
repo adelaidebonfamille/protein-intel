@@ -18,10 +18,10 @@ const Login = () => {
       } else {
         setIsMessage(res.message);
         setIsError(null);
-        //redirect to login page after 5 second
+        // redirect to login page after 3 second
         setTimeout(() => {
           navigate("/");
-        }, 5000);
+        }, 3000);
       }
     });
   };
@@ -53,9 +53,9 @@ const Login = () => {
                 />
               </div>
               <div className={styles["checkbox-text"]}></div>
-              <a href="#" className={styles.text}>
+              <Link to={"/forgot-password"} href="#" className={styles.text}>
                 Lupa password?
-              </a>
+              </Link>
 
               {isError && <div className={styles.error}>{isError}</div>}
               {isMessage && <div className={styles.messsage}>{isMessage}</div>}
