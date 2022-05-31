@@ -5,6 +5,7 @@ const Batch = require("../models/batch.model");
 const User = require("../models/user.model");
 
 const validation = require("../utility/validation");
+const toeflConversionTable = require("../utility/toefl-conversion-table")
 
 const startTest = async(req, res, next) => {
     const { nim } = req.user;
@@ -304,9 +305,9 @@ const endTestAndCalculateScore = async(req, res, next) => {
     if (!Problems) return next(new Error("No Problems found"));
 
     let userScore = {
-        reading: [],
-        listening: [],
-        structure: [],
+        reading: 0,
+        listening: 0,
+        structure: 0,
     };
     for (const answerGroup in test.answers) {
         answerGroup.forEach((answerData) => {
@@ -320,8 +321,9 @@ const endTestAndCalculateScore = async(req, res, next) => {
             const correctAnswer = problem.key;
             const userAnswer = answer;
             const isCorrect = correctAnswer === userAnswer;
-            const score = isCorrect ? 1 : 0;
-            userScore[answerGroup].push(score);
+            if (isCorrect) {
+                userScore[answerGroup] += 1;
+            }
         });
     }
 
@@ -333,20 +335,13 @@ const endTestAndCalculateScore = async(req, res, next) => {
         structure: 0,
     };
     for (const answerGroup in userScore) {
-        let correct = 0;
-        const total = userScore[answerGroup].length;
-
-        userScore[answerGroup].forEach((score) => {
-            correct += score;
-        });
-
-        answerGroupScore[answerGroup] = correct / total;
+        answerGroupScore[answerGroup] = toeflConversionTable[answerGroup][userScore[answerGroup]];
     }
     totalScore =
         (answerGroupScore.reading +
             answerGroupScore.listening +
             answerGroupScore.structure) /
-        3;
+        3 * 10;
 
     try {
         const score = new Score({
@@ -360,11 +355,11 @@ const endTestAndCalculateScore = async(req, res, next) => {
     }
 };
 
-const getAllActiveBatch = async (req, res, next) => {
+const getAllActiveBatch = async(req, res, next) => {
     try {
-        const activeBatch = await Batch.find({isActive: true},{isActive: 0})
+        const activeBatch = await Batch.find({ isActive: true }, { isActive: 0 })
 
-        res.json({activeBatch , message: "success getting active batch"});
+        res.json({ activeBatch, message: "success getting active batch" });
     } catch (error) {
         return next(error);
     }
