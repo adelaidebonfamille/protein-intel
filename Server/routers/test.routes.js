@@ -7,6 +7,8 @@ router.patch("/", testController.saveTest);
 
 router.get("/", testController.findTest);
 
+router.get("/batch", testController.getAllActiveBatch);
+
 router.post("/end", testController.endTest);
 
 router.post("/subtest", testController.startSubTest);

@@ -272,7 +272,7 @@ const saveTestAnswer = async(req, res, next) => {
 };
 
 const findTestByNim = async(req, res, next) => {
-    const { nim } = req.user;
+    const { nim } = req.body;
     try {
         const test = await Test.findOne({ nim });
         if (!test) return next(new Error("Test not found"));
@@ -360,6 +360,16 @@ const endTestAndCalculateScore = async(req, res, next) => {
     }
 };
 
+const getAllActiveBatch = async (req, res, next) => {
+    try {
+        const activeBatch = await Batch.find({isActive: true},{isActive: 0})
+
+        res.json({activeBatch , message: "success getting active batch"});
+    } catch (error) {
+        return next(error);
+    }
+};
+
 module.exports = {
     startTest: startTest,
     saveTest: saveTestAnswer,
@@ -368,4 +378,5 @@ module.exports = {
     startSubTest: startSubTest,
     continueSubTest: continueSubTest,
     endSubTest: endSubTest,
+    getAllActiveBatch: getAllActiveBatch,
 };

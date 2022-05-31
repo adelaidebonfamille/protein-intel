@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui;
+  text-decoration: none;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(227, 227, 227);
+}
+
+.batches {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.batch {
+    display: flex;
+    background-color: white;
+    min-width: 360px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+.batch button {
+  display: inline-block;
+  width: 160px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid;
+  background-color: #5e5ff5;
+  color: white;
+}
+
+.batch button:hover {
+  background-color: white;
+  color: #5e5ff5;
+  transition: .2s ease;
+  transform: scale(1.01);
+}

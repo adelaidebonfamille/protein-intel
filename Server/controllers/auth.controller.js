@@ -148,7 +148,7 @@ const forgotPassword = async(req, res, next) => {
     res.json({ message: "Reset Password Link has been sent to your email" });
 };
 
-const resetPassword = async(req, res, next) => {
+const resetUserPassword = async(req, res, next) => {
     const { password, confirmPassword } = req.body;
     const { id, token } = req.params;
 
