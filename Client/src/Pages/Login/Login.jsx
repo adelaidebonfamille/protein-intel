@@ -53,9 +53,9 @@ const Login = () => {
                 />
               </div>
               <div className={styles["checkbox-text"]}></div>
-              <a href="#" className={styles.text}>
+              <Link to={"/forgot-password"} href="#" className={styles.text}>
                 Lupa password?
-              </a>
+              </Link>
 
               {isError && <div className={styles.error}>{isError}</div>}
               {isMessage && <div className={styles.messsage}>{isMessage}</div>}

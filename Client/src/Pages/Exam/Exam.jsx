@@ -60,7 +60,9 @@ const Exam = () => {
             {allActiveBatch.map((batch) => (
               <div className={styles.batch} key={batch["_id"]}>
                 {batch.batch}
-                <button data-id={batch["_id"]} onClick={selectBatch}>Select Batch</button>
+                <button data-id={batch["_id"]} onClick={selectBatch}>
+                  Select Batch
+                </button>
               </div>
             ))}
           </div>
