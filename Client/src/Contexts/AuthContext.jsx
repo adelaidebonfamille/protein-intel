@@ -13,7 +13,8 @@ const AuthContext = React.createContext({
 });
 
 const BASE_URL =
-  `${import.meta.env.API_URL}/auth` || "http://localhost:5000/api/auth";
+  (import.meta.env.API_URL && `${import.meta.env.API_URL}/auth`) ||
+  "http://localhost:5000/api/auth";
 
 export const AuthProvider = (props) => {
   const [userData, setUserData] = useState(null);
