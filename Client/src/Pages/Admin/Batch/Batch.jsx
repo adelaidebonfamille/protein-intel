@@ -130,7 +130,7 @@ const Batch = () => {
               <button
                 data-batch-id={batch["_id"]}
                 onClick={(e) => {
-                  deleteBatchById(e).then(getAllBatch());
+                  deleteBatchById(e).then(()=>{setTimeout(getAllBatch, 100)});
                 }}
               >
                 Delete Batch
