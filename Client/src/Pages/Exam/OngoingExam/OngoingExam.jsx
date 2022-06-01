@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import axios from "axios";
+import Timer from "../../../Components/Timer/Timer";
 
 const OngoingExam = () => {
   const location = useLocation();
@@ -11,6 +12,7 @@ const OngoingExam = () => {
 
   const [problems, setProblems] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [time, setTime] = useState(null);
 
   const convert = ["A", "B", "C", "D", "E"];
 
@@ -20,14 +22,26 @@ const OngoingExam = () => {
     setIsLoading(true);
     console.log("testGroup", testGroup);
     axios
-      .get(`${BASE_URL}/test/problems/${testGroup}`, {
-        headers: {
-          "auth-token": localStorage.getItem("token"),
-        },
-      })
+      .patch(
+        `${BASE_URL}/test/subtest`,
+        { testGroup },
+        {
+          headers: { "auth-token": localStorage.getItem("token") },
+        }
+      )
       .then((res) => {
-        setProblems(res.data.problems);
-        setIsLoading(false);
+        setTime(res.data.time);
+        console.log(time);
+        axios
+          .get(`${BASE_URL}/test/problems/${testGroup}`, {
+            headers: {
+              "auth-token": localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            setProblems(res.data.problems);
+            setIsLoading(false);
+          });
       });
   }, []);
 
@@ -43,10 +57,7 @@ const OngoingExam = () => {
             </div>
             <div>
               <div className={styles.menu}>
-                <div className={styles.time}>
-                  <h3>Time Left</h3>
-                  <p>02:30</p>
-                </div>
+                <Timer time={time} />
                 <div className={styles.problemGrid}>
                   {problems.map((problem, index) => {
                     return (

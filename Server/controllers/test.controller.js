@@ -156,6 +156,7 @@ const startSubTest = async (req, res, next) => {
 			{ testTime: test.testTime },
 			{ new: true }
 		);
+		console.log(test.testTime[testGroup].timeLeft);
 	} catch (error) {
 		return next(error);
 	}
@@ -212,6 +213,7 @@ const continueSubTest = async (req, res, next) => {
 	res.json({
 		message: "Sub test continued",
 		subTest: test.answers[testGroup],
+		time: test.testTime[testGroup].timeLeft,
 	});
 };
 
@@ -284,6 +286,8 @@ const saveTestAnswer = async (req, res, next) => {
 
 	//check if test is over
 	if (test.isTestOver) return next(new Error("Test is over"));
+	if (test.testTime[testType].timeLeft < Date.now())
+		return next(new Error("Test is over"));
 	if (test.testTime[testType].isOver)
 		return next(new Error("Sub test is over"));
 

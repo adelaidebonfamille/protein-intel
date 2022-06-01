@@ -1,0 +1,14 @@
+.time {
+  font-size: 2rem;
+  font-weight: 600;
+
+  text-align: center;
+  margin: 0 auto;
+}
+.time > h3 {
+  color: #5e5ff5;
+}
+.time > p {
+  font-size: 3rem;
+  color: #ff5a5f;
+}
