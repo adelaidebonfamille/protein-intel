@@ -1,8 +1,11 @@
 import styles from "./SubTestMenu.module.css";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const OngoingExam = (props) => {
   const baseUrl = "http://localhost:5000/api/test/subtest";
+
+  const navigate = useNavigate();
 
   const subTests = ["Reading", "Listening", "Structure"];
 
@@ -10,18 +13,50 @@ const OngoingExam = (props) => {
     const { nim, testGroup } = e.target.dataset;
 
     await axios
-      .post(baseUrl, {
-        nim,
-        testGroup,
+      .post(
+        baseUrl,
+        {
+          nim,
+          testGroup,
+        },
+        {
+          headers: { "auth-token": localStorage.getItem("token") },
+        }
+      )
+      .then((res) => {
+        navigate("/exam/ongoing", {
+          state: { testGroup, subTest: res.data.subTest },
+        });
+        console.log(res.data.message);
       })
-      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const continueSubTest = (e) => {
+  const continueSubTest = async (e) => {
     const { nim, testGroup } = e.target.dataset;
+
+    await axios
+      .patch(
+        baseUrl,
+        {
+          nim,
+          testGroup,
+        },
+        {
+          headers: { "auth-token": localStorage.getItem("token") },
+        }
+      )
+      .then((res) => {
+        navigate("/exam/ongoing", {
+          state: { testGroup, subTest: res.data.subTest },
+        });
+        console.log(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

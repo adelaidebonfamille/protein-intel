@@ -1,0 +1,128 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "poppins", sans-serif;
+  width: 100%;
+}
+.error-container {
+  margin: auto;
+  padding: 2rem;
+  text-align: center;
+  background: #fff;
+  width: 400px;
+  display: block;
+  margin: auto;
+  color: red;
+  font-size: 1.25rem;
+  border: solid 1px red;
+}
+.title {
+  position: fixed;
+  z-index: 10;
+  background: #5e5ff5;
+  width: 100vw;
+  text-align: center;
+}
+.title-text {
+  color: white;
+}
+.radio-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.text {
+  margin: 50px 100px;
+}
+.radio-list {
+  color: white;
+}
+.radio-item [type="radio"] {
+  display: none;
+}
+
+.radio-item + .radio-item {
+  margin-top: 10px;
+}
+.radio-item label {
+  display: block;
+  padding: 20px 60px;
+  background: #5e5ff5;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  min-width: 400px;
+  white-space: nowrap;
+  position: relative;
+}
+.radio-item label:after,
+.radio-item label:before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.radio-item label:after {
+  height: 20px;
+  width: 20px;
+  border: 2px solid white;
+  left: 20px;
+  top: calc(50% - 12px);
+}
+.radio-item label:before {
+  background: white;
+  height: 10px;
+  width: 10px;
+  left: 27px;
+  top: calc(50% - 5px);
+  transform: scale(3);
+  transition: 0.4s ease 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+.radio-item [type="radio"]:checked ~ label {
+  border-color: white;
+  background: #2d2df4;
+}
+
+.radio-item [type="radio"]:checked ~ label:before {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+.radio-item:hover {
+  transform: scale(1.02);
+  transition: scale 0.2s ease-in-out;
+}
+.radio-item:hover label {
+  background: #4646c0;
+  transition: background 0.2s ease-in-out;
+}
+
+.end {
+  text-align: center;
+}
+.end-button {
+  border: none;
+  background: red;
+  color: white;
+  font-size: 25px;
+  padding: 10px 50px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+.end-button:hover {
+  background-color: white;
+  color: red;
+  border: 2px solid red;
+  transition: 0.2s ease-in-out;
+}

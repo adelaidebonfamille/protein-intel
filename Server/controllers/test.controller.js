@@ -71,6 +71,8 @@ const startTest = async(req, res, next) => {
         structure: structureAnswersFilled,
     };
 
+    console.log(testAnswers);
+
     const testTime = { 
         reading: {
             time: 60, //minutes
