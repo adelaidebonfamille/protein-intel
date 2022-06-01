@@ -138,7 +138,7 @@ const forgotPassword = async (req, res, next) => {
 		{ email: user.email, password: user.password },
 		`${process.env.JWT_SECRET}${user.password}`
 	);
-	const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password?id${user._id}&token=${resetPasswordToken}`;
+	const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password?id=${user._id}&token=${resetPasswordToken}`;
 
 	try {
 		emailSender({
