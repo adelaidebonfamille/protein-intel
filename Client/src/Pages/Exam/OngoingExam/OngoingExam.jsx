@@ -1,6 +1,6 @@
 import styles from "./OngoingExam.module.css";
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import axios from "axios";
 
@@ -8,60 +8,70 @@ const OngoingExam = () => {
   const location = useLocation();
   const { testGroup } = location.state;
 
+  const [problems, setProblems] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const convert = ["A", "B", "C", "D", "E"];
 
   const BASE_URL = import.meta.env.API_URL || "http://localhost:5000/api";
 
-  const getProblems = async () => {
-    const response = await axios.get(`${BASE_URL}/test/problems/${testGroup}`, {
-      headers: {
-        "auth-token": localStorage.getItem("token"),
-      },
-    });
-    return response.data;
-  };
-
-  let problems;
-
   useEffect(() => {
-    problems = getProblems();
+    setIsLoading(true);
+    console.log("testGroup", testGroup);
+    axios
+      .get(`${BASE_URL}/test/problems/${testGroup}`, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setProblems(res.data.problems);
+        console.log(problems);
+        setIsLoading(false);
+      });
   }, []);
 
   return (
     <div className={styles.container}>
-      {testGroup != undefined ? (
+      {!isLoading && testGroup != undefined ? (
         <>
-          <div className="title">
-            <div className="title-text">
+          <div className={styles.title}>
+            <div className={styles["title-text"]}>
               <h1>PROTEIN 2022 - {testGroup.toUpperCase()} SECTION</h1>
             </div>
           </div>
-          {problems.map((problem, index) => {
-            return (
-              <div className="radio-section">
-                <div className="text">
-                  {`${index + 1}. ${problem.description}`}
-                </div>
-                <div className="radio-list">
-                  {problem.choice.map((choice, index) => {
-                    return (
-                      <div className="radio-item">
-                        <input
-                          value={convert[index]}
-                          type="radio"
-                          name="radio"
-                          id={`radio${index}`}
-                        />
-                        <label htmlFor="radio1">{`${convert[index]}. ${choice}`}</label>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-          <div className="end">
-            <button className="end-button">End Section</button>
+          <div className={styles.problemSection}>
+            {problems &&
+              problems.map((problem, problemIndex) => {
+                return (
+                  <div className={styles["radio-section"]}>
+                    <div className={styles.text}>
+                      <p>{problemIndex + 1}.</p>
+                      <pre>{problem.description}</pre>
+                    </div>
+                    <div className={styles["radio-list"]}>
+                      {problem.choice.map((choice, index) => {
+                        return (
+                          <div className={styles["radio-item"]}>
+                            <input
+                              value={convert[index]}
+                              type="radio"
+                              name={`${problem._id}`}
+                              id={`radio${index}${problemIndex}`}
+                            />
+                            <label htmlFor={`radio${index}${problemIndex}`}>
+                              <pre>{`${convert[index]}. ${choice}`}</pre>
+                            </label>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+          <div className={styles.end}>
+            <button className={styles["end-button"]}>End Section</button>
           </div>
         </>
       ) : (

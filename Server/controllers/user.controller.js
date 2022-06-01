@@ -3,7 +3,6 @@ const Score = require("../models/score.model");
 const User = require("../models/user.model");
 
 const validation = require("../utility/validation");
-const randomizeArray = require("../utility/randomize-array-algorithm");
 
 const updateUserData = async (req, res, next) => {
 	const nim = req.user.nim;

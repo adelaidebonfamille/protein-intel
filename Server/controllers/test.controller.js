@@ -4,7 +4,8 @@ const Score = require("../models/score.model");
 const Batch = require("../models/batch.model");
 const User = require("../models/user.model");
 
-const validation = require("../utility/validation");
+const randomizeArray = require("../utility/randomize-array-algorithm");
+
 const toeflConversionTable = require("../utility/toefl-conversion-table");
 
 const startTest = async (req, res, next) => {
@@ -387,15 +388,15 @@ const getTestProblems = async (req, res, next) => {
 	const { nim } = req.user;
 	const { testGroup } = req.params;
 
-	let user;
+	let test;
 	try {
-		user = await User.findOne({ nim });
+		test = await Test.findOne({ nim });
 	} catch (error) {
 		return next(error);
 	}
-	if (!user) return next(new Error("User not found"));
+	if (!test) return next(new Error("User not found"));
 
-	if (!user.testTime[testGroup]) return next(new Error("Test not started"));
+	if (!test.testTime[testGroup]) return next(new Error("Test not started"));
 
 	let testProblems;
 	try {
