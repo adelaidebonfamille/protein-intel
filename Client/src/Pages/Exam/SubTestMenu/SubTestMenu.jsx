@@ -71,7 +71,7 @@ const OngoingExam = (props) => {
                 <>
                   <p>
                     {subtest}:{" "}
-                    {props.test.testTime[subtest.toLowerCase()].timeLeft}{" "}
+                    {Math.floor( (new Date(props.test.testTime[subtest.toLowerCase()].timeLeft) - new Date()) / (60 * 1000) )}{" "}
                     Minutes (Continue)
                   </p>
                   <button

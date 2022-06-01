@@ -1,0 +1,18 @@
+.inner-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loading-container {
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background: #fff;
+  width: 400px;
+  display: block;
+  margin: auto;
+  color: #5e5ff5;
+  font-size: 1.25rem;
+  border: solid 1px #5e5ff5;
+}

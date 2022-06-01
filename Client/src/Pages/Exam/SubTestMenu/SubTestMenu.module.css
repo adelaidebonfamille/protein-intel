@@ -68,14 +68,14 @@
   padding: 5px 30px;
 }
 .container .small-container .button2 {
-  background-color: rgb(255, 230, 0);
+  background-color: rgb(223, 201, 0);
   color: #fff;
-  padding: 5px 8px;
+  padding: 5px 17px;
 }
 .container .small-container .button3 {
   background-color: red;
   color: #fff;
-  padding: 5px 20px;
+  padding: 5px 19px;
 }
 .container .small-container .end {
   display: flex;

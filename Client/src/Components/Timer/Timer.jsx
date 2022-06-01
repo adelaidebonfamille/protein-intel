@@ -4,7 +4,6 @@ import { useTimer } from "react-timer-hook";
 import styles from "./Timer.module.css";
 
 const Timer = ({ time }) => {
-  console.log(time);
   const {
     seconds,
     minutes,

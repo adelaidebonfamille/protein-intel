@@ -1,3 +1,4 @@
+import styles from "./Exam.module.css";
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import AuthContext from "../../Contexts/AuthContext";
@@ -8,10 +9,10 @@ import ChooseBatch from "./ChooseBatch/ChooseBatch";
 const Exam = () => {
   const authCtx = useContext(AuthContext);
   const baseUrl =
-    (import.meta.env.API_URL &&
-      `${import.meta.env.API_URL}/api/auth/forgot-password`) ||
+    (import.meta.env.API_URL && `${import.meta.env.API_URL}/api/test`) ||
     "http://localhost:5000/api/test";
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isNotStarted, setIsNotStarted] = useState(true);
 
   const [test, setTest] = useState({});
@@ -76,6 +77,8 @@ const Exam = () => {
         if (Object.keys(test).length == 0) {
           await getAllActiveBatch();
         }
+
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -88,6 +91,13 @@ const Exam = () => {
 
   return (
     <>
+      {!isLoading ? (
+        <></>
+      ) : (
+        <div className={styles["inner-container"]}>
+          <div className={styles["loading-container"]}>Loading...</div>
+        </div>
+      )}
       {Object.keys(test).length == 0 &&
       Object.keys(selectedBatch).length == 0 ? (
         <ChooseBatch

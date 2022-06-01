@@ -12,6 +12,7 @@ const OngoingExam = () => {
 
   const [problems, setProblems] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isNotError, setIsNotError] = useState(true);
   const [time, setTime] = useState(null);
 
   const convert = ["A", "B", "C", "D", "E"];
@@ -30,7 +31,9 @@ const OngoingExam = () => {
         }
       )
       .then((res) => {
-        setTime( new Date( Date.now() + (new Date(res.data.time) - new Date()) ) );
+        setTime(new Date(Date.now() + (new Date(res.data.time) - new Date())));
+        if (res.data.time == null) setIsNotError(false);
+
         axios
           .get(`${BASE_URL}/test/problems/${testGroup}`, {
             headers: {
@@ -47,7 +50,7 @@ const OngoingExam = () => {
   return (
     <div className={styles.container}>
       {!isLoading ? (
-        testGroup ? (
+        testGroup && isNotError ? (
           <div>
             <div className={styles.title}>
               <div className={styles["title-text"]}>
@@ -80,6 +83,24 @@ const OngoingExam = () => {
                         key={problemIndex}
                         className={styles["radio-section"]}
                       >
+                        {problem.associatedFile && (
+                          <>
+                            {problem.type == "listening" ? (
+                              <audio controls>
+                                <source
+                                  src={`http://localhost:5000${problem.associatedFile}`}
+                                  type="audio/mpeg"
+                                />
+                              </audio>
+                            ) : (
+                              <img
+                                className={styles["image-file"]}
+                                src={`http://localhost:5000${problem.associatedFile}`}
+                                alt="server failed to retrieve file"
+                              />
+                            )}
+                          </>
+                        )}
                         <div className={styles.desc}>
                           <p>{problemIndex + 1}.</p>
                           <pre>{problem.description}</pre>
