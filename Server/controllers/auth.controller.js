@@ -140,16 +140,15 @@ const forgotPassword = async (req, res, next) => {
 	);
 	const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password?id${user._id}&token=${resetPasswordToken}`;
 
-    try{
-        emailSender({
-		to: user.email,
-		subject: "Reset Password",
-		html: `<p>Click <a href="${resetPasswordLink}">here</a> to reset your password</p>`,
-	});
-    } catch (error) {
-        return next(error)
-    }
-	
+	try {
+		emailSender({
+			to: user.email,
+			subject: "Reset Password",
+			html: `<p>Click <a href="${resetPasswordLink}">here</a> to reset your password</p>`,
+		});
+	} catch (error) {
+		return next(error);
+	}
 
 	res.json({ message: "Reset Password Link has been sent to your email" });
 };
@@ -158,7 +157,11 @@ const resetUserPassword = async (req, res, next) => {
 	const { password, confirmPassword } = req.body;
 	const { id, token } = req.query;
 
-	validation.passwordChangeValidation({ password, confirmPassword });
+	const { error } = validation.passwordChangeValidation({
+		password,
+		confirmPassword,
+	});
+	if (error) return next(error.details[0]);
 
 	let user;
 	try {

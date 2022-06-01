@@ -36,7 +36,7 @@ const ResetPassword = () => {
 
   return (
     <div>
-      <form onClick={onSubmitHandler}>
+      <form onSubmit={onSubmitHandler}>
         <div>
           <label htmlFor="password">Type in new Password</label>
           <input type="password" id="password" name="password" />
