@@ -24,9 +24,7 @@ const OngoingExam = (props) => {
         }
       )
       .then((res) => {
-        navigate("/exam/ongoing", {
-          state: { testGroup, subTest: res.data.subTest },
-        });
+        navigate(`/exam/ongoing?testGroup=${testGroup}`);
         console.log(res.data.message);
       })
       .catch((err) => {
@@ -49,9 +47,7 @@ const OngoingExam = (props) => {
         }
       )
       .then((res) => {
-        navigate("/exam/ongoing", {
-          state: { testGroup, subTest: res.data.subTest },
-        });
+        navigate(`/exam/ongoing?testGroup=${testGroup}`);
         console.log(res.data.message);
       })
       .catch((err) => {

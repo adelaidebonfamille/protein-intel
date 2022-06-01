@@ -6,10 +6,11 @@ import axios from "axios";
 
 const OngoingExam = () => {
   const location = useLocation();
-  const testGroup = location.state && location.state.testGroup;
+  const query = new URLSearchParams(location.search);
+  const testGroup = query.get("testGroup");
 
   const [problems, setProblems] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const convert = ["A", "B", "C", "D", "E"];
 
@@ -34,51 +35,72 @@ const OngoingExam = () => {
     <div className={styles.container}>
       {!isLoading ? (
         testGroup ? (
-          <>
+          <div>
             <div className={styles.title}>
               <div className={styles["title-text"]}>
                 <h1>PROTEIN 2022 - {testGroup.toUpperCase()} SECTION</h1>
               </div>
             </div>
-            <div className={styles.problemSection}>
-              {problems &&
-                problems.map((problem, problemIndex) => {
-                  return (
-                    <div
-                      id={problemIndex + 1}
-                      key={problemIndex}
-                      className={styles["radio-section"]}
-                    >
-                      <div className={styles.text}>
-                        <p>{problemIndex + 1}.</p>
-                        <pre>{problem.description}</pre>
+            <div>
+              <div className={styles.menu}>
+                <div className={styles.time}>
+                  <h3>Time Left</h3>
+                  <p>02:30</p>
+                </div>
+                <div className={styles.problemGrid}>
+                  {problems.map((problem, index) => {
+                    return (
+                      <a
+                        href={`#${index + 1}`}
+                        className={styles.gridItem}
+                        key={index}
+                      >
+                        <p>{index + 1}</p>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className={styles.problemSection}>
+                {problems &&
+                  problems.map((problem, problemIndex) => {
+                    return (
+                      <div
+                        id={problemIndex + 1}
+                        key={problemIndex}
+                        className={styles["radio-section"]}
+                      >
+                        <div className={styles.desc}>
+                          <p>{problemIndex + 1}.</p>
+                          <pre>{problem.description}</pre>
+                        </div>
+                        <div className={styles["radio-list"]}>
+                          {problem.choice.map((choice, index) => {
+                            return (
+                              <div key={index} className={styles["radio-item"]}>
+                                <input
+                                  value={convert[index]}
+                                  type="radio"
+                                  name={`${problem._id}`}
+                                  id={`radio${index}${problemIndex}`}
+                                />
+                                <label htmlFor={`radio${index}${problemIndex}`}>
+                                  <p>{`${convert[index]}.`}</p>
+                                  <pre>{choice}</pre>
+                                </label>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
-                      <div className={styles["radio-list"]}>
-                        {problem.choice.map((choice, index) => {
-                          return (
-                            <div key={index} className={styles["radio-item"]}>
-                              <input
-                                value={convert[index]}
-                                type="radio"
-                                name={`${problem._id}`}
-                                id={`radio${index}${problemIndex}`}
-                              />
-                              <label htmlFor={`radio${index}${problemIndex}`}>
-                                <p>{`${convert[index]}.`}</p>
-                                <pre>{choice}</pre>
-                              </label>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+              </div>
             </div>
             <div className={styles.end}>
               <button className={styles["end-button"]}>End Section</button>
             </div>
-          </>
+          </div>
         ) : (
           <div className={styles["inner-container"]}>
             <div className={styles["error-container"]}>
