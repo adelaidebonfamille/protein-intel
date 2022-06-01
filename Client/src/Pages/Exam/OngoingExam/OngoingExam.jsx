@@ -6,7 +6,7 @@ import axios from "axios";
 
 const OngoingExam = () => {
   const location = useLocation();
-  const { testGroup } = location.state;
+  const testGroup = location.state && location.state.testGroup;
 
   const [problems, setProblems] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,58 +26,69 @@ const OngoingExam = () => {
       })
       .then((res) => {
         setProblems(res.data.problems);
-        console.log(problems);
         setIsLoading(false);
       });
   }, []);
 
   return (
     <div className={styles.container}>
-      {!isLoading && testGroup != undefined ? (
-        <>
-          <div className={styles.title}>
-            <div className={styles["title-text"]}>
-              <h1>PROTEIN 2022 - {testGroup.toUpperCase()} SECTION</h1>
+      {!isLoading ? (
+        testGroup ? (
+          <>
+            <div className={styles.title}>
+              <div className={styles["title-text"]}>
+                <h1>PROTEIN 2022 - {testGroup.toUpperCase()} SECTION</h1>
+              </div>
+            </div>
+            <div className={styles.problemSection}>
+              {problems &&
+                problems.map((problem, problemIndex) => {
+                  return (
+                    <div
+                      id={problemIndex + 1}
+                      key={problemIndex}
+                      className={styles["radio-section"]}
+                    >
+                      <div className={styles.text}>
+                        <p>{problemIndex + 1}.</p>
+                        <pre>{problem.description}</pre>
+                      </div>
+                      <div className={styles["radio-list"]}>
+                        {problem.choice.map((choice, index) => {
+                          return (
+                            <div key={index} className={styles["radio-item"]}>
+                              <input
+                                value={convert[index]}
+                                type="radio"
+                                name={`${problem._id}`}
+                                id={`radio${index}${problemIndex}`}
+                              />
+                              <label htmlFor={`radio${index}${problemIndex}`}>
+                                <p>{`${convert[index]}.`}</p>
+                                <pre>{choice}</pre>
+                              </label>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+            <div className={styles.end}>
+              <button className={styles["end-button"]}>End Section</button>
+            </div>
+          </>
+        ) : (
+          <div className={styles["inner-container"]}>
+            <div className={styles["error-container"]}>
+              You are not in any ongoing exam, go back to exam page
             </div>
           </div>
-          <div className={styles.problemSection}>
-            {problems &&
-              problems.map((problem, problemIndex) => {
-                return (
-                  <div className={styles["radio-section"]}>
-                    <div className={styles.text}>
-                      <p>{problemIndex + 1}.</p>
-                      <pre>{problem.description}</pre>
-                    </div>
-                    <div className={styles["radio-list"]}>
-                      {problem.choice.map((choice, index) => {
-                        return (
-                          <div className={styles["radio-item"]}>
-                            <input
-                              value={convert[index]}
-                              type="radio"
-                              name={`${problem._id}`}
-                              id={`radio${index}${problemIndex}`}
-                            />
-                            <label htmlFor={`radio${index}${problemIndex}`}>
-                              <p>{`${convert[index]}.`}</p>
-                              <pre>{choice}</pre>
-                            </label>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
-          </div>
-          <div className={styles.end}>
-            <button className={styles["end-button"]}>End Section</button>
-          </div>
-        </>
+        )
       ) : (
-        <div className={styles["error-container"]}>
-          You are not in any ongoing exam, go back to exam page
+        <div className={styles["inner-container"]}>
+          <div className={styles["loading-container"]}>Loading...</div>
         </div>
       )}
     </div>

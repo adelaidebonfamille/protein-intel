@@ -4,8 +4,14 @@
   font-family: "poppins", sans-serif;
   width: 100%;
 }
+.inner-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .error-container {
-  margin: auto;
+  margin: 0 auto;
   padding: 2rem;
   text-align: center;
   background: #fff;
@@ -15,6 +21,18 @@
   color: red;
   font-size: 1.25rem;
   border: solid 1px red;
+}
+.loading-container {
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background: #fff;
+  width: 400px;
+  display: block;
+  margin: auto;
+  color: #5e5ff5;
+  font-size: 1.25rem;
+  border: solid 1px #5e5ff5;
 }
 .title {
   z-index: 1;
