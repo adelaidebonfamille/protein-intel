@@ -95,14 +95,14 @@ const startTest = async (req, res, next) => {
 		},
 	};
 
-	let test;
+	const test = new Test({
+		nim,
+		answers: testAnswers,
+		testTime,
+		batchId,
+	});
+
 	try {
-		test = new Test({
-			nim,
-			answers: testAnswers,
-			testTime,
-			batchId,
-		});
 		await test.save();
 	} catch (error) {
 		return next(error);
@@ -151,7 +151,11 @@ const startSubTest = async (req, res, next) => {
 	);
 
 	try {
-		await test.save();
+		await Test.findOneAndUpdate(
+			{ nim },
+			{ testTime: test.testTime },
+			{ new: true }
+		);
 	} catch (error) {
 		return next(error);
 	}
@@ -190,7 +194,11 @@ const continueSubTest = async (req, res, next) => {
 		test.testTime[testGroup].isOver = true;
 
 		try {
-			await test.save();
+			await Test.findOneAndUpdate(
+				{ nim },
+				{ testTime: test.testTime },
+				{ new: true }
+			);
 		} catch (error) {
 			return next(error);
 		}
@@ -240,7 +248,11 @@ const endSubTest = async (req, res, next) => {
 	test.answers[testGroup] = answers;
 
 	try {
-		await test.save();
+		await Test.findOneAndUpdate(
+			{ nim },
+			{ testTime: test.testTime, answers: test.answers },
+			{ new: true }
+		);
 	} catch (error) {
 		return next(error);
 	}
@@ -278,7 +290,11 @@ const saveTestAnswer = async (req, res, next) => {
 	test.answers[testType] = testAnswers;
 
 	try {
-		await test.save();
+		await Test.findOneAndUpdate(
+			{ nim },
+			{ answers: test.answers },
+			{ new: true }
+		);
 	} catch (error) {
 		return next(error);
 	}
@@ -304,8 +320,11 @@ const endTestAndCalculateScore = async (req, res, next) => {
 	try {
 		test = await Test.findOne({ nim });
 		if (!test) return next(new Error("Test not found"));
-		test.isTestOver = true;
-		await test.save();
+		await Test.findOneAndUpdate(
+			{ nim },
+			{ isTestOver: true },
+			{ new: true }
+		);
 	} catch (error) {
 		return next(error);
 	}
@@ -359,12 +378,13 @@ const endTestAndCalculateScore = async (req, res, next) => {
 			3) *
 		10;
 
+	const score = new Score({
+		nim,
+		totalScore,
+		...answerGroupScore,
+	});
+
 	try {
-		const score = new Score({
-			nim,
-			totalScore,
-			...answerGroupScore,
-		});
 		await score.save();
 	} catch (error) {
 		return next(error);
