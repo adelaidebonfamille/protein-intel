@@ -21,7 +21,6 @@ const OngoingExam = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    console.log("testGroup", testGroup);
     axios
       .patch(
         `${BASE_URL}/test/subtest`,
@@ -31,8 +30,9 @@ const OngoingExam = () => {
         }
       )
       .then((res) => {
-        setTime(new Date(Date.now() + (new Date(res.data.time) - new Date())));
         if (res.data.time == null) setIsNotError(false);
+
+        setTime(new Date(Date.now() + (new Date(res.data.time) - new Date())));
 
         axios
           .get(`${BASE_URL}/test/problems/${testGroup}`, {

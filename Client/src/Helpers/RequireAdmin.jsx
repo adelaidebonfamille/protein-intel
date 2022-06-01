@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import AuthContext from "../Contexts/AuthContext";
-import PleaseLogin from "../Pages/PleaseLogin/PleaseLogin";
 
 const RequireAuth = (props) => {
   const authCtx = useContext(AuthContext);
@@ -11,9 +10,9 @@ const RequireAuth = (props) => {
   }
 
   const isAuthenticated =
-    user && user.role === "user" && user.exp * 1000 > Date.now();
+    user && user.role === "admin" && user.exp * 1000 > Date.now();
 
-  return isAuthenticated ? <Outlet /> : <PleaseLogin />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default RequireAuth;

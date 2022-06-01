@@ -92,39 +92,40 @@ const Exam = () => {
   return (
     <>
       {!isLoading ? (
-        <></>
+        <>
+          {Object.keys(test).length == 0 &&
+          Object.keys(selectedBatch).length == 0 ? (
+            <ChooseBatch
+              allActiveBatch={allActiveBatch}
+              selectBatch={selectBatch}
+            />
+          ) : (
+            <>
+              {isNotStarted ? (
+                Object.keys(selectedBatch).length == 0 ? (
+                  <StartExam
+                    startHandler={() => {
+                      setIsNotStarted(false);
+                    }}
+                  />
+                ) : (
+                  <StartExam
+                    startHandler={startTest}
+                    batch={selectedBatch}
+                    nim={authCtx.userData.nim}
+                    deleteBatch={deleteBatch}
+                  />
+                )
+              ) : (
+                <SubTestMenu test={test} />
+              )}
+            </>
+          )}
+        </>
       ) : (
         <div className={styles["inner-container"]}>
           <div className={styles["loading-container"]}>Loading...</div>
         </div>
-      )}
-      {Object.keys(test).length == 0 &&
-      Object.keys(selectedBatch).length == 0 ? (
-        <ChooseBatch
-          allActiveBatch={allActiveBatch}
-          selectBatch={selectBatch}
-        />
-      ) : (
-        <>
-          {isNotStarted ? (
-            Object.keys(selectedBatch).length == 0 ? (
-              <StartExam
-                startHandler={() => {
-                  setIsNotStarted(false);
-                }}
-              />
-            ) : (
-              <StartExam
-                startHandler={startTest}
-                batch={selectedBatch}
-                nim={authCtx.userData.nim}
-                deleteBatch={deleteBatch}
-              />
-            )
-          ) : (
-            <SubTestMenu test={test} />
-          )}
-        </>
       )}
     </>
   );
