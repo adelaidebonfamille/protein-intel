@@ -30,8 +30,7 @@ const OngoingExam = () => {
         }
       )
       .then((res) => {
-        setTime(res.data.time);
-        console.log(time);
+        setTime( new Date( Date.now() + (new Date(res.data.time) - new Date()) ) );
         axios
           .get(`${BASE_URL}/test/problems/${testGroup}`, {
             headers: {
