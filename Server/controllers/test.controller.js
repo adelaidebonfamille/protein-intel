@@ -75,8 +75,6 @@ const startTest = async (req, res, next) => {
 		structure: structureAnswersFilled,
 	};
 
-	console.log(testAnswers);
-
 	const testTime = {
 		reading: {
 			time: 60, //minutes
@@ -156,7 +154,6 @@ const startSubTest = async (req, res, next) => {
 			{ testTime: test.testTime },
 			{ new: true }
 		);
-		console.log(test.testTime[testGroup].timeLeft);
 	} catch (error) {
 		return next(error);
 	}
@@ -311,6 +308,13 @@ const findTestByNim = async (req, res, next) => {
 	try {
 		const test = await Test.findOne({ nim }, { answers: 0 });
 		if (!test) return next(new Error("Test not found"));
+
+		["reading", "listening", "structure"].map((testGroup) => {
+			if (new Date(test.testTime[testGroup].timeLeft) - new Date() < 0) {
+				test.testTime[testGroup].isOver = true;
+			}
+		})
+
 		res.json({ test, message: "Test found" });
 	} catch (error) {
 		return next(error);

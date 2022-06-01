@@ -1,5 +1,5 @@
 import styles from "./OngoingExam.module.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import axios from "axios";
@@ -129,7 +129,7 @@ const OngoingExam = () => {
               </div>
             </div>
             <div className={styles.end}>
-              <button className={styles["end-button"]}>End Section</button>
+              <Link to="/exam" className={styles["end-button"]}>End Section</Link>
             </div>
           </div>
         ) : (

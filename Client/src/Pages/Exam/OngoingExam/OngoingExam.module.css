@@ -75,7 +75,7 @@
 .title {
   z-index: 1;
   background: #5e5ff5;
-  width: 100vw;
+  width: 100%;
   text-align: center;
   position: sticky;
   top: 0;
@@ -177,7 +177,10 @@
 }
 
 .end {
+  width: 100%;
   text-align: center;
+  display: block;
+  margin-bottom: 4rem;
 }
 .end-button {
   border: none;
