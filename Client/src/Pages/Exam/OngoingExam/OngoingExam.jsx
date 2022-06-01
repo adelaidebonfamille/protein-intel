@@ -5,7 +5,7 @@ const OngoingExam = () => {
   const location = useLocation();
 
   return (
-    <div className={styles.body}>
+    <div className={styles.container}>
       {location.state.testGroup != undefined ? (
         <>
           <div className="title">
