@@ -383,6 +383,33 @@ const getAllActiveBatch = async (req, res, next) => {
 	}
 };
 
+const getTestProblems = async (req, res, next) => {
+	const { nim } = req.user;
+	const { testGroup } = req.params;
+
+	let user;
+	try {
+		user = await User.findOne({ nim });
+	} catch (error) {
+		return next(error);
+	}
+	if (!user) return next(new Error("User not found"));
+
+	if (!user.testTime[testGroup]) return next(new Error("Test not started"));
+
+	let testProblems;
+	try {
+		testProblems = await Problem.find({ type: testGroup }, { key: 0 });
+	} catch (error) {
+		return next(error);
+	}
+
+	res.json({
+		message: "All test problems delivered successfully",
+		problems: randomizeArray(testProblems),
+	});
+};
+
 module.exports = {
 	startTest: startTest,
 	saveTest: saveTestAnswer,
@@ -392,4 +419,5 @@ module.exports = {
 	continueSubTest: continueSubTest,
 	endSubTest: endSubTest,
 	getAllActiveBatch: getAllActiveBatch,
+	getTestProblems,
 };

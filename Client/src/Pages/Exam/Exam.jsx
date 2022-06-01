@@ -7,7 +7,10 @@ import ChooseBatch from "./ChooseBatch/ChooseBatch";
 
 const Exam = () => {
   const authCtx = useContext(AuthContext);
-  const baseUrl = "http://localhost:5000/api/test";
+  const baseUrl =
+    (import.meta.env.API_URL &&
+      `${import.meta.env.API_URL}/api/auth/forgot-password`) ||
+    "http://localhost:5000/api/test";
 
   const [isNotStarted, setIsNotStarted] = useState(true);
 
@@ -62,24 +65,24 @@ const Exam = () => {
       });
   };
 
+  const getInfo = async () => {
+    await axios
+      .get(baseUrl, {
+        headers: { "auth-token": localStorage.getItem("token") },
+      })
+      .then(async (res) => {
+        res.data.test != undefined && setTest(res.data.test);
+
+        if (Object.keys(test).length == 0) {
+          await getAllActiveBatch();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    const getInfo = async () => {
-      await axios
-        .get(baseUrl, {
-          headers: { "auth-token": localStorage.getItem("token") },
-        })
-        .then(async (res) => {
-          res.data.test != undefined && setTest(res.data.test);
-
-          if (Object.keys(test).length == 0) {
-            await getAllActiveBatch();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-
     getInfo();
   }, []);
 

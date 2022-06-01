@@ -17,4 +17,6 @@ router.patch("/subtest", testController.continueSubTest);
 
 router.post("/subtest/end", testController.endSubTest);
 
+router.get("/problems/:testGroup", testController.getTestProblems);
+
 module.exports = router;
