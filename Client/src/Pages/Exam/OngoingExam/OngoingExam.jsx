@@ -60,7 +60,8 @@ const OngoingExam = () => {
                               id={`radio${index}${problemIndex}`}
                             />
                             <label htmlFor={`radio${index}${problemIndex}`}>
-                              <pre>{`${convert[index]}. ${choice}`}</pre>
+                              <p>{`${convert[index]}.`}</p>
+                              <pre>{choice}</pre>
                             </label>
                           </div>
                         );
