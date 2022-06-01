@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "./ResetPassword.module.css";
 import { useLocation } from "react-router-dom";
 
 import axios from "axios";
@@ -35,18 +36,20 @@ const ResetPassword = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmitHandler}>
-        <div>
+    <div className={styles.container}>
+      <form onSubmit={onSubmitHandler} className={styles.card}>
+        <div className={styles.input}>
           <label htmlFor="password">Type in new Password</label>
           <input type="password" id="password" name="password" />
         </div>
-        <div>
+        <div className={styles.input}>
           <label htmlFor="confirmPassword">Type in new Confirm Password</label>
           <input type="password" id="confirmPassword" name="confirmPassword" />
         </div>
-        <button type="submit">Submit</button>
-        {isMessage && <p>{isMessage}</p>}
+        <button className={styles.button} type="submit">
+          Submit
+        </button>
+        <div className={styles.message}>{isMessage && <p>{isMessage}</p>}</div>
       </form>
     </div>
   );

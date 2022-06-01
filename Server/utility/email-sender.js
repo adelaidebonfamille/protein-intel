@@ -22,7 +22,7 @@ const getAccessToken = () =>
         oauth2Client.getAccessToken((err, token) => {
             if (err) {
                 console.log(err);
-                reject("Failed to create access token");
+                return reject("Failed to create access token");
             }
             resolve(token);
         });
