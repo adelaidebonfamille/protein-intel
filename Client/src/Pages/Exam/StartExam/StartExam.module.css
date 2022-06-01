@@ -9,6 +9,7 @@
 .container {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: rgb(227, 227, 227);
@@ -21,6 +22,20 @@
   border-radius: 5px;
   width: 500px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.change-batch p {
+  display: block;
+  margin-right: 1rem;
+}
+.change-batch a {
+  display: block;
+}
+.container .change-batch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .content .title {
@@ -48,7 +63,20 @@
   font-size: 16px;
 }
 
-.content a {
+.change-batch button {
+  display: inline-block;
+  background-color: transparent;
+  color: #5e5ff5;
+  border: none;
+}
+
+.change-batch button:hover {
+  color: #2c2cf5;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.content button {
   display: inline-block;
   width: 160px;
   padding: 5px;
@@ -58,7 +86,7 @@
   color: white;
 }
 
-.content a:hover {
+.content button:hover {
   background-color: white;
   color: #5e5ff5;
   transition: 1s ease;

@@ -19,9 +19,6 @@ const startTest = async(req, res, next) => {
     }
     if (!user) return next(new Error("User not found"));
 
-    const { error } = validation.startTestValidation(user);
-    if (error) return next(error);
-
     let existingTest;
     try {
         existingTest = await Test.findOne({ nim });
@@ -58,15 +55,15 @@ const startTest = async(req, res, next) => {
     });
 
     //fill in blank answers with empty strings
-    const readingAnswersFilled = readingAnswers.map((problem) => {
-        return { problemId: problem._id, answer: "" };
-    });
-    const listeningAnswersFilled = listeningAnswers.map((problem) => {
-        return { problemId: problem._id, answer: "" };
-    });
-    const structureAnswersFilled = structureAnswers.map((problem) => {
-        return { problemId: problem._id, answer: "" };
-    });
+    const readingAnswersFilled = readingAnswers.map((problem) => ( 
+        { problemId: problem._id, answer: "" }
+     ));
+    const listeningAnswersFilled = listeningAnswers.map((problem) => ( 
+        { problemId: problem._id, answer: "" }
+     ));
+    const structureAnswersFilled = structureAnswers.map((problem) => ( 
+        { problemId: problem._id, answer: "" }
+     ));
 
     const testAnswers = {
         reading: readingAnswersFilled,
@@ -74,25 +71,25 @@ const startTest = async(req, res, next) => {
         structure: structureAnswersFilled,
     };
 
-    const testTime = [{
-            testGroup: "reading",
+    console.log(testAnswers);
+
+    const testTime = { 
+        reading: {
             time: 60, //minutes
             timeLeft: null,
             isOver: false,
         },
-        {
-            testGroup: "listening",
+        listening: {
             time: 60, //minutes
             timeLeft: null,
             isOver: false,
         },
-        {
-            testGroup: "structure",
+        structure: {
             time: 45, //minutes
             timeLeft: null,
             isOver: false,
         },
-    ];
+     };
 
     let test;
     try {
@@ -107,7 +104,12 @@ const startTest = async(req, res, next) => {
         return next(error);
     }
 
-    res.json({ test, message: "Test started" });
+    res.json({ test: {
+        _id: test._id,
+        nim,
+        testTime,
+        batchId
+    }, message: "Test started" });
 };
 
 const startSubTest = async(req, res, next) => {
@@ -275,7 +277,7 @@ const saveTestAnswer = async(req, res, next) => {
 const findTestByNim = async(req, res, next) => {
     const { nim } = req.user;
     try {
-        const test = await Test.findOne({ nim });
+        const test = await Test.findOne({ nim },{answers: 0});
         if (!test) return next(new Error("Test not found"));
         res.json({ test, message: "Test found" });
     } catch (error) {

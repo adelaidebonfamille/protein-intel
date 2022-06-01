@@ -80,4 +80,5 @@ module.exports = {
     updateUserValidation,
     addBatchValidation,
     passwordChangeValidation,
+    startTestValidation,
 };

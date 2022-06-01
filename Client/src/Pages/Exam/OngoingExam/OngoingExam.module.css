@@ -1,99 +1,128 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap");
-
 * {
-  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  outline: none;
-  border: none;
 }
-
-.container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  padding-bottom: 60px;
-  background: #eee;
+body {
+  font-family: "poppins", sans-serif;
+  width: 100%;
 }
-.container .small-container {
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  background: #fff;
+.error-container {
+  margin: auto;
+  padding: 2rem;
   text-align: center;
-  width: 420px;
+  background: #fff;
+  width: 400px;
+  display: block;
+  margin: auto;
+  color: red;
+  font-size: 1.25rem;
+  border: solid 1px red;
 }
-
-.container .small-container .small-container2 {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-top: 50px;
+.title {
+  position: fixed;
+  z-index: 10;
+  background: #5e5ff5;
+  width: 100vw;
+  text-align: center;
 }
-
-.container .small-container .p p {
-  display: flex;
-  justify-content: left;
-  float: left;
-  margin-bottom: 15px;
-}
-
-.container .small-container .button {
-  text-align: right;
-}
-.container .small-container .button button {
-  margin-bottom: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease 0s;
-}
-.container .small-container .button button:hover {
-  background-color: black;
-  color: #fff;
-}
-.container .small-container .button .button1 {
-  background-color: rgb(0, 175, 0);
-  color: #fff;
-  padding: 5px 30px;
-}
-.container .small-container .button .button2 {
-  background-color: rgb(255, 230, 0);
-  color: #fff;
-  padding: 5px 8px;
-}
-.container .small-container .button .button3 {
-  background-color: red;
-  color: #fff;
-  padding: 5px 20px;
-}
-.container .small-container .end {
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-}
-.container .small-container .end .small-end {
-  text-align: left;
-}
-.small-end button {
-  padding: 5px 120px;
-  margin-bottom: 5px;
-  font-size: 15px;
-  border-radius: 5px;
-  background-color: #5e5ff5;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease 0s;
-}
-.small-end button:hover {
-  background-color: black;
+.title-text {
   color: white;
 }
-.small-end input {
-  cursor: pointer;
+.radio-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
-.small-end label {
-  font-size: 14.5px;
+.text {
+  margin: 50px 100px;
+}
+.radio-list {
+  color: white;
+}
+.radio-item [type="radio"] {
+  display: none;
+}
+
+.radio-item + .radio-item {
+  margin-top: 10px;
+}
+.radio-item label {
+  display: block;
+  padding: 20px 60px;
+  background: #5e5ff5;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  min-width: 400px;
+  white-space: nowrap;
+  position: relative;
+}
+.radio-item label:after,
+.radio-item label:before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.radio-item label:after {
+  height: 20px;
+  width: 20px;
+  border: 2px solid white;
+  left: 20px;
+  top: calc(50% - 12px);
+}
+.radio-item label:before {
+  background: white;
+  height: 10px;
+  width: 10px;
+  left: 27px;
+  top: calc(50% - 5px);
+  transform: scale(3);
+  transition: 0.4s ease 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+.radio-item [type="radio"]:checked ~ label {
+  border-color: white;
+  background: #2d2df4;
+}
+
+.radio-item [type="radio"]:checked ~ label:before {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+.radio-item:hover {
+  transform: scale(1.02);
+  transition: scale 0.2s ease-in-out;
+}
+.radio-item:hover label {
+  background: #4646c0;
+  transition: background 0.2s ease-in-out;
+}
+
+.end {
+  text-align: center;
+}
+.end-button {
+  border: none;
+  background: red;
+  color: white;
+  font-size: 25px;
+  padding: 10px 50px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+.end-button:hover {
+  background-color: white;
+  color: red;
+  border: 2px solid red;
+  transition: 0.2s ease-in-out;
 }

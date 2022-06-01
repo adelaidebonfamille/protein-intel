@@ -1,12 +1,13 @@
-import { useEffect, useState, useRef, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import AuthContext from "../../Contexts/AuthContext";
-import styles from "./Exam.module.css";
-import OngoingExam from "./OngoingExam/OngoingExam";
+import SubTestMenu from "./SubTestMenu/SubTestMenu";
 import StartExam from "./StartExam/StartExam";
+import ChooseBatch from "./ChooseBatch/ChooseBatch";
 
 const Exam = () => {
   const authCtx = useContext(AuthContext);
+  const baseUrl = "http://localhost:5000/api/test";
 
   const [isNotStarted, setIsNotStarted] = useState(true);
 
@@ -15,7 +16,7 @@ const Exam = () => {
   const [allActiveBatch, setAllActiveBatch] = useState([]);
   const getAllActiveBatch = async () => {
     await axios
-      .get("http://localhost:5000/api/test/batch", {
+      .get(`${baseUrl}/batch`, {
         headers: { "auth-token": localStorage.getItem("token") },
       })
       .then((res) => {
@@ -26,15 +27,45 @@ const Exam = () => {
       });
   };
 
-  const selectedBatch = useRef({});
-  const selectBatch = async (e) => {
-    selectedBatch.current = e.target.dataset.id;
+  const [selectedBatch, setSelectedBatch] = useState({});
+  const selectBatch = (e) => {
+    setSelectedBatch({
+      batchId: e.target.dataset.id,
+      batchName: e.target.dataset.batchName,
+    });
+  };
+  const deleteBatch = () => {
+    setSelectedBatch({});
+  };
+
+  const startTest = async (e) => {
+    await axios
+      .post(
+        baseUrl,
+        {
+          nim: e.target.dataset.nim,
+          batchId: e.target.dataset.batchId,
+        },
+        {
+          headers: { "auth-token": localStorage.getItem("token") },
+        }
+      )
+      .then((res) => {
+        setTest(res.data.test);
+        console.log(res.data.message);
+      })
+      .then(() => {
+        setIsNotStarted(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
     const getInfo = async () => {
       await axios
-        .get("http://localhost:5000/api/test", {
+        .get(baseUrl, {
           headers: { "auth-token": localStorage.getItem("token") },
         })
         .then(async (res) => {
@@ -43,6 +74,9 @@ const Exam = () => {
           if (Object.keys(test).length == 0) {
             await getAllActiveBatch();
           }
+        })
+        .catch((error) => {
+          console.log(error);
         });
     };
 
@@ -51,32 +85,31 @@ const Exam = () => {
 
   return (
     <>
-      {Object.keys(test).length == 0 ? (
-        <div className={styles.container}>
-          <div>
-            <h3>Select Active Batch</h3>
-          </div>
-          <div className={styles.batches}>
-            {allActiveBatch.map((batch) => (
-              <div className={styles.batch} key={batch["_id"]}>
-                {batch.batch}
-                <button data-id={batch["_id"]} onClick={selectBatch}>
-                  Select Batch
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
+      {Object.keys(test).length == 0 &&
+      Object.keys(selectedBatch).length == 0 ? (
+        <ChooseBatch
+          allActiveBatch={allActiveBatch}
+          selectBatch={selectBatch}
+        />
       ) : (
         <>
           {isNotStarted ? (
-            <StartExam
-              startHandler={() => {
-                setIsNotStarted(false);
-              }}
-            />
+            Object.keys(selectedBatch).length == 0 ? (
+              <StartExam
+                startHandler={() => {
+                  setIsNotStarted(false);
+                }}
+              />
+            ) : (
+              <StartExam
+                startHandler={startTest}
+                batch={selectedBatch}
+                nim={authCtx.userData.nim}
+                deleteBatch={deleteBatch}
+              />
+            )
           ) : (
-            <OngoingExam />
+            <SubTestMenu test={test} />
           )}
         </>
       )}

@@ -75,6 +75,10 @@
   margin-top: 0;
 }
 
+.problem input[type="button"] {
+  margin-right: 1rem;
+}
+
 .image-file {
   min-width: 400px;
   max-width: 800px;

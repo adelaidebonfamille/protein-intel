@@ -18,10 +18,10 @@ const Login = () => {
       } else {
         setIsMessage(res.message);
         setIsError(null);
-        //redirect to login page after 5 second
+        // redirect to login page after 3 second
         setTimeout(() => {
           navigate("/");
-        }, 5000);
+        }, 3000);
       }
     });
   };
