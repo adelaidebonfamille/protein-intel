@@ -209,7 +209,7 @@ const continueSubTest = async (req, res, next) => {
 
 	res.json({
 		message: "Sub test continued",
-		subTest: test.answers[testGroup],
+		answers: test.answers[testGroup],
 		time: test.testTime[testGroup].timeLeft,
 	});
 };

@@ -11,6 +11,7 @@ const OngoingExam = () => {
   const testGroup = query.get("testGroup");
 
   const [problems, setProblems] = useState(null);
+  const [answers, setAnswers] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isNotError, setIsNotError] = useState(true);
   const [time, setTime] = useState(null);
@@ -31,6 +32,7 @@ const OngoingExam = () => {
       )
       .then((res) => {
         if (res.data.time == null) setIsNotError(false);
+        setAnswers(res.data.answers);
 
         setTime(new Date(Date.now() + (new Date(res.data.time) - new Date())));
 
@@ -47,25 +49,31 @@ const OngoingExam = () => {
       });
   }, []);
 
-  const changeAnswer = (e) => {
-    console.log(e.target.name);
-    axios
-      .patch(
-        `${BASE_URL}/test`,
-        {
-          testType: testGroup,
-          testAnswers: {
-            problemId: e.target.name,
-            answer: e.target.value,
-          },
+  const changeAnswer = async (e) => {
+    setAnswers((prev) => {
+      const prevAnswer = prev.filter(
+        (answer) => answer.problemId !== e.target.name
+      );
+
+      return [
+        ...prevAnswer,
+        { problemId: e.target.name, answer: e.target.value },
+      ];
+    });
+
+    await axios.patch(
+      `${BASE_URL}/test`,
+      {
+        testType: testGroup,
+        testAnswers: {
+          problemId: e.target.name,
+          answer: e.target.value,
         },
-        {
-          headers: { "auth-token": localStorage.getItem("token") },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-      });
+      },
+      {
+        headers: { "auth-token": localStorage.getItem("token") },
+      }
+    );
   };
 
   return (
@@ -97,7 +105,7 @@ const OngoingExam = () => {
                   </div>
                 </div>
               </div>
-              <form onChange={changeAnswer} className={styles.problemSection}>
+              <div className={styles.problemSection}>
                 {problems &&
                   problems.map((problem, problemIndex) => {
                     return (
@@ -126,7 +134,11 @@ const OngoingExam = () => {
                         )}
                         <div className={styles.desc}>
                           <p>{problemIndex + 1}.</p>
-                          <pre>{problem.description}</pre>
+                          <pre>
+                            {problem.description}
+                            <br />
+                            {problem._id}
+                          </pre>
                         </div>
                         <div className={styles["radio-list"]}>
                           {problem.choice.map((choice, index) => {
@@ -137,6 +149,15 @@ const OngoingExam = () => {
                                   type="radio"
                                   name={`${problem._id}`}
                                   id={`radio${index}${problemIndex}`}
+                                  onChange={changeAnswer}
+                                  defaultChecked={
+                                    answers &&
+                                    answers.find(
+                                      (answer) =>
+                                        answer.problemId === problem._id &&
+                                        answer.answer === convert[index]
+                                    )
+                                  }
                                 />
                                 <label htmlFor={`radio${index}${problemIndex}`}>
                                   <p>{`${convert[index]}.`}</p>
@@ -149,7 +170,7 @@ const OngoingExam = () => {
                       </div>
                     );
                   })}
-              </form>
+              </div>
             </div>
             <div className={styles.end}>
               <Link to="/exam" className={styles["end-button"]}>
