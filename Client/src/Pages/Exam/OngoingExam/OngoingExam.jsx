@@ -20,8 +20,17 @@ const OngoingExam = () => {
   const BASE_URL = import.meta.env.API_URL || "http://localhost:5000/api";
 
   const changeAnswer = (answers, action) => {//TODO
+    switch(action.type) {
+      case "add":
+        return [...answers, ...action.payload.answers];
+      case "change":
+        answers[action.payload.problemNumber].answer = action.payload.answer;
+        //axios bla bla
+        //set problems bla bla
+        return [...answers];
+    }
   }
-  const [answers, dispatch] = useReducer()
+  const [answers, dispatch] = useReducer(changeAnswer, [])
 
   useEffect(() => {
     setIsLoading(true);
