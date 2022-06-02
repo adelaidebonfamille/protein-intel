@@ -310,7 +310,7 @@ const findTestByNim = async (req, res, next) => {
 		if (!test) return next(new Error("Test not found"));
 
 		["reading", "listening", "structure"].map((testGroup) => {
-			if (new Date(test.testTime[testGroup].timeLeft) - new Date() < 0) {
+			if (new Date(test.testTime[testGroup].timeLeft) < Date.now()) {
 				test.testTime[testGroup].isOver = true;
 			}
 		})

@@ -1,9 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useTimer } from "react-timer-hook";
 
 import styles from "./Timer.module.css";
 
 const Timer = ({ time }) => {
+  const navigate = useNavigate();
+
   const {
     seconds,
     minutes,
@@ -16,7 +19,7 @@ const Timer = ({ time }) => {
     restart,
   } = useTimer({
     expiryTimestamp: time,
-    onExpire: () => console.warn("onExpire called"),
+    onExpire: () => navigate("/exam"),
     autoStart: true,
   });
 

@@ -1,6 +1,6 @@
 import styles from "./OngoingExam.module.css";
 import { useLocation, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 
 import axios from "axios";
 import Timer from "../../../Components/Timer/Timer";
@@ -18,6 +18,10 @@ const OngoingExam = () => {
   const convert = ["A", "B", "C", "D", "E"];
 
   const BASE_URL = import.meta.env.API_URL || "http://localhost:5000/api";
+
+  const changeAnswer = (answers, action) => {//TODO
+  }
+  const [answers, dispatch] = useReducer()
 
   useEffect(() => {
     setIsLoading(true);
@@ -129,7 +133,9 @@ const OngoingExam = () => {
               </div>
             </div>
             <div className={styles.end}>
-              <Link to="/exam" className={styles["end-button"]}>End Section</Link>
+              <Link to="/exam" className={styles["end-button"]}>
+                End Section
+              </Link>
             </div>
           </div>
         ) : (
