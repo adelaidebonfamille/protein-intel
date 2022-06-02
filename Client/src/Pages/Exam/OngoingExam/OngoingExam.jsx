@@ -1,6 +1,6 @@
 import styles from "./OngoingExam.module.css";
 import { useLocation, Link } from "react-router-dom";
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useState } from "react";
 
 import axios from "axios";
 import Timer from "../../../Components/Timer/Timer";
@@ -18,10 +18,6 @@ const OngoingExam = () => {
   const convert = ["A", "B", "C", "D", "E"];
 
   const BASE_URL = import.meta.env.API_URL || "http://localhost:5000/api";
-
-  const changeAnswer = (answers, action) => {//TODO
-  }
-  const [answers, dispatch] = useReducer()
 
   useEffect(() => {
     setIsLoading(true);
@@ -51,6 +47,27 @@ const OngoingExam = () => {
       });
   }, []);
 
+  const changeAnswer = (e) => {
+    console.log(e.target.name);
+    axios
+      .patch(
+        `${BASE_URL}/test`,
+        {
+          testType: testGroup,
+          testAnswers: {
+            problemId: e.target.name,
+            answer: e.target.value,
+          },
+        },
+        {
+          headers: { "auth-token": localStorage.getItem("token") },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
   return (
     <div className={styles.container}>
       {!isLoading ? (
@@ -62,23 +79,25 @@ const OngoingExam = () => {
               </div>
             </div>
             <div>
-              <div className={styles.menu}>
-                <Timer time={time} />
-                <div className={styles.problemGrid}>
-                  {problems.map((problem, index) => {
-                    return (
-                      <a
-                        href={`#${index + 1}`}
-                        className={styles.gridItem}
-                        key={index}
-                      >
-                        <p>{index + 1}</p>
-                      </a>
-                    );
-                  })}
+              <div className={styles["menu-container"]}>
+                <div className={styles.menu}>
+                  <Timer time={time} />
+                  <div className={styles.problemGrid}>
+                    {problems.map((problem, index) => {
+                      return (
+                        <a
+                          href={`#${index + 1}`}
+                          className={styles.gridItem}
+                          key={index}
+                        >
+                          <p>{index + 1}</p>
+                        </a>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-              <div className={styles.problemSection}>
+              <form onChange={changeAnswer} className={styles.problemSection}>
                 {problems &&
                   problems.map((problem, problemIndex) => {
                     return (
@@ -130,7 +149,7 @@ const OngoingExam = () => {
                       </div>
                     );
                   })}
-              </div>
+              </form>
             </div>
             <div className={styles.end}>
               <Link to="/exam" className={styles["end-button"]}>

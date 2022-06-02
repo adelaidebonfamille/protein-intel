@@ -288,7 +288,15 @@ const saveTestAnswer = async (req, res, next) => {
 	if (test.testTime[testType].isOver)
 		return next(new Error("Sub test is over"));
 
-	test.answers[testType] = testAnswers;
+	const answerIndex = test.answers[testType].filter((answer) => {
+		return answer.problemId !== testAnswers.problemId;
+	});
+	const insertedAnswer = {
+		problemId: testAnswers.problemId,
+		answer: testAnswers.answer,
+	};
+
+	test.answers[testType] = [...answerIndex, insertedAnswer];
 
 	try {
 		await Test.findOneAndUpdate(
@@ -313,7 +321,7 @@ const findTestByNim = async (req, res, next) => {
 			if (new Date(test.testTime[testGroup].timeLeft) < Date.now()) {
 				test.testTime[testGroup].isOver = true;
 			}
-		})
+		});
 
 		res.json({ test, message: "Test found" });
 	} catch (error) {
