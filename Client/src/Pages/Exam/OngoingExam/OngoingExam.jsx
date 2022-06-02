@@ -21,47 +21,54 @@ const OngoingExam = () => {
   const BASE_URL = import.meta.env.API_URL || "http://localhost:5000/api";
 
   useEffect(() => {
-    setIsLoading(true);
-    axios
-      .patch(
-        `${BASE_URL}/test/subtest`,
-        { testGroup },
-        {
-          headers: { "auth-token": localStorage.getItem("token") },
-        }
-      )
-      .then((res) => {
-        if (res.data.time == null) setIsNotError(false);
-        setAnswers(res.data.answers);
+    const getData = async () => {
+      setIsLoading(true);
+      let subTestData;
+      try {
+        subTestData = await axios.patch(
+          `${BASE_URL}/test/subtest`,
+          { testGroup },
+          {
+            headers: { "auth-token": localStorage.getItem("token") },
+          }
+        );
+      } catch (error) {
+        return setIsNotError(false);
+      }
+      if (subTestData.data.error) setIsNotError(false);
 
-        setTime(new Date(Date.now() + (new Date(res.data.time) - new Date())));
-
-        axios
-          .get(`${BASE_URL}/test/problems/${testGroup}`, {
+      let problemData;
+      try {
+        problemData = await axios.get(
+          `${BASE_URL}/test/problems/${testGroup}`,
+          {
             headers: {
               "auth-token": localStorage.getItem("token"),
             },
-          })
-          .then((res) => {
-            setProblems(res.data.problems);
-            setIsLoading(false);
-          });
-      });
+          }
+        );
+      } catch (error) {
+        return setIsNotError(false);
+      }
+      if (problemData.data.error) setIsNotError(false);
+
+      setAnswers(subTestData.data.answers);
+      setTime(
+        new Date(Date.now() + (new Date(subTestData.data.time) - new Date()))
+      );
+      setProblems(problemData.data.problems);
+
+      setInterval(() => {
+        setIsLoading(false);
+      }, 1000);
+    };
+
+    getData();
   }, []);
 
   const changeAnswer = async (e) => {
-    setAnswers((prev) => {
-      const prevAnswer = prev.filter(
-        (answer) => answer.problemId !== e.target.name
-      );
-
-      return [
-        ...prevAnswer,
-        { problemId: e.target.name, answer: e.target.value },
-      ];
-    });
-
-    await axios.patch(
+    setIsLoading(true);
+    const response = await axios.patch(
       `${BASE_URL}/test`,
       {
         testType: testGroup,
@@ -74,6 +81,21 @@ const OngoingExam = () => {
         headers: { "auth-token": localStorage.getItem("token") },
       }
     );
+    if (response.data.error) {
+      return setIsNotError(false);
+    }
+    setIsLoading(false);
+
+    setAnswers((prev) => {
+      const prevAnswer = prev.filter(
+        (answer) => answer.problemId !== e.target.name
+      );
+
+      return [
+        ...prevAnswer,
+        { problemId: e.target.name, answer: e.target.value },
+      ];
+    });
   };
 
   return (
