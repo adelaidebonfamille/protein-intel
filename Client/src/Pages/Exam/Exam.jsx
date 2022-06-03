@@ -5,6 +5,7 @@ import AuthContext from "../../Contexts/AuthContext";
 import SubTestMenu from "./SubTestMenu/SubTestMenu";
 import StartExam from "./StartExam/StartExam";
 import ChooseBatch from "./ChooseBatch/ChooseBatch";
+import SeeScore from "./SeeScore/SeeScore";
 
 const Exam = () => {
   const authCtx = useContext(AuthContext);
@@ -90,7 +91,7 @@ const Exam = () => {
   }, []);
 
   return (
-    <>
+    <div>
       {!isLoading ? (
         <>
           {Object.keys(test).length == 0 &&
@@ -103,11 +104,19 @@ const Exam = () => {
             <>
               {isNotStarted ? (
                 Object.keys(selectedBatch).length == 0 ? (
+                  <>
+                    {test.isTestOver ? (
+                      <SeeScore />
+                    ) : (
+
                   <StartExam
                     startHandler={() => {
                       setIsNotStarted(false);
                     }}
                   />
+                    )} 
+                  </>
+                  
                 ) : (
                   <StartExam
                     startHandler={startTest}
@@ -127,7 +136,7 @@ const Exam = () => {
           <div className={styles["loading-container"]}>Loading...</div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

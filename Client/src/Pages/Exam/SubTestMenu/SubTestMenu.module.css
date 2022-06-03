@@ -77,6 +77,10 @@
   color: #fff;
   padding: 5px 19px;
 }
+.container .small-container .button3:hover {
+  cursor: not-allowed;
+  background-color: red;
+}
 .container .small-container .end {
   display: flex;
   justify-content: center;
@@ -99,7 +103,4 @@
 }
 .end input {
   cursor: pointer;
-}
-.end p {
-  color: grey;
 }

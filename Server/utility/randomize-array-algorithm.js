@@ -1,4 +1,4 @@
-module.exports = (array) => {
+module.exports = (array, maxLength) => {
     let currentIndex = array.length,
         randomIndex;
 
@@ -13,6 +13,10 @@ module.exports = (array) => {
             array[randomIndex],
             array[currentIndex],
         ];
+    }
+
+    if (array.length > maxLength) {
+        array = array.slice(maxLength);
     }
 
     return array;

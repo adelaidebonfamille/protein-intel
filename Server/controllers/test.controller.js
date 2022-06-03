@@ -4,9 +4,8 @@ const Score = require("../models/score.model");
 const Batch = require("../models/batch.model");
 const User = require("../models/user.model");
 
-const randomizeArray = require("../utility/randomize-array-algorithm");
-
 const toeflConversionTable = require("../utility/toefl-conversion-table");
+const randomizeArrayAlgorithm = require("../utility/randomize-array-algorithm");
 
 const startTest = async (req, res, next) => {
 	const { nim } = req.user;
@@ -70,9 +69,9 @@ const startTest = async (req, res, next) => {
 	}));
 
 	const testAnswers = {
-		reading: readingAnswersFilled,
-		listening: listeningAnswersFilled,
-		structure: structureAnswersFilled,
+		reading: randomizeArrayAlgorithm(readingAnswersFilled, 50),
+		listening: randomizeArrayAlgorithm(listeningAnswersFilled, 50),
+		structure: randomizeArrayAlgorithm(structureAnswersFilled, 40),
 	};
 
 	const testTime = {
@@ -209,7 +208,7 @@ const continueSubTest = async (req, res, next) => {
 
 	res.json({
 		message: "Sub test continued",
-		subTest: test.answers[testGroup],
+		answers: test.answers[testGroup],
 		time: test.testTime[testGroup].timeLeft,
 	});
 };
@@ -242,8 +241,7 @@ const endSubTest = async (req, res, next) => {
 	}
 
 	//end sub test
-	test.testTime[testGroup].timeLeft = null;
-	test.testTime[testGroup].time = null;
+	test.testTime[testGroup].isOver = true;
 	test.answers[testGroup] = answers;
 
 	try {
@@ -288,7 +286,21 @@ const saveTestAnswer = async (req, res, next) => {
 	if (test.testTime[testType].isOver)
 		return next(new Error("Sub test is over"));
 
-	test.answers[testType] = testAnswers;
+	let answerIndex = -1;
+	 for (let i = 0; i < test.answers[testType].length; i++) {
+		 if (test.answers[testType][i].problemId.toString() === testAnswers.problemId) {
+			 answerIndex = i;
+			 break;
+		 }
+	 }
+	 if (answerIndex === -1) return next(new Error("Problem not found"));
+
+	const insertedAnswer = {
+		problemId: test.answers[testType][answerIndex].problemId,
+		answer: testAnswers.answer,
+	};
+
+	test.answers[testType][answerIndex] = insertedAnswer;
 
 	try {
 		await Test.findOneAndUpdate(
@@ -306,14 +318,35 @@ const saveTestAnswer = async (req, res, next) => {
 const findTestByNim = async (req, res, next) => {
 	const { nim } = req.user;
 	try {
-		const test = await Test.findOne({ nim }, { answers: 0 });
+		let test
+		test = await Test.findOne({ nim }, { answers: 0 })
 		if (!test) return next(new Error("Test not found"));
 
-		["reading", "listening", "structure"].map((testGroup) => {
-			if (new Date(test.testTime[testGroup].timeLeft) < Date.now()) {
+		const testGroups = ["reading", "listening", "structure"];
+
+		testGroups.map((testGroup) => {
+			if (!test.testTime[testGroup].isOver && test.testTime[testGroup].timeLeft && (new Date(test.testTime[testGroup].timeLeft) < Date.now())) {
 				test.testTime[testGroup].isOver = true;
 			}
-		})
+		});
+
+		if (testGroups.every((testGroup) => test.testTime[testGroup].isOver)) {
+			test.isTestOver = true;
+		}
+
+		try {
+			test = await Test.findOneAndUpdate(
+				{nim},
+				{
+					testTime: test.testTime, 
+					isTestOver: test.isTestOver
+				},
+				{new: true}
+			);
+		} catch (error) {
+			return next(error);
+		}
+			
 
 		res.json({ test, message: "Test found" });
 	} catch (error) {
@@ -350,9 +383,10 @@ const endTestAndCalculateScore = async (req, res, next) => {
 		listening: 0,
 		structure: 0,
 	};
-	for (const answerGroup in test.answers) {
-		answerGroup.forEach((answerData) => {
-			const answer = answerData.answer;
+
+	for (const answerGroup of Object.keys(test.answers)) {
+		test.answers[answerGroup].forEach((answerData) => {
+			const userAnswer = answerData.answer;
 			const problemId = answerData.problemId;
 			const problem = Problems.find((problem) => {
 				return problem._id.toString() === problemId.toString();
@@ -360,9 +394,7 @@ const endTestAndCalculateScore = async (req, res, next) => {
 			if (!problem) return next(new Error("Problem not found"));
 			//
 			const correctAnswer = problem.key;
-			const userAnswer = answer;
-			const isCorrect = correctAnswer === userAnswer;
-			if (isCorrect) {
+			if (correctAnswer === userAnswer) {
 				userScore[answerGroup] += 1;
 			}
 		});
@@ -377,19 +409,19 @@ const endTestAndCalculateScore = async (req, res, next) => {
 	};
 	for (const answerGroup in userScore) {
 		answerGroupScore[answerGroup] =
-			toeflConversionTable[answerGroup][userScore[answerGroup]];
+			toeflConversionTable[userScore[answerGroup]][answerGroup];
 	}
 	totalScore =
-		((answerGroupScore.reading +
+		Math.round((answerGroupScore.reading +
 			answerGroupScore.listening +
-			answerGroupScore.structure) /
-			3) *
-		10;
+			answerGroupScore.structure) * 10 / 3)
+
+	if (totalScore < 310) totalScore = 310;
 
 	const score = new Score({
 		nim,
 		totalScore,
-		...answerGroupScore,
+		...userScore,
 	});
 
 	try {
@@ -397,6 +429,8 @@ const endTestAndCalculateScore = async (req, res, next) => {
 	} catch (error) {
 		return next(error);
 	}
+
+	res.json({message: "successfully ended test and calculated score"})
 };
 
 const getAllActiveBatch = async (req, res, next) => {
@@ -428,14 +462,17 @@ const getTestProblems = async (req, res, next) => {
 
 	let testProblems;
 	try {
-		testProblems = await Problem.find({ type: testGroup }, { key: 0 });
+		testProblems = await Promise.all(test.answers[testGroup].map(async (answer) => {
+			const problem = await Problem.findOne({ _id: answer.problemId }, { key: 0 });
+			return problem; 
+		}));
 	} catch (error) {
 		return next(error);
 	}
 
 	res.json({
 		message: "All test problems delivered successfully",
-		problems: randomizeArray(testProblems),
+		problems: testProblems,
 	});
 };
 

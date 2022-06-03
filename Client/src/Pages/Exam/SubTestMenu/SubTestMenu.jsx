@@ -108,11 +108,6 @@ const OngoingExam = (props) => {
             </div>
           ))}
         </div>
-        <div className={styles.end}>
-          {subTests.every(
-            (subtest) => props.test.testTime[subtest.toLowerCase()].isOver
-          ) && <p>Congrats! you've finished all the test</p>}
-        </div>
       </div>
     </div>
   );

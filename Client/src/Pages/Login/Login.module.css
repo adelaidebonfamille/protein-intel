@@ -172,6 +172,6 @@
   transition: all 0.3s ease;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 16px;
   text-align: center;
 }

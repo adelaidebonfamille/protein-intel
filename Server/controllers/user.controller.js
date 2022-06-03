@@ -44,6 +44,8 @@ const getUserScore = async (req, res, next) => {
 	const nim = req.user.nim;
 	try {
 		const userScore = await Score.findOne({ nim });
+		if (!userScore) return next(new Error("User score not found"));
+
 		res.json({
 			message: "User score delivered successfully",
 			userScore: userScore,

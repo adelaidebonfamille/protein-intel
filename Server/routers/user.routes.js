@@ -11,6 +11,6 @@ router.patch(
 	userController.updateUserData
 );
 
-router.get("/scores", userController.getUserScore);
+router.get("/score", userController.getUserScore);
 
 module.exports = router;
