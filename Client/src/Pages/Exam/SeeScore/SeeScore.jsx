@@ -79,7 +79,12 @@ export default function SeeScore() {
               score={score.reading + score.listening + score.structure}
               maxScore={50 + 40 + 50}
             />
-            <p style={{color: getColorFromScore()}}className={styles["total-score-number"]}>{score?.totalScore}</p>
+            <p
+              style={{ color: getColorFromScore() }}
+              className={styles["total-score-number"]}
+            >
+              {score?.totalScore}
+            </p>
           </div>
           <div className={styles["subtest-score-container"]}>
             <div className={styles["subtest-score"]}>
