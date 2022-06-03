@@ -12,7 +12,7 @@ import UpdateTextForm from "./UpdateForm/UpdateTextForm";
 import { useEffect } from "react";
 
 const Problems = () => {
-  const baseUrl = "http://localhost:5000/api/admin/problems";
+  const baseUrl = (import.meta.env.API_URL && `${import.meta.env.API_URL}/api/admin/problems`) || "http://localhost:5000/api/admin/problems";
 
   const selectedFile = useRef(null);
   const fileChangedHandler = (e) => {

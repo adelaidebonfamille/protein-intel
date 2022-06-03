@@ -4,7 +4,9 @@ import styles from "./Profile.module.css";
 
 const Profile = () => {
   const baseUrl =
-    "http://localhost:5000/api/user" || `${process.env.API_URL}/user`;
+    (import.meta.env.API_URL &&
+      `${import.meta.env.API_URL}/api/user`) ||
+    "http://localhost:5000/api/user";
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [kpmName, setKpmName] = useState("Tidak Ada File Terpilih");

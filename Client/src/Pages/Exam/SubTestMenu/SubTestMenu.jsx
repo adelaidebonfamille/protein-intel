@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const OngoingExam = (props) => {
-  const baseUrl = "http://localhost:5000/api/test/subtest";
+  const baseUrl = 
+  (import.meta.env.API_URL && `${import.meta.env.API_URL}/api/subtest`) ||
+  "http://localhost:5000/api/test/subtest";
 
   const navigate = useNavigate();
 

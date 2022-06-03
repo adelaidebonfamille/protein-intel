@@ -21,7 +21,7 @@ const OngoingExam = () => {
 
   const convert = ["A", "B", "C", "D", "E"];
 
-  const BASE_URL = import.meta.env.API_URL || "http://localhost:5000/api";
+  const BASE_URL = ( import.meta.env.API_URL && `${import.meta.env.API_URL}/api/test` ) || "http://localhost:5000/api/test";
 
   useEffect(() => {
     const getData = async () => {
@@ -29,7 +29,7 @@ const OngoingExam = () => {
       let subTestData;
       try {
         subTestData = await axios.patch(
-          `${BASE_URL}/test/subtest`,
+          `${BASE_URL}/subtest`,
           { testGroup },
           {
             headers: { "auth-token": localStorage.getItem("token") },
@@ -43,7 +43,7 @@ const OngoingExam = () => {
       let problemData;
       try {
         problemData = await axios.get(
-          `${BASE_URL}/test/problems/${testGroup}`,
+          `${BASE_URL}/problems/${testGroup}`,
           {
             headers: {
               "auth-token": localStorage.getItem("token"),
@@ -72,7 +72,7 @@ const OngoingExam = () => {
   const changeAnswer = async (e) => {
     await axios
       .patch(
-        `${BASE_URL}/test`,
+        `${BASE_URL}`,
         {
           testType: testGroup,
           testAnswers: {
@@ -106,7 +106,7 @@ const OngoingExam = () => {
   const endSubTest = async () => {
     await axios
       .post(
-        `${BASE_URL}/test/subtest/end`,
+        `${BASE_URL}/subtest/end`,
         {
           testGroup,
           answers,

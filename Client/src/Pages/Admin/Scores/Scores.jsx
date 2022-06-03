@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Scores = () => {
-  const baseUrl = "http://localhost:5000/api/admin/scores";
+  const baseUrl = (import.meta.env.API_URL && `${import.meta.env.API_URL}/api/admin/scores`) || "http://localhost:5000/api/admin/scores";
 
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);

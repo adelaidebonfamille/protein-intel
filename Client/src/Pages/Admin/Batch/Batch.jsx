@@ -5,7 +5,7 @@ import axios from "axios";
 import { useEffect } from "react";
 
 const Batch = () => {
-  const baseUrl = "http://localhost:5000/api/admin/batch";
+  const baseUrl = (import.meta.env.API_URL && `${import.meta.env.API_URL}/api/admin/batch`) || "http://localhost:5000/api/admin/batch";
 
   const [allBatch, setAllBatch] = useState([]);
   const getAllBatch = async () => {
