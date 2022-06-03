@@ -10,7 +10,8 @@ import SeeScore from "./SeeScore/SeeScore";
 const Exam = () => {
   const authCtx = useContext(AuthContext);
   const baseUrl =
-    (import.meta.env.API_URL && `${import.meta.env.API_URL}/api/test`) ||
+    (import.meta.env.VITE_API_URL &&
+      `${import.meta.env.VITE_API_URL}/api/test`) ||
     "http://localhost:5000/api/test";
 
   const [isLoading, setIsLoading] = useState(true);
