@@ -25,8 +25,6 @@ app.use("/problems/files", express.static("./problem-data/files"));
 
 app.use("/api/auth", authRoutes);
 
-app.get("*", () => {});
-
 app.use(verifyTokenMiddleware);
 
 app.use("/api/admin", verifyRolesMiddleware.bind(null, "admin"), adminRoutes);
