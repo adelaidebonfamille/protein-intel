@@ -2,10 +2,25 @@
   display: flex;
   background-color: white;
   justify-content: space-around;
+  align-items: center;
   color: black;
   align-items: center;
-  padding: 1rem 0;
+
   font-family: "Inter", sans-serif;
+}
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+}
+.logo img {
+  width: auto;
+  height: 100px;
 }
 
 .nav h4 {

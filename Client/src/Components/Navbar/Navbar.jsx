@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import AuthContext from "../../Contexts/AuthContext";
 
+import logo from "../../assets/Logo/logo.png";
+
 const Navbar = () => {
   const authCtx = useContext(AuthContext);
 
@@ -13,9 +15,10 @@ const Navbar = () => {
   return (
     <nav className={styles.nav}>
       <div>
-        <h4>
-          <Link to={"/"}>Protein Intel</Link>
-        </h4>
+        <Link className={styles.logo} to={"/"}>
+          <img src={logo} alt="intel-logo" />
+          <h1>Protein Intel</h1>
+        </Link>
       </div>
       <ul className={styles.link1}>
         <li>
