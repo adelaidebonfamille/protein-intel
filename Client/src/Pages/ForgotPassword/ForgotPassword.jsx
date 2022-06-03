@@ -4,8 +4,8 @@ import axios from "axios";
 import styles from "./ForgotPassword.module.css";
 
 const API_URL =
-  (import.meta.env.API_URL &&
-    `${import.meta.env.API_URL}/api/auth/forgot-password`) ||
+  (import.meta.env.VITE_API_URL &&
+    `${import.meta.env.VITE_API_URL}/auth/forgot-password`) ||
   "http://localhost:5000/api/auth/forgot-password";
 
 const ForgotPassword = () => {

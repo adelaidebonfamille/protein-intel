@@ -13,8 +13,8 @@ import { useEffect } from "react";
 
 const Problems = () => {
   const baseUrl =
-    (import.meta.env.API_URL &&
-      `${import.meta.env.API_URL}/api/admin/problems`) ||
+    (import.meta.env.VITE_API_URL &&
+      `${import.meta.env.VITE_API_URL}/admin/problems`) ||
     "http://localhost:5000/api/admin/problems";
 
   const selectedFile = useRef(null);

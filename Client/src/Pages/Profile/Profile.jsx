@@ -4,7 +4,7 @@ import styles from "./Profile.module.css";
 
 const Profile = () => {
   const baseUrl =
-    (import.meta.env.API_URL && `${import.meta.env.API_URL}/api/user`) ||
+    (import.meta.env.VITE_API_URL && `${import.meta.env.VITE_API_URL}/user`) ||
     "http://localhost:5000/api/user";
 
   const [selectedFile, setSelectedFile] = useState(null);

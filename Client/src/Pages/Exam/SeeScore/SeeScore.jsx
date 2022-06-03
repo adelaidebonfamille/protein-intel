@@ -5,7 +5,7 @@ import OverallChart from "./OverallChart/OverallChart";
 
 export default function SeeScore() {
   const baseUrl =
-    (import.meta.env.API_URL && `${import.meta.env.API_URL}/api`) ||
+    (import.meta.env.VITE_API_URL && `${import.meta.env.VITE_API_URL}`) ||
     "http://localhost:5000/api";
 
   const [score, setScore] = useState({});
