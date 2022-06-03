@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import AuthContext from "../../Contexts/AuthContext";
 
-import logo from "../../assets/Logo/logo.png";
+import logo from "../../Assets/Logo/logo.png";
 
 const Navbar = () => {
   const authCtx = useContext(AuthContext);
