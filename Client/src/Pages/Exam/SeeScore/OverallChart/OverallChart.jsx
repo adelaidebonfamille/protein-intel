@@ -1,42 +1,24 @@
-import { PieChart, Pie, Cell } from "recharts";
+import { PieChart, Pie, Sector, Cell } from "recharts";
 
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const OverallChart = (props) => {
+  const data = [
+    { name: "Group A", value: props.score === 0 ? 5 : props.score },
+    { name: "Group B", value: props.maxScore - props.score },
+  ];
 
-export default function OverallChart() {
+  const COLORS = [props.color, "#5e5ff5"];
+
   return (
-    <PieChart width={800} height={400}>
+    <PieChart width={200} height={150}>
       <Pie
         data={data}
-        cx={120}
-        cy={200}
-        startAngle={270}
-        endAngle={-90}
-        innerRadius={60}
-        outerRadius={80}
-        fill="#8884d8"
-        paddingAngle={3}
-        dataKey="value"
-      >
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-      <Pie
-        data={data}
-        cx={420}
-        cy={200}
-        startAngle={170}
-        endAngle={10}
-        innerRadius={60}
-        outerRadius={80}
-        fill="#8884d8"
-        paddingAngle={3}
+        cx={95}
+        cy={110}
+        startAngle={175}
+        endAngle={5}
+        innerRadius={75}
+        outerRadius={100}
+        paddingAngle={1}
         dataKey="value"
       >
         {data.map((entry, index) => (
@@ -45,4 +27,6 @@ export default function OverallChart() {
       </Pie>
     </PieChart>
   );
-}
+};
+
+export default OverallChart;
