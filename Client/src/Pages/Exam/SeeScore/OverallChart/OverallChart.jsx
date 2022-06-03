@@ -1,12 +1,27 @@
 import { PieChart, Pie, Sector, Cell } from "recharts";
+import { useState } from "react";
 
 const OverallChart = (props) => {
+  const [score, setScore] = useState(0);
+
   const data = [
-    { name: "Group A", value: props.score === 0 ? 5 : props.score },
-    { name: "Group B", value: props.maxScore - props.score },
+    { name: "Group A", value: score },
+    { name: "Group B", value: props.maxScore - score },
   ];
 
   const COLORS = [props.color, "#5e5ff5"];
+
+  useState(() => {
+    setTimeout(() => {
+      setScore((prev) => {
+        return props.score < 4 ? 4 : props.score;
+      });
+
+      setTimeout(() => {
+        props.changeTotalScoreShown();
+      }, 1600)
+    }, 100);
+  }, []);
 
   return (
     <PieChart width={200} height={150}>

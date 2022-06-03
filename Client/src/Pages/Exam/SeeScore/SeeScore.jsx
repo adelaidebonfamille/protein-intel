@@ -1,15 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import styles from "./SeeScore.module.css";
 import axios from "axios";
 import OverallChart from "./OverallChart/OverallChart";
+import AnimatedNumber from "react-animated-number";
 
 export default function SeeScore() {
   const baseUrl =
     (import.meta.env.VITE_API_URL && `${import.meta.env.VITE_API_URL}`) ||
     "http://localhost:5000/api";
 
-  const [score, setScore] = useState({});
+  const [scores, setScores] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+
+  const totalScoreShownId = useId();
+  const [totalScoreShown, setTotalScoreShown] = useState(0);
+  const changeTotalScoreShown = () => {
+    setTimeout(() => {
+      document.getElementById(totalScoreShownId).style.opacity = "1";
+      setTotalScoreShown(scores.totalScore);
+    }, 100);
+  };
 
   const calculateScore = async () => {
     await axios
@@ -41,7 +51,7 @@ export default function SeeScore() {
       })
       .then((res) => {
         if (res.data.userScore) {
-          setScore(res.data.userScore);
+          setScores(res.data.userScore);
           setIsLoading(false);
         } else {
           calculateScore();
@@ -53,11 +63,11 @@ export default function SeeScore() {
   };
 
   const getColorFromScore = () => {
-    if (score.totalScore <= 420) {
+    if (scores.totalScore <= 420) {
       return "#bf616a";
-    } else if (score.totalScore <= 480) {
+    } else if (scores.totalScore <= 480) {
       return "#d08770";
-    } else if (score.totalScore <= 520) {
+    } else if (scores.totalScore <= 520) {
       return "#a3be8c";
     } else {
       return "#ebcb8b";
@@ -68,6 +78,8 @@ export default function SeeScore() {
     getScore();
   }, []);
 
+  useEffect(() => {}, [scores]);
+
   return (
     <div className={styles.container}>
       {!isLoading ? (
@@ -75,29 +87,56 @@ export default function SeeScore() {
           <div className={styles["total-score"]}>
             <h1>Total Score</h1>
             <OverallChart
+              changeTotalScoreShown={changeTotalScoreShown}
               color={getColorFromScore()}
-              score={score.reading + score.listening + score.structure}
+              score={scores.reading + scores.listening + scores.structure}
               maxScore={50 + 40 + 50}
             />
-            <p
-              style={{ color: getColorFromScore() }}
+            <div
+              id={totalScoreShownId}
               className={styles["total-score-number"]}
             >
-              {score?.totalScore}
-            </p>
+              <AnimatedNumber
+                value={totalScoreShown}
+                style={{
+                  fontSize: "2.5rem",
+                  fontWeight: "bold",
+                  color: getColorFromScore(),
+                }}
+                formatValue={(n) => n.toFixed(0)}
+                frameStyle={(percentage) =>
+                  percentage < 80 ? { opacity: 0.4 } : { opacity: 1 }
+                }
+              />
+            </div>
           </div>
           <div className={styles["subtest-score-container"]}>
             <div className={styles["subtest-score"]}>
               <h3>Listening Score</h3>
-              {score?.listening}/50
+              <span>
+                <span className={styles["subtest-score-number"]}>
+                  {scores?.listening}
+                </span>
+                /50
+              </span>
             </div>
             <div className={styles["subtest-score"]}>
               <h3>Reading Score</h3>
-              {score?.reading}/50
+              <span>
+                <span className={styles["subtest-score-number"]}>
+                  {scores?.reading}
+                </span>
+                /50
+              </span>
             </div>
             <div className={styles["subtest-score"]}>
               <h3>Structure Score</h3>
-              {score?.structure}/40
+              <span>
+                <span className={styles["subtest-score-number"]}>
+                  {scores?.structure}
+                </span>
+                /40
+              </span>
             </div>
           </div>
         </div>
