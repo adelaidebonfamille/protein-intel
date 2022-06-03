@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./SeeScore.module.css";
 import axios from "axios";
+import OverallChart from "./OverallChart/OverallChart";
 
 export default function SeeScore() {
   const baseUrl =
@@ -51,6 +52,18 @@ export default function SeeScore() {
       });
   };
 
+  const getColorFromScore = () => {
+    if (score.totalScore <= 420) {
+      return "#bf616a";
+    } else if (score.totalScore <= 480) {
+      return "#d08770";
+    } else if (score.totalScore <= 520) {
+      return "#a3be8c";
+    } else {
+      return "#ebcb8b";
+    }
+  };
+
   useEffect(() => {
     getScore();
   }, []);
@@ -60,21 +73,26 @@ export default function SeeScore() {
       {!isLoading ? (
         <div className={styles["score-container"]}>
           <div className={styles["total-score"]}>
-            <p>Total Score</p>
-            {score?.totalScore}
+            <h1>Total Score</h1>
+            <OverallChart
+              color={getColorFromScore()}
+              score={score.reading + score.listening + score.structure}
+              maxScore={50 + 40 + 50}
+            />
+            <p style={{color: getColorFromScore()}}className={styles["total-score-number"]}>{score?.totalScore}</p>
           </div>
-          <div className={styles["section-score"]}>
-            <div className={styles["score-listening"]}>
-              <p>Listening Score</p>
-              {score?.listening}
+          <div className={styles["subtest-score-container"]}>
+            <div className={styles["subtest-score"]}>
+              <h3>Listening Score</h3>
+              {score?.listening}/50
             </div>
-            <div className={styles["score-reading"]}>
-              <p>Reading Score</p>
-              {score?.reading}
+            <div className={styles["subtest-score"]}>
+              <h3>Reading Score</h3>
+              {score?.reading}/50
             </div>
-            <div className={styles["score-structure"]}>
-              <p>Structure Score</p>
-              {score?.structure}
+            <div className={styles["subtest-score"]}>
+              <h3>Structure Score</h3>
+              {score?.structure}/40
             </div>
           </div>
         </div>
