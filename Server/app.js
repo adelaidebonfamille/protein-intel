@@ -25,8 +25,6 @@ app.use("/problems/files", express.static("./problem-data/files"));
 
 app.use("/api/auth", authRoutes);
 
-app.get("*", () => {});
-
 app.use(verifyTokenMiddleware);
 
 app.use("/api/admin", verifyRolesMiddleware.bind(null, "admin"), adminRoutes);
@@ -40,7 +38,7 @@ app.use(errorHandlerMiddleware);
 const PORT = process.env.PORT || 5000;
 
 db.connectToDatabase().then(() => {
-	app.listen(PORT, () => {
-		console.log(`Server running on port ${PORT}`);
-	});
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
