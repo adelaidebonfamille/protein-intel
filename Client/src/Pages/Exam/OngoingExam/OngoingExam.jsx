@@ -89,7 +89,7 @@ const OngoingExam = () => {
 
         setAnswers((prev) => {
           const prevAnswer = prev.filter(
-            (answer) => answer.problemId !== e.target.name,
+            (answer) => answer.problemId !== e.target.name
           );
 
           return [
@@ -213,9 +213,7 @@ const OngoingExam = () => {
                         )}
                         <div className={styles.desc}>
                           <p>{problemIndex + 1}.</p>
-                          <pre>
-                            {problem.description}
-                          </pre>
+                          <pre>{problem.description}</pre>
                         </div>
                         <div className={styles["radio-list"]}>
                           {problem.choice.map((choice, index) => {
@@ -251,7 +249,9 @@ const OngoingExam = () => {
                                   );
                                   radio.checked = false;
                                 } catch (error) {
-                                  console.log("No answer to clear -_- (btw yg buat website ni namany azie)");
+                                  console.log(
+                                    "No answer to clear -_- (btw yg buat website ni namany azie)"
+                                  );
                                 }
                               });
                             }}

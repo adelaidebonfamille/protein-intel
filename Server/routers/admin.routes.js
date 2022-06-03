@@ -24,4 +24,6 @@ router.delete("/batch/:id", adminController.deleteBatch);
 
 router.patch("/batch/:id", adminController.updateBatch);
 
+router.get("/scores", adminController.getAllScore);
+
 module.exports = router;

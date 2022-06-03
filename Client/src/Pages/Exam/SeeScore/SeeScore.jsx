@@ -39,12 +39,12 @@ export default function SeeScore() {
         },
       })
       .then((res) => {
-        if ( res.data.userScore ) {
-          setScore(res.data.userScore)
+        if (res.data.userScore) {
+          setScore(res.data.userScore);
           setIsLoading(false);
-         } else {
+        } else {
           calculateScore();
-         } 
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -59,11 +59,11 @@ export default function SeeScore() {
     <div className={styles.container}>
       {!isLoading ? (
         <div className={styles["score-container"]}>
-          <div className={styles["score-all"]}>
+          <div className={styles["total-score"]}>
             <p>Total Score</p>
             {score?.totalScore}
           </div>
-          <div className={styles["score-section"]}>
+          <div className={styles["section-score"]}>
             <div className={styles["score-listening"]}>
               <p>Listening Score</p>
               {score?.listening}

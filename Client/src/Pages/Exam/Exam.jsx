@@ -108,15 +108,13 @@ const Exam = () => {
                     {test.isTestOver ? (
                       <SeeScore />
                     ) : (
-
-                  <StartExam
-                    startHandler={() => {
-                      setIsNotStarted(false);
-                    }}
-                  />
-                    )} 
+                      <StartExam
+                        startHandler={() => {
+                          setIsNotStarted(false);
+                        }}
+                      />
+                    )}
                   </>
-                  
                 ) : (
                   <StartExam
                     startHandler={startTest}

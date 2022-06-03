@@ -2,6 +2,7 @@ import styles from "./Batch.module.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useEffect } from "react";
 
 const Batch = () => {
   const baseUrl = "http://localhost:5000/api/admin/batch";
@@ -80,7 +81,11 @@ const Batch = () => {
       });
   };
 
-  const [mode, setMode] = useState("");
+  useEffect(() => {
+    getAllBatch();
+  })
+
+  const [mode, setMode] = useState("search");
 
   return (
     <div className={styles.container}>

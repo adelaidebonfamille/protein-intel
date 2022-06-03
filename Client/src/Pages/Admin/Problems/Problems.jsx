@@ -273,70 +273,75 @@ const Problems = () => {
             </div>
           </div>
         </div>
-        {mode === "search" &&
-          problemShown.map((problem) => (
-            <div className={styles.problem} key={problem["_id"]}>
-              <h4>Id</h4>
-              <p>{problem["_id"]}</p>
-              <h4>Question Category</h4>
-              <p>{problem.type}</p>
-              {problem.associatedFile && (
-                <>
-                  <h4>File Used</h4>
-                  {problem.type == "listening" ? (
-                    <audio controls>
-                      <source
+        {mode === "search" && (
+          <>
+            <h3>Total: {problemShown.length} problem</h3>
+            {problemShown.map((problem) => (
+              <div className={styles.problem} key={problem["_id"]}>
+                <h3>Id</h3>
+                <br />
+                <p>{problem["_id"]}</p>
+                <h4>Question Category</h4>
+                <p>{problem.type}</p>
+                {problem.associatedFile && (
+                  <>
+                    <h4>File Used</h4>
+                    {problem.type == "listening" ? (
+                      <audio controls>
+                        <source
+                          src={`http://localhost:5000${problem.associatedFile}`}
+                          type="audio/mpeg"
+                        />
+                      </audio>
+                    ) : (
+                      <img
+                        className={styles["image-file"]}
                         src={`http://localhost:5000${problem.associatedFile}`}
-                        type="audio/mpeg"
+                        alt="server failed to retrieve file"
                       />
-                    </audio>
-                  ) : (
-                    <img
-                      className={styles["image-file"]}
-                      src={`http://localhost:5000${problem.associatedFile}`}
-                      alt="server failed to retrieve file"
-                    />
-                  )}
-                </>
-              )}
-              <h4>Question</h4>
-              <pre>{problem.description}</pre>
-              <h4>Choice</h4>
-              <ol type="A">
-                {problem.choice.map((choice, index) => (
-                  <li key={index}>
-                    {" "}
-                    <pre>{choice}</pre>{" "}
-                  </li>
-                ))}
-              </ol>
-              <h4>Key</h4>
-              {problem.key}
-              <div>
-                <input
-                  type="button"
-                  value="Edit Problem"
-                  onClick={selectProblem}
-                  data-id={problem["_id"]}
-                  data-type={problem.type}
-                  data-associated-file={problem.associatedFile}
-                  data-description={problem.description}
-                  data-choice-1={problem.choice[0]}
-                  data-choice-2={problem.choice[1]}
-                  data-choice-3={problem.choice[2]}
-                  data-choice-4={problem.choice[3]}
-                  data-choice-5={problem.choice[4]}
-                  data-key={problem.key}
-                />
-                <input
-                  type="button"
-                  value="Delete Problem"
-                  data-id={problem["_id"]}
-                  onClick={deleteProblemHandler}
-                />
+                    )}
+                  </>
+                )}
+                <h4>Question</h4>
+                <pre>{problem.description}</pre>
+                <h4>Choice</h4>
+                <ol type="A">
+                  {problem.choice.map((choice, index) => (
+                    <li key={index}>
+                      {" "}
+                      <pre>{choice}</pre>{" "}
+                    </li>
+                  ))}
+                </ol>
+                <h4>Key</h4>
+                {problem.key}
+                <div>
+                  <input
+                    type="button"
+                    value="Edit Problem"
+                    onClick={selectProblem}
+                    data-id={problem["_id"]}
+                    data-type={problem.type}
+                    data-associated-file={problem.associatedFile}
+                    data-description={problem.description}
+                    data-choice-1={problem.choice[0]}
+                    data-choice-2={problem.choice[1]}
+                    data-choice-3={problem.choice[2]}
+                    data-choice-4={problem.choice[3]}
+                    data-choice-5={problem.choice[4]}
+                    data-key={problem.key}
+                  />
+                  <input
+                    type="button"
+                    value="Delete Problem"
+                    data-id={problem["_id"]}
+                    onClick={deleteProblemHandler}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </>
+        )}
         {mode === "update" && (
           <div>
             <h3>Update Problem</h3>

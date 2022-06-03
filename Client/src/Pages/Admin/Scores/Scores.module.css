@@ -1,6 +1,8 @@
 .container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .go-back-home {
@@ -21,4 +23,9 @@
   transform: translate(1px, 1px);
   transition: transform 0.2s;
   box-shadow: none;
+}
+.score {
+  padding: 16px;
+  background-color: bisque;
+  margin-top: 32px;
 }

@@ -1,5 +1,6 @@
 const Problem = require("../models/problem.model");
 const Test = require("../models/test.model");
+const Score = require("../models/score.model");
 const Batch = require("../models/batch.model");
 const validation = require("../utility/validation");
 const moveDeletedFile = require("../utility/move-deleted-file");
@@ -131,7 +132,7 @@ const updateProblemById = async (req, res, next) => {
 
 const getAllUserScore = async (req, res, next) => {
 	try {
-		const allUserScore = await Test.find({});
+		const allUserScore = await Score.find({});
 		res.json({
 			message: "All user score delivered successfully",
 			userScore: allUserScore,

@@ -16,4 +16,6 @@
   font-size: 1.25rem;
   border: solid 1px #5e5ff5;
 }
-
+.score-container {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
