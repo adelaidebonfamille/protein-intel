@@ -317,6 +317,7 @@ const saveTestAnswer = async (req, res, next) => {
 
 const findTestByNim = async (req, res, next) => {
 	const { nim } = req.user;
+
 	try {
 		let test
 		test = await Test.findOne({ nim }, { answers: 0 })
