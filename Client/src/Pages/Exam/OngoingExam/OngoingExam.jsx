@@ -21,7 +21,9 @@ const OngoingExam = () => {
 
   const convert = ["A", "B", "C", "D", "E"];
 
-  const BASE_URL = ( import.meta.env.API_URL && `${import.meta.env.API_URL}/api/test` ) || "http://localhost:5000/api/test";
+  const BASE_URL =
+    (import.meta.env.API_URL && `${import.meta.env.API_URL}/api/test`) ||
+    "http://localhost:5000/api/test";
 
   useEffect(() => {
     const getData = async () => {
@@ -42,14 +44,11 @@ const OngoingExam = () => {
 
       let problemData;
       try {
-        problemData = await axios.get(
-          `${BASE_URL}/problems/${testGroup}`,
-          {
-            headers: {
-              "auth-token": localStorage.getItem("token"),
-            },
-          }
-        );
+        problemData = await axios.get(`${BASE_URL}/problems/${testGroup}`, {
+          headers: {
+            "auth-token": localStorage.getItem("token"),
+          },
+        });
       } catch (error) {
         return setIsNotError(false);
       }

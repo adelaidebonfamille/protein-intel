@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Scores = () => {
-  const baseUrl = (import.meta.env.API_URL && `${import.meta.env.API_URL}/api/admin/scores`) || "http://localhost:5000/api/admin/scores";
+  const baseUrl =
+    (import.meta.env.API_URL &&
+      `${import.meta.env.API_URL}/api/admin/scores`) ||
+    "http://localhost:5000/api/admin/scores";
 
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,9 +20,9 @@ const Scores = () => {
       .then((res) => {
         setScores((prev) => {
           let newScores = [...res.data.userScore];
-          newScores.sort((a,b) => b.totalScore - a.totalScore);
+          newScores.sort((a, b) => b.totalScore - a.totalScore);
 
-          return newScores;;
+          return newScores;
         });
       })
       .then(() => {
@@ -39,14 +42,15 @@ const Scores = () => {
       <Link to="/admin">
         <div className={styles["go-back-home"]}>Go back to Admin Homepage</div>
       </Link>
-      {!loading && scores.map((score, index) => {
-        return (
-          <div className={styles.score} key={index}>
-            <p>NIM {score.nim}</p>
-            <p>score {score.totalScore}</p>
-          </div>
-        );
-      })}
+      {!loading &&
+        scores.map((score, index) => {
+          return (
+            <div className={styles.score} key={index}>
+              <p>NIM {score.nim}</p>
+              <p>score {score.totalScore}</p>
+            </div>
+          );
+        })}
     </div>
   );
 };
