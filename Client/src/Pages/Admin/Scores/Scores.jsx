@@ -6,7 +6,7 @@ import axios from "axios";
 const Scores = () => {
   const baseUrl =
     (import.meta.env.VITE_API_URL &&
-      `${import.meta.env.VITE_API_URL}/api/admin/scores`) ||
+      `${import.meta.env.VITE_API_URL}/admin/scores`) ||
     "http://localhost:5000/api/admin/scores";
 
   const [scores, setScores] = useState([]);
