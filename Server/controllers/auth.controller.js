@@ -5,7 +5,7 @@ const validation = require("../utility/validation");
 
 const generateToken = require("../utility/generate-token");
 const resetPassword = require("../utility/generate-reset-password-link");
-const emailSender = require("../utility/email-sender");
+const emailSender = require("../utility/node-mailer");
 
 const User = require("../models/user.model");
 
@@ -14,9 +14,7 @@ const userRegister = async (req, res, next) => {
 
 	//check if password and confirmPassword are the same
 	if (password !== confirmPassword) {
-		return next(
-			new Error("Password and Confirm Password are not the same")
-		);
+		return next(new Error("Password and Confirm Password are not the same"));
 	}
 
 	const { error } = validation.registerValidation({
