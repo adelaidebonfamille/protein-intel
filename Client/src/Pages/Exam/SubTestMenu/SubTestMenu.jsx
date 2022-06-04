@@ -5,7 +5,7 @@ import axios from "axios";
 const OngoingExam = (props) => {
   const baseUrl =
     (import.meta.env.VITE_API_URL &&
-      `${import.meta.env.VITE_API_URL}/subtest`) ||
+      `${import.meta.env.VITE_API_URL}/test/subtest`) ||
     "http://localhost:5000/api/test/subtest";
 
   const navigate = useNavigate();
