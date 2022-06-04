@@ -17,7 +17,10 @@ const Navbar = () => {
       <div>
         <Link className={styles.logo} to={"/"}>
           <img src={logo} alt="intel-logo" />
-          <h1>Protein Intel</h1>
+          <h1 className={styles["logo-text"]}>
+            Protein <span className={styles["logo-text-int"]}>INT</span>
+            <span className={styles["logo-text-el"]}>EL</span>
+          </h1>
         </Link>
       </div>
       <ul className={styles.link1}>

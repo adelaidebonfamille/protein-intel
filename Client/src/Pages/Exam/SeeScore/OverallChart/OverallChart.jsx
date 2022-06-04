@@ -19,7 +19,7 @@ const OverallChart = (props) => {
 
       setTimeout(() => {
         props.changeTotalScoreShown();
-      }, 1600)
+      }, 1600);
     }, 100);
   }, []);
 

@@ -18,6 +18,15 @@
   font-weight: bold;
   margin: 0;
 }
+.logo .logo-text {
+  color: #5e5ff5;
+}
+.logo-text .logo-text-int {
+  color: #393839;
+}
+.logo-text .logo-text-el {
+  color: #fe8a01;
+}
 .logo img {
   width: auto;
   height: 100px;
