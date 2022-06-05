@@ -24,6 +24,12 @@ app.use(express.json());
 
 app.use("/problems/files", express.static("./problem-data/files"));
 
+app.use("/", (req, res) => {
+	res.json({
+		message: "Welcome to the Protein API",
+	});
+});
+
 app.use("/api/auth", authRoutes);
 
 app.use(verifyTokenMiddleware);
