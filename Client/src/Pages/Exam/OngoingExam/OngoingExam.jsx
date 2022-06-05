@@ -199,14 +199,26 @@ const OngoingExam = () => {
                             {problem.type == "listening" ? (
                               <audio controls>
                                 <source
-                                  src={`http://localhost:5000${problem.associatedFile}`}
+                                  src={
+                                    (import.meta.env.VITE_API_STATIC &&
+                                      `${import.meta.env.VITE_API_STATIC}${
+                                        problem.associatedFile
+                                      }`) ||
+                                    `http://localhost:5000${problem.associatedFile}`
+                                  }
                                   type="audio/mpeg"
                                 />
                               </audio>
                             ) : (
                               <img
                                 className={styles["image-file"]}
-                                src={`http://localhost:5000${problem.associatedFile}`}
+                                src={
+                                  (import.meta.env.VITE_API_STATIC &&
+                                    `${import.meta.env.VITE_API_STATIC}${
+                                      problem.associatedFile
+                                    }`) ||
+                                  `http://localhost:5000${problem.associatedFile}`
+                                }
                                 alt="server failed to retrieve file"
                               />
                             )}

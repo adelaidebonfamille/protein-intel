@@ -19,7 +19,6 @@ app.use(cors());
 
 dotenv.config();
 
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/problems/files", express.static("./problem-data/files"));

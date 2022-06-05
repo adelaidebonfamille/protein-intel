@@ -54,7 +54,13 @@ const UpdateTextForm = (props) => {
               <p>Associated File</p>
               <audio controls>
                 <source
-                  src={`http://localhost:5000${props.problem.associatedFile}`}
+                  src={
+                    (import.meta.env.VITE_API_STATIC &&
+                      `${import.meta.env.VITE_API_STATIC}${
+                        props.problem.associatedFile
+                      }`) ||
+                    `http://localhost:5000${props.problem.associatedFile}`
+                  }
                   type="audio/mpeg"
                 />
               </audio>
@@ -64,7 +70,13 @@ const UpdateTextForm = (props) => {
             <>
               <p>Associated File</p>
               <img
-                src={`http://localhost:5000${props.problem.associatedFile}`}
+                src={
+                  (import.meta.env.VITE_API_STATIC &&
+                    `${import.meta.env.VITE_API_STATIC}${
+                      props.problem.associatedFile
+                    }`) ||
+                  `http://localhost:5000${props.problem.associatedFile}`
+                }
                 alt="server failed to retrieve file"
                 className={styles["image-file"]}
               />
