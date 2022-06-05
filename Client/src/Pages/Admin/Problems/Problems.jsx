@@ -281,9 +281,7 @@ const Problems = () => {
             <h3>Total: {problemShown.length} problem</h3>
             {problemShown.map((problem) => (
               <div className={styles.problem} key={problem["_id"]}>
-                <h3>Id</h3>
-                <br />
-                <p>{problem["_id"]}</p>
+                <h3>Id {problem["_id"]}</h3>
                 <h4>Question Category</h4>
                 <p>{problem.type}</p>
                 {problem.associatedFile && (
