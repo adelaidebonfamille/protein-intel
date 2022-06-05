@@ -4,7 +4,7 @@ const path = require("path");
 
 const kpmUpload = multer({
 	storage: multer.diskStorage({
-		destination: "user-data/kpm",
+		destination: ".user-data/kpm",
 		filename: (req, file, cb) => {
 			cb(null, "kpm_" + uuid() + "_" + file.originalname);
 		},
@@ -34,12 +34,7 @@ const problemFileUpload = multer({
 	}),
 	fileFilter: (req, file, cb) => {
 		var ext = path.extname(file.originalname);
-		if (
-			ext !== ".mp3" &&
-			ext !== ".jpeg" &&
-			ext !== ".jpg" &&
-			ext !== ".png"
-		) {
+		if (ext !== ".mp3" && ext !== ".jpeg" && ext !== ".jpg" && ext !== ".png") {
 			return cb(new Error("Only .mp3 and images are allowed"));
 		}
 		cb(null, true);
