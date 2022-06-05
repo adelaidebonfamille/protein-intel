@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const db = require("./data/database");
 const dotenv = require("dotenv");
+const path = require("path");
 
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 const verifyTokenMiddleware = require("./middlewares/verifyToken");
@@ -38,7 +39,7 @@ app.use(errorHandlerMiddleware);
 const PORT = process.env.PORT || 5000;
 
 db.connectToDatabase().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+	app.listen(PORT, () => {
+		console.log(`Server running on port ${PORT}`);
+	});
 });
