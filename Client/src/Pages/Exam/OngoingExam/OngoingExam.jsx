@@ -137,8 +137,9 @@ const OngoingExam = () => {
               <div className={styles["inner-container-end"]}>
                 <div className={styles["sure-end"]}>
                   <p>
-                    Are you sure want to end this section? You can always exit
-                    this page and go back without ending the section first
+                    <span>Are you sure want to end this section?</span> You can always exit
+                    this page and go back without ending the section first (but
+                    the timer is still going if you are not in this page)
                   </p>
                   <div className={styles["sure-end-buttons"]}>
                     <button
@@ -190,7 +191,7 @@ const OngoingExam = () => {
                       <div
                         id={problemIndex + 1}
                         key={problemIndex}
-                        className={styles["radio-section"]}
+                        className={styles["problem-container"]}
                       >
                         {problem.associatedFile && (
                           <>
