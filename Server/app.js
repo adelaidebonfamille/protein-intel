@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const db = require("./data/database");
 const dotenv = require("dotenv");
+const path = require("path");
 
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 const verifyTokenMiddleware = require("./middlewares/verifyToken");
@@ -21,6 +22,10 @@ dotenv.config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+});
+
 app.use("/problems/files", express.static("./problem-data/files"));
 
 app.use("/api/auth", authRoutes);
@@ -38,7 +43,7 @@ app.use(errorHandlerMiddleware);
 const PORT = process.env.PORT || 5000;
 
 db.connectToDatabase().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+	app.listen(PORT, () => {
+		console.log(`Server running on port ${PORT}`);
+	});
 });
