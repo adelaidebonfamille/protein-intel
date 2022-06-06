@@ -9,7 +9,7 @@ import CategoryInput from "./FormInput/CategoryInput";
 import ImageInput from "./ImageInput/ImageInput";
 import AudioInput from "./AudioInput/AudioInput";
 import UpdateTextForm from "./UpdateForm/UpdateTextForm";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Problems = () => {
   const baseUrl =
@@ -17,12 +17,13 @@ const Problems = () => {
       `${import.meta.env.VITE_API_URL}/admin/problems`) ||
     "http://localhost:5000/api/admin/problems";
 
-  const selectedFile = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const fileChangedHandler = (e) => {
-    selectedFile.current = e.target.files[0];
+    setSelectedFile(e.target.files[0]);
   };
   const fileCanceledHandler = (e) => {
-    selectedFile.current = null;
+    setSelectedFile(null);
   };
 
   const [allProblems, setAllProblems] = useState([]);
@@ -77,8 +78,8 @@ const Problems = () => {
       formData.append("choice[]", e.target[`choice-${i}`].value);
     }
 
-    if (selectedFile.current) {
-      formData.append("problem", selectedFile.current);
+    if (selectedFile) {
+      formData.append("problem", selectedFile);
     }
 
     let response;
@@ -104,19 +105,20 @@ const Problems = () => {
   };
 
   const deleteProblemHandler = async (e) => {
-    await axios
-      .delete(`${baseUrl}/${e.target.dataset.id}`, {
+    let response;
+    try {
+      response = await axios.delete(`${baseUrl}/${e.target.dataset.id}`, {
         headers: {
           "auth-token": localStorage.getItem("token"),
         },
-      })
-      .then((response) => {
-        console.log(response.data.message);
-        showAllProblemHandler();
-      })
-      .catch((error) => {
-        console.log(error);
       });
+    } catch (error) {}
+
+    if (!response) {
+      return console.log("error Connecting to server");
+    } else {
+      showAllProblemHandler();
+    }
   };
 
   const selectedProblem = useRef({});
@@ -138,33 +140,31 @@ const Problems = () => {
       formData.append("choice[]", e.target[`choice-${i}`].value);
     }
 
-    if (selectedFile.current) {
+    if (selectedFile) {
       formData.append("problem", selectedFile.current);
     }
 
-    await axios
-      .patch(`${baseUrl}/${e.target.id.value}`, formData, {
+    let response;
+    try {
+      await axios.patch(`${baseUrl}/${e.target.id.value}`, formData, {
         headers: {
           "content-type": "multipart/form-data",
           "auth-token": localStorage.getItem("token"),
         },
-      })
-      .then((response) => {
-        console.log(response.data.message);
-      })
-      .catch((error) => {
-        console.log(error);
       });
+    } catch (error) {
+      return console.log(error);
+    }
   };
 
   const [mode, setMode] = useState("");
   useEffect(() => {
-    selectedFile.current = null;
+    setSelectedFile(null);
     setCategoryShown("");
     setOrder(false);
 
     if (mode !== "search" && mode !== "update") {
-      selectedProblem.current = null;
+      setSelectedFile(null);
     }
 
     window.scrollTo(0, 0);
