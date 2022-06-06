@@ -75,7 +75,7 @@ const Problems = () => {
 
     for (let i = 1; i <= 5; i++) {
       formData.append("choice[]", e.target[`choice-${i}`].value);
-    }
+    }Prob
 
     if (selectedFile) {
       formData.append("problem", selectedFile);
