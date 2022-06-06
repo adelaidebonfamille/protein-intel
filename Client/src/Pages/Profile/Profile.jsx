@@ -26,7 +26,7 @@ const Profile = () => {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`${baseUrl}`, {
+      .get(`${baseUrl}/profile`, {
         headers: {
           "auth-token": localStorage.getItem("token"),
         },
