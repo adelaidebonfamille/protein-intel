@@ -26,7 +26,7 @@ const Profile = () => {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`${baseUrl}/profile`, {
+      .get(`${baseUrl}`, {
         headers: {
           "auth-token": localStorage.getItem("token"),
         },
@@ -67,11 +67,7 @@ const Profile = () => {
     };
 
     try {
-      const res = await axios.patch(
-        "http://localhost:5000/api/user/profile",
-        formData,
-        config
-      );
+      const res = await axios.patch(`${baseUrl}/profile`, formData, config);
       console.log(res.data);
     } catch (err) {
       console.log(err);

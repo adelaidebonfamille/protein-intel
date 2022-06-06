@@ -10,15 +10,19 @@ import AudioInput from "./AudioInput/AudioInput";
 import UpdateTextForm from "./UpdateForm/UpdateTextForm";
 
 const Problems = () => {
+  const [allProblems, setAllProblems] = useState([]);
+  const [mode, setMode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [problemShown, setProblemShown] = useState([]);
+  const [categoryShown, setCategoryShown] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [order, setOrder] = useState(false);
+
   const baseUrl =
     (import.meta.env.VITE_API_URL &&
       `${import.meta.env.VITE_API_URL}/admin/problems`) ||
     "http://localhost:5000/api/admin/problems";
 
-  const [mode, setMode] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [selectedFile, setSelectedFile] = useState(null);
   const fileChangedHandler = (e) => {
     setSelectedFile(e.target.files[0]);
   };
@@ -26,7 +30,6 @@ const Problems = () => {
     setSelectedFile(null);
   };
 
-  const [allProblems, setAllProblems] = useState([]);
   const showAllProblemHandler = async () => {
     setIsLoading(true);
     let response;
@@ -50,9 +53,6 @@ const Problems = () => {
     }
   };
 
-  const [problemShown, setProblemShown] = useState([]);
-  const [categoryShown, setCategoryShown] = useState("");
-  const [order, setOrder] = useState(false);
   useEffect(() => {
     let chosenProblem =
       categoryShown == ""
@@ -68,7 +68,6 @@ const Problems = () => {
   }, [categoryShown, order, allProblems]);
 
   const addProblemHandler = async (e) => {
-    setIsLoading(true);
     e.preventDefault();
 
     const formData = new FormData();
@@ -85,6 +84,7 @@ const Problems = () => {
       formData.append("problem", selectedFile);
     }
 
+    setIsLoading(true);
     let response;
     try {
       response = await axios.post(baseUrl, formData, {
@@ -96,17 +96,16 @@ const Problems = () => {
     } catch (error) {
       return console.log(error);
     }
+    setIsLoading(false);
     if (!response) {
-      return console.log("error Connecting to server");
+      return console.log("Error Connecting to server");
     }
     if (response.data.message) {
       console.log(response.data.message);
-      setIsLoading(false);
       setMode("");
     }
     if (response.data.error) {
       console.log(response.data.error);
-      setIsLoading(false);
       setMode("");
     }
   };
@@ -120,13 +119,15 @@ const Problems = () => {
           "auth-token": localStorage.getItem("token"),
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      return console.log(error);
+    }
+    setIsLoading(false);
 
     if (!response) {
       return console.log("error Connecting to server");
     } else {
       showAllProblemHandler();
-      setIsLoading(false);
     }
   };
 
@@ -156,12 +157,16 @@ const Problems = () => {
 
     let response;
     try {
-      response = await axios.patch(`${baseUrl}/${e.target.id.value}`, formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-          "auth-token": localStorage.getItem("token"),
-        },
-      });
+      response = await axios.patch(
+        `${baseUrl}/${e.target.id.value}`,
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+            "auth-token": localStorage.getItem("token"),
+          },
+        }
+      );
     } catch (error) {
       return console.log(error);
     }
@@ -183,7 +188,7 @@ const Problems = () => {
     setOrder(false);
 
     if (mode !== "search" && mode !== "update") {
-      setSelectedProblem(null)
+      setSelectedProblem(null);
     }
 
     window.scrollTo(0, 0);
