@@ -29,7 +29,7 @@ const Problems = () => {
   const showAllProblemHandler = async () => {
     let response;
     try {
-      await axios.get(baseUrl, {
+      response = await axios.get(baseUrl, {
         headers: {
           "auth-token": localStorage.getItem("token"),
         },
@@ -145,7 +145,7 @@ const Problems = () => {
 
     let response;
     try {
-      await axios.patch(`${baseUrl}/${e.target.id.value}`, formData, {
+      response = await axios.patch(`${baseUrl}/${e.target.id.value}`, formData, {
         headers: {
           "content-type": "multipart/form-data",
           "auth-token": localStorage.getItem("token"),
