@@ -10,7 +10,11 @@ const kpmUpload = multer({
 		},
 	}),
 	fileFilter: (req, file, cb) => {
-		var ext = path.extname(file.originalname);
+		//limit file size to 10MB
+		if (file.size > 10485760) {
+			return cb(new Error("File is too large"));
+		}
+		let ext = path.extname(file.originalname);
 		if (
 			ext !== ".png" &&
 			ext !== ".jpg" &&
@@ -33,7 +37,11 @@ const problemFileUpload = multer({
 		},
 	}),
 	fileFilter: (req, file, cb) => {
-		var ext = path.extname(file.originalname);
+		//limit file size to 10MB
+		if (file.size > 10485760) {
+			return cb(new Error("File size exceeded"));
+		}
+		let ext = path.extname(file.originalname);
 		if (ext !== ".mp3" && ext !== ".jpeg" && ext !== ".jpg" && ext !== ".png") {
 			return cb(new Error("Only .mp3 and images are allowed"));
 		}
