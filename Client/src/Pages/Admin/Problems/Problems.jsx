@@ -27,18 +27,25 @@ const Problems = () => {
 
   const [allProblems, setAllProblems] = useState([]);
   const showAllProblemHandler = async () => {
-    await axios
-      .get(baseUrl, {
+    let response;
+    try {
+      await axios.get(baseUrl, {
         headers: {
           "auth-token": localStorage.getItem("token"),
         },
-      })
-      .then((response) => {
-        setAllProblems(response.data.problems);
-      })
-      .catch((error) => {
-        console.log(error);
       });
+    } catch (error) {
+      console.log(error);
+    }
+    if (!response) {
+      return console.log();
+    }
+    if (response.data.problems) {
+      setAllProblems(response.data.problems);
+    }
+    if (response.data.error) {
+      console.log(response.data.error);
+    }
   };
   const [problemShown, setProblemShown] = useState([]);
 
@@ -86,7 +93,7 @@ const Problems = () => {
       return console.log(error);
     }
     if (!response) {
-      return console.log(response);
+      return console.log("error Connecting to server");
     }
     if (response.data.message) {
       console.log(response.data.message);
