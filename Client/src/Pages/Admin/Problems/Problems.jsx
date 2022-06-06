@@ -1,7 +1,7 @@
 import styles from "./Problems.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import TextInputForm from "./FormInput/TextInputForm";
 import CategoryInput from "./FormInput/CategoryInput";
@@ -16,6 +16,7 @@ const Problems = () => {
     "http://localhost:5000/api/admin/problems";
 
   const [mode, setMode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const fileChangedHandler = (e) => {
@@ -27,6 +28,7 @@ const Problems = () => {
 
   const [allProblems, setAllProblems] = useState([]);
   const showAllProblemHandler = async () => {
+    setIsLoading(true);
     let response;
     try {
       response = await axios.get(baseUrl, {
@@ -62,9 +64,11 @@ const Problems = () => {
     }
 
     setProblemShown(chosenProblem);
+    setIsLoading(false);
   }, [categoryShown, order, allProblems]);
 
   const addProblemHandler = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
 
     const formData = new FormData();
@@ -75,7 +79,7 @@ const Problems = () => {
 
     for (let i = 1; i <= 5; i++) {
       formData.append("choice[]", e.target[`choice-${i}`].value);
-    }Prob
+    }
 
     if (selectedFile) {
       formData.append("problem", selectedFile);
@@ -97,13 +101,18 @@ const Problems = () => {
     }
     if (response.data.message) {
       console.log(response.data.message);
+      setIsLoading(false);
+      setMode("");
     }
     if (response.data.error) {
       console.log(response.data.error);
+      setIsLoading(false);
+      setMode("");
     }
   };
 
   const deleteProblemHandler = async (e) => {
+    setIsLoading(true);
     let response;
     try {
       response = await axios.delete(`${baseUrl}/${e.target.dataset.id}`, {
@@ -117,6 +126,7 @@ const Problems = () => {
       return console.log("error Connecting to server");
     } else {
       showAllProblemHandler();
+      setIsLoading(false);
     }
   };
 
@@ -127,6 +137,7 @@ const Problems = () => {
   };
 
   const updateProblemHandler = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
 
     const formData = new FormData();
@@ -160,6 +171,7 @@ const Problems = () => {
     if (response.data.message) {
       console.log(response.data.message);
       showAllProblemHandler().then(setMode(""));
+      setIsLoading(false);
     }
     if (response.data.error) {
       console.log(response.data.error);
@@ -183,6 +195,9 @@ const Problems = () => {
         <div className={styles["go-back-home"]}>Go back to Admin Homepage</div>
       </Link>
       <div className={styles.container}>
+        {isLoading && (
+          <div className={styles["loading-container"]}>Loading...</div>
+        )}
         <div className={styles["input-container"]}>
           <div className={styles["show-problem-container"]}>
             <h3>Search Problems</h3>
