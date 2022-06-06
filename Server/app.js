@@ -20,7 +20,7 @@ app.use(cors());
 dotenv.config();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use("/problems/files", express.static("./problem-data/files"));
 
