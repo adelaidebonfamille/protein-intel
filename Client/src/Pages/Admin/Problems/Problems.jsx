@@ -34,10 +34,10 @@ const Problems = () => {
         },
       });
     } catch (error) {
-      console.log(error);
+      return console.log(error);
     }
     if (!response) {
-      return console.log();
+      return console.log("Error");
     }
     if (response.data.problems) {
       setAllProblems(response.data.problems);
@@ -152,6 +152,15 @@ const Problems = () => {
       });
     } catch (error) {
       return console.log(error);
+    }
+    if (!response) {
+      return console.log("error Connecting to server");
+    }
+    if (response.data.message) {
+      console.log(response.data.message);
+    }
+    if (response.data.error) {
+      console.log(response.data.error);
     }
   };
 
@@ -371,11 +380,7 @@ const Problems = () => {
           <div>
             <h3>Update Problem</h3>
             <UpdateTextForm
-              handler={(e) => {
-                updateProblemHandler(e)
-                  .then(setTimeout(showAllProblemHandler, 100))
-                  .then(setMode("search"));
-              }}
+              handler={updateProblemHandler}
               fileChangeHandler={fileChangedHandler}
               fileCancelHandler={fileCanceledHandler}
               problem={selectedProblem.current}
@@ -385,11 +390,7 @@ const Problems = () => {
         {mode === "text" && (
           <div>
             <h3>Add Problem Type Text</h3>
-            <TextInputForm
-              handler={(e) => {
-                addProblemHandler(e).then(setMode(""));
-              }}
-            >
+            <TextInputForm handler={addProblemHandler}>
               <CategoryInput categories={["Reading", "Structure"]} />
             </TextInputForm>
           </div>
@@ -397,11 +398,7 @@ const Problems = () => {
         {mode === "image" && (
           <div>
             <h3>Add Problem Type Image</h3>
-            <TextInputForm
-              handler={(e) => {
-                addProblemHandler(e).then(setMode(""));
-              }}
-            >
+            <TextInputForm handler={addProblemHandler}>
               <CategoryInput categories={["Reading", "Structure"]} />
               <ImageInput fileChangeHandler={fileChangedHandler} />
             </TextInputForm>
@@ -410,11 +407,7 @@ const Problems = () => {
         {mode === "audio" && (
           <div>
             <h3>Add Problem Type Audio</h3>
-            <TextInputForm
-              handler={(e) => {
-                addProblemHandler(e).then(setMode(""));
-              }}
-            >
+            <TextInputForm handler={addProblemHandler}>
               <input
                 type="radio"
                 id="problem-type-listening"
