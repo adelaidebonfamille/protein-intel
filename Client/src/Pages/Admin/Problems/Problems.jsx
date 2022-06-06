@@ -74,19 +74,26 @@ const Problems = () => {
       formData.append("problem", selectedFile.current);
     }
 
-    await axios
-      .post(baseUrl, formData, {
+    let response;
+    try {
+      response = await axios.post(baseUrl, formData, {
         headers: {
           "content-type": "multipart/form-data",
           "auth-token": localStorage.getItem("token"),
         },
-      })
-      .then((response) => {
-        console.log(response.data.message);
-      })
-      .catch((error) => {
-        console.log(error);
       });
+    } catch (error) {
+      return console.log(error);
+    }
+    if (!response) {
+      return console.log(response);
+    }
+    if (response.data.message) {
+      console.log(response.data.message);
+    }
+    if (response.data.error) {
+      console.log(response.data.error);
+    }
   };
 
   const deleteProblemHandler = async (e) => {
