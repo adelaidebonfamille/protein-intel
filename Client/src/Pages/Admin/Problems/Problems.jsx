@@ -16,8 +16,14 @@ const Problems = () => {
     (import.meta.env.VITE_API_URL &&
       `${import.meta.env.VITE_API_URL}/admin/problems`) ||
     "http://localhost:5000/api/admin/problems";
-
+  
+  const [mode, setMode] = useState("");
+  const [allProblems, setAllProblems] = useState([]);
+  const [problemShown, setProblemShown] = useState([]);
+  const [categoryShown, setCategoryShown] = useState("");
+  const [order, setOrder] = useState(false);
   const selectedFile = useRef(null);
+
   const fileChangedHandler = (e) => {
     selectedFile.current = e.target.files[0];
   };
@@ -25,7 +31,6 @@ const Problems = () => {
     selectedFile.current = null;
   };
 
-  const [allProblems, setAllProblems] = useState([]);
   const showAllProblemHandler = async () => {
     await axios
       .get(baseUrl, {
@@ -40,10 +45,7 @@ const Problems = () => {
         console.log(error);
       });
   };
-  const [problemShown, setProblemShown] = useState([]);
 
-  const [categoryShown, setCategoryShown] = useState("");
-  const [order, setOrder] = useState(false);
   useEffect(() => {
     let selectedProblem =
       categoryShown == ""
@@ -74,7 +76,7 @@ const Problems = () => {
       formData.append("problem", selectedFile.current);
     }
 
-    await axios
+    axios
       .post(baseUrl, formData, {
         headers: {
           "content-type": "multipart/form-data",
@@ -83,6 +85,9 @@ const Problems = () => {
       })
       .then((response) => {
         console.log(response.data.message);
+      })
+      .then(() => {
+        setMode("");
       })
       .catch((error) => {
         console.log(error);
@@ -143,9 +148,7 @@ const Problems = () => {
       });
   };
 
-  const [mode, setMode] = useState("");
   useEffect(() => {
-    selectedFile.current = null;
     setCategoryShown("");
     setOrder(false);
 
@@ -374,9 +377,7 @@ const Problems = () => {
           <div>
             <h3>Add Problem Type Text</h3>
             <TextInputForm
-              handler={(e) => {
-                addProblemHandler(e).then(setMode(""));
-              }}
+              handler={addProblemHandler}
             >
               <CategoryInput categories={["Reading", "Structure"]} />
             </TextInputForm>
@@ -386,9 +387,7 @@ const Problems = () => {
           <div>
             <h3>Add Problem Type Image</h3>
             <TextInputForm
-              handler={(e) => {
-                addProblemHandler(e).then(setMode(""));
-              }}
+              handler={addProblemHandler}
             >
               <CategoryInput categories={["Reading", "Structure"]} />
               <ImageInput fileChangeHandler={fileChangedHandler} />
@@ -399,9 +398,7 @@ const Problems = () => {
           <div>
             <h3>Add Problem Type Audio</h3>
             <TextInputForm
-              handler={(e) => {
-                addProblemHandler(e).then(setMode(""));
-              }}
+              handler={addProblemHandler}
             >
               <input
                 type="radio"
