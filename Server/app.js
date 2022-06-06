@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const db = require("./data/database");
 const dotenv = require("dotenv");
-const path = require("path");
+const bodyParser = require("body-parser");
 
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 const verifyTokenMiddleware = require("./middlewares/verifyToken");
@@ -19,7 +19,8 @@ app.use(cors());
 
 dotenv.config();
 
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
 
 app.use("/problems/files", express.static("./problem-data/files"));
 

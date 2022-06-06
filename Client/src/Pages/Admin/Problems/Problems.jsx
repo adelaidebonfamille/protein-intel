@@ -1,62 +1,67 @@
 import styles from "./Problems.module.css";
 import axios from "axios";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 
 import TextInputForm from "./FormInput/TextInputForm";
 import CategoryInput from "./FormInput/CategoryInput";
 import ImageInput from "./ImageInput/ImageInput";
 import AudioInput from "./AudioInput/AudioInput";
 import UpdateTextForm from "./UpdateForm/UpdateTextForm";
-import { useEffect } from "react";
 
 const Problems = () => {
   const baseUrl =
     (import.meta.env.VITE_API_URL &&
       `${import.meta.env.VITE_API_URL}/admin/problems`) ||
     "http://localhost:5000/api/admin/problems";
-  
-  const [mode, setMode] = useState("");
-  const [allProblems, setAllProblems] = useState([]);
-  const [problemShown, setProblemShown] = useState([]);
-  const [categoryShown, setCategoryShown] = useState("");
-  const [order, setOrder] = useState(false);
-  const selectedFile = useRef(null);
 
+  const [mode, setMode] = useState("");
+
+  const [selectedFile, setSelectedFile] = useState(null);
   const fileChangedHandler = (e) => {
-    selectedFile.current = e.target.files[0];
+    setSelectedFile(e.target.files[0]);
   };
   const fileCanceledHandler = (e) => {
-    selectedFile.current = null;
+    setSelectedFile(null);
   };
 
+  const [allProblems, setAllProblems] = useState([]);
   const showAllProblemHandler = async () => {
-    await axios
-      .get(baseUrl, {
+    let response;
+    try {
+      await axios.get(baseUrl, {
         headers: {
           "auth-token": localStorage.getItem("token"),
         },
-      })
-      .then((response) => {
-        setAllProblems(response.data.problems);
-      })
-      .catch((error) => {
-        console.log(error);
       });
+    } catch (error) {
+      return console.log(error);
+    }
+    if (!response) {
+      return console.log("Error");
+    }
+    if (response.data.problems) {
+      setAllProblems(response.data.problems);
+    }
+    if (response.data.error) {
+      console.log(response.data.error);
+    }
   };
 
+  const [problemShown, setProblemShown] = useState([]);
+  const [categoryShown, setCategoryShown] = useState("");
+  const [order, setOrder] = useState(false);
   useEffect(() => {
-    let selectedProblem =
+    let chosenProblem =
       categoryShown == ""
         ? allProblems
         : allProblems.filter((problem) => problem.type === categoryShown);
 
     if (order) {
-      selectedProblem = selectedProblem.slice().reverse();
+      chosenProblem = chosenProblem.slice().reverse();
     }
 
-    setProblemShown(selectedProblem);
+    setProblemShown(chosenProblem);
   }, [categoryShown, order, allProblems]);
 
   const addProblemHandler = async (e) => {
@@ -72,47 +77,52 @@ const Problems = () => {
       formData.append("choice[]", e.target[`choice-${i}`].value);
     }
 
-    if (selectedFile.current) {
-      formData.append("problem", selectedFile.current);
+    if (selectedFile) {
+      formData.append("problem", selectedFile);
     }
 
-    axios
-      .post(baseUrl, formData, {
+    let response;
+    try {
+      response = await axios.post(baseUrl, formData, {
         headers: {
           "content-type": "multipart/form-data",
           "auth-token": localStorage.getItem("token"),
         },
-      })
-      .then((response) => {
-        console.log(response.data.message);
-      })
-      .then(() => {
-        setMode("");
-      })
-      .catch((error) => {
-        console.log(error);
       });
+    } catch (error) {
+      return console.log(error);
+    }
+    if (!response) {
+      return console.log("error Connecting to server");
+    }
+    if (response.data.message) {
+      console.log(response.data.message);
+    }
+    if (response.data.error) {
+      console.log(response.data.error);
+    }
   };
 
   const deleteProblemHandler = async (e) => {
-    await axios
-      .delete(`${baseUrl}/${e.target.dataset.id}`, {
+    let response;
+    try {
+      response = await axios.delete(`${baseUrl}/${e.target.dataset.id}`, {
         headers: {
           "auth-token": localStorage.getItem("token"),
         },
-      })
-      .then((response) => {
-        console.log(response.data.message);
-        showAllProblemHandler();
-      })
-      .catch((error) => {
-        console.log(error);
       });
+    } catch (error) {}
+
+    if (!response) {
+      return console.log("error Connecting to server");
+    } else {
+      showAllProblemHandler();
+    }
   };
 
-  const selectedProblem = useRef({});
+  const [selectedProblem, setSelectedProblem] = useState({});
   const selectProblem = (e) => {
-    selectedProblem.current = { ...e.target.dataset };
+    setSelectedProblem({ ...e.target.dataset });
     setMode("update");
   };
 
@@ -129,23 +139,31 @@ const Problems = () => {
       formData.append("choice[]", e.target[`choice-${i}`].value);
     }
 
-    if (selectedFile.current) {
-      formData.append("problem", selectedFile.current);
+    if (selectedFile) {
+      formData.append("problem", selectedFile);
     }
 
-    await axios
-      .patch(`${baseUrl}/${e.target.id.value}`, formData, {
+    let response;
+    try {
+      await axios.patch(`${baseUrl}/${e.target.id.value}`, formData, {
         headers: {
           "content-type": "multipart/form-data",
           "auth-token": localStorage.getItem("token"),
         },
-      })
-      .then((response) => {
-        console.log(response.data.message);
-      })
-      .catch((error) => {
-        console.log(error);
       });
+    } catch (error) {
+      return console.log(error);
+    }
+    if (!response) {
+      return console.log("error Connecting to server");
+    }
+    if (response.data.message) {
+      console.log(response.data.message);
+      showAllProblemHandler().then(setMode(""));
+    }
+    if (response.data.error) {
+      console.log(response.data.error);
+    }
   };
 
   useEffect(() => {
@@ -153,7 +171,7 @@ const Problems = () => {
     setOrder(false);
 
     if (mode !== "search" && mode !== "update") {
-      selectedProblem.current = null;
+      setSelectedProblem(null)
     }
 
     window.scrollTo(0, 0);
@@ -362,23 +380,17 @@ const Problems = () => {
           <div>
             <h3>Update Problem</h3>
             <UpdateTextForm
-              handler={(e) => {
-                updateProblemHandler(e)
-                  .then(setTimeout(showAllProblemHandler, 100))
-                  .then(setMode("search"));
-              }}
+              handler={updateProblemHandler}
               fileChangeHandler={fileChangedHandler}
               fileCancelHandler={fileCanceledHandler}
-              problem={selectedProblem.current}
+              problem={selectedProblem}
             />
           </div>
         )}
         {mode === "text" && (
           <div>
             <h3>Add Problem Type Text</h3>
-            <TextInputForm
-              handler={addProblemHandler}
-            >
+            <TextInputForm handler={addProblemHandler}>
               <CategoryInput categories={["Reading", "Structure"]} />
             </TextInputForm>
           </div>
@@ -386,9 +398,7 @@ const Problems = () => {
         {mode === "image" && (
           <div>
             <h3>Add Problem Type Image</h3>
-            <TextInputForm
-              handler={addProblemHandler}
-            >
+            <TextInputForm handler={addProblemHandler}>
               <CategoryInput categories={["Reading", "Structure"]} />
               <ImageInput fileChangeHandler={fileChangedHandler} />
             </TextInputForm>
@@ -397,9 +407,7 @@ const Problems = () => {
         {mode === "audio" && (
           <div>
             <h3>Add Problem Type Audio</h3>
-            <TextInputForm
-              handler={addProblemHandler}
-            >
+            <TextInputForm handler={addProblemHandler}>
               <input
                 type="radio"
                 id="problem-type-listening"

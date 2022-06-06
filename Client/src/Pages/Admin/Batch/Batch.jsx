@@ -86,7 +86,7 @@ const Batch = () => {
 
   useEffect(() => {
     getAllBatch();
-  });
+  }, []);
 
   const [mode, setMode] = useState("search");
 
