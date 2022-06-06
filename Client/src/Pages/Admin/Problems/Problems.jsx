@@ -2,14 +2,13 @@ import styles from "./Problems.module.css";
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 
 import TextInputForm from "./FormInput/TextInputForm";
 import CategoryInput from "./FormInput/CategoryInput";
 import ImageInput from "./ImageInput/ImageInput";
 import AudioInput from "./AudioInput/AudioInput";
 import UpdateTextForm from "./UpdateForm/UpdateTextForm";
-import { useEffect, useState } from "react";
 
 const Problems = () => {
   const baseUrl =
