@@ -153,6 +153,14 @@ const getAllUserScore = async (req, res, next) => {
 	}
 	if (!allUser) return next(new Error("No user found"));
 
+	let allBatch;
+	try {
+		allBatch = await Batch.find();
+	} catch (error) {
+		return next(error);
+	}
+	if (!allBatch) return next(new Error("No batch found"));
+
 	// join user, test and score
 	const scoreAndUserData = allUserScore.map((score) => {
 		const user = allUser.find((user) => user.nim === score.nim);
@@ -173,9 +181,21 @@ const getAllUserScore = async (req, res, next) => {
 		};
 	});
 
+	//join batch scoreAndUserData
+	const batchScoreAndUserData = allBatch.map((batch) => {
+		const batchScore = scoreAndUserData.filter(
+			(score) => score.batchId === batch._id
+		);
+		return {
+			batchId: batch._id,
+			batchName: batch.name,
+			batchScore,
+		};
+	});
+
 	res.json({
 		message: "All user score delivered successfully",
-		scoreData: scoreAndUserData,
+		allBatchScore: batchScoreAndUserData,
 	});
 };
 
