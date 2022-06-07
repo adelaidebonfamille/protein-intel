@@ -1,4 +1,5 @@
 const Problem = require("../models/problem.model");
+const User = require("../models/user.model");
 const Test = require("../models/test.model");
 const Score = require("../models/score.model");
 const Batch = require("../models/batch.model");
@@ -128,15 +129,54 @@ const updateProblemById = async (req, res, next) => {
 };
 
 const getAllUserScore = async (req, res, next) => {
+	let allUserScore;
 	try {
-		const allUserScore = await Score.find({});
-		res.json({
-			message: "All user score delivered successfully",
-			userScore: allUserScore,
-		});
+		allUserScore = await Score.find();
 	} catch (error) {
 		return next(error);
 	}
+	if (!allUserScore) return next(new Error("No score found"));
+
+	let allTest;
+	try {
+		allTest = await Test.find();
+	} catch (error) {
+		return next(error);
+	}
+	if (!allTest) return next(new Error("No test found"));
+
+	let allUser;
+	try {
+		allUser = await User.find();
+	} catch (error) {
+		return next(error);
+	}
+	if (!allUser) return next(new Error("No user found"));
+
+	// join user, test and score
+	const scoreAndUserData = allUserScore.map((score) => {
+		const user = allUser.find((user) => user.nim === score.nim);
+		const test = allTest.find((test) => test.nim === score.nim);
+
+		return {
+			nim: score.nim,
+			name: user.name,
+			totalScore: score.totalScore,
+			subTestScore: {
+				reading: score.reading,
+				listening: score.listening,
+				structure: score.structure,
+			},
+			faculty: user.faculty,
+			major: user.major,
+			batchId: test.batchId,
+		};
+	});
+
+	res.json({
+		message: "All user score delivered successfully",
+		scoreData: scoreAndUserData,
+	});
 };
 
 const getAllBatch = async (req, res, next) => {

@@ -30,7 +30,12 @@ const startTest = async (req, res, next) => {
 	} catch (error) {
 		return next(error);
 	}
-	if (existingTest) return next(new Error("You have already started a test"));
+	if (existingTest)
+		return next(
+			new Error(
+				"You have already started a test or you are already finished the test"
+			)
+		);
 
 	let batch;
 	try {
