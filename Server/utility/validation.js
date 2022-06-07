@@ -52,10 +52,6 @@ const updateUserValidation = (data) => {
 
 const startTestValidation = (data) => {
 	const schema = Joi.object({
-		nim: Joi.string().required().min(14).max(14),
-		password: Joi.string().required().min(6).max(255),
-		name: Joi.string().required().min(3).max(255),
-		email: Joi.string().required().min(6).max(255),
 		faculty: Joi.string().required(),
 		major: Joi.string().required(),
 		entryYear: Joi.number().required(),
