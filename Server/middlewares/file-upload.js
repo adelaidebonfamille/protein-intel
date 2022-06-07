@@ -10,8 +10,8 @@ const kpmUpload = multer({
 		},
 	}),
 	fileFilter: (req, file, cb) => {
-		//limit file size to 10MB
-		if (file.size > 10485760) {
+		//limit file size to 1MB
+		if (file.size > 1048576) {
 			return cb(new Error("File is too large"));
 		}
 		let ext = path.extname(file.originalname);
@@ -37,9 +37,8 @@ const problemFileUpload = multer({
 		},
 	}),
 	fileFilter: (req, file, cb) => {
-		//limit file size to 10MB
-		console.log(file);
-		if (file.size > 10485760) {
+		//limit file size to 1MB
+		if (file.size > 1048576) {
 			return cb(new Error("File size exceeded"));
 		}
 		let ext = path.extname(file.originalname);
