@@ -20,8 +20,8 @@ const Login = () => {
         setIsError(null);
         // redirect to login page after 3 second
         setTimeout(() => {
-          navigate("/");
-        }, 3000);
+          navigate("/profile");
+        }, 1000);
       }
     });
   };
