@@ -147,7 +147,7 @@ const Problems = () => {
     formData.append("key", e.target.key.value);
     formData.append("type", e.target.type.value);
 
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 4; i++) {
       formData.append("choice[]", e.target[`choice-${i}`].value);
     }
 
@@ -382,7 +382,6 @@ const Problems = () => {
                     data-choice-2={problem.choice[1]}
                     data-choice-3={problem.choice[2]}
                     data-choice-4={problem.choice[3]}
-                    data-choice-5={problem.choice[4]}
                     data-key={problem.key}
                   />
                   <input

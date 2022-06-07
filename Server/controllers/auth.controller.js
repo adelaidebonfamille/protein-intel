@@ -65,7 +65,7 @@ const userRegister = async (req, res, next) => {
 };
 
 const userLogin = async (req, res, next) => {
-	const { email, password } = req.body;
+	let { email, password } = req.body;
 	email = email.toLowerCase();
 
 	const { error } = validation.loginValidation({

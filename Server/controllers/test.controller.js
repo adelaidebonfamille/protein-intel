@@ -21,8 +21,8 @@ const startTest = async (req, res, next) => {
 	}
 	if (!user) return next(new Error("User not found"));
 
-	const { error } = validation.startTestValidation(user);
-	if (error) return next(new Error(error.details[0].message));
+	// const { error } = validation.startTestValidation(user);
+	// if (error) return next(new Error(error.details[0].message));
 
 	let existingTest;
 	try {

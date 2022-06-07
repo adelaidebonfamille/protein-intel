@@ -9,6 +9,21 @@
   width: 100%;
 }
 
+.title {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  background-color: white;
+  padding: 3rem;
+  box-shadow: 0 5px 10px rgba(0,0,0, 0.1);
+}
+
+.title h1, .title h4 {
+  color: #5e5ff5;
+  margin-bottom: .25rem;
+}
+
 .form-container {
   min-height: 100vh;
   display: flex;
@@ -38,10 +53,11 @@
 
 .file {
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   margin: 8px 0;
   border: none;
+  width: 100%;
 }
 
 .form-container .file button {

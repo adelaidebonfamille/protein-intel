@@ -18,7 +18,7 @@ export default function SeeScore() {
     setTimeout(() => {
       document.getElementById(totalScoreShownId).style.opacity = "1";
       setTotalScoreShown(scores.totalScore);
-    }, 100);
+    }, 300);
   };
 
   const calculateScore = async () => {
@@ -64,13 +64,13 @@ export default function SeeScore() {
 
   const getColorFromScore = () => {
     if (scores.totalScore <= 420) {
-      return "#bf616a";
+      return "#c74653";
     } else if (scores.totalScore <= 480) {
-      return "#d08770";
+      return "#ebe660";
     } else if (scores.totalScore <= 520) {
-      return "#a3be8c";
+      return "#aaeb73";
     } else {
-      return "#ebcb8b";
+      return "#62f5fc";
     }
   };
 

@@ -44,6 +44,7 @@ const Exam = () => {
   };
 
   const startTest = async (e) => {
+    setIsLoading(true);
     await axios
       .post(
         baseUrl,
@@ -60,6 +61,7 @@ const Exam = () => {
         console.log(res.data.message);
       })
       .then(() => {
+        setIsLoading(false);
         setIsNotStarted(false);
       })
       .catch((error) => {
