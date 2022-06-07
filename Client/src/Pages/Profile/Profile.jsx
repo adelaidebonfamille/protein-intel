@@ -82,6 +82,13 @@ const Profile = () => {
 
   return (
     <div className={styles["form-container"]}>
+      <div className={styles["title"]}>
+        <h1>Profile</h1>
+        <p>Complete all data here to start Protein Exam</p>
+        <br />
+        <h4>Join Protein Whatsapp Group (mandatory)</h4>
+        <a href="https://chat.whatsapp.com/J8j8pSh1sdF3rWCETu1BWsp" target="_blank">https://chat.whatsapp.com/J8j8pSh1sdF3rWCETu1BWs</a>
+      </div>
       <form>
         <label htmlFor="name">Nama</label>
         <input
@@ -128,6 +135,7 @@ const Profile = () => {
         <label htmlFor="phone">Nomor Telpon</label>
         <input type="text" name="phone" id="phone" ref={phone} />
 
+        <label htmlFor="kpm">Upload KPM (max size 1mb)</label>
         <div className={styles.file}>
           <button
             onClick={(e) => {
@@ -143,6 +151,7 @@ const Profile = () => {
             hidden
             id="kpm"
             name="kpm"
+            accept=".png .jpg .jpeg .pdf .docx .doc"
             onChange={fileChangedHandler}
           />
         </div>

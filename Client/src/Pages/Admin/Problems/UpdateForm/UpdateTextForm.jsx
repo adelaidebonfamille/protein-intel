@@ -184,14 +184,6 @@ const UpdateTextForm = (props) => {
           cols="60"
           rows="2"
         ></textarea>
-        E{" "}
-        <textarea
-          name="choice-5"
-          defaultValue={props.problem["choice-5"]}
-          id=""
-          cols="60"
-          rows="2"
-        ></textarea>
       </div>
 
       <p>Right Answer</p>
@@ -262,23 +254,6 @@ const UpdateTextForm = (props) => {
           <>
             <input type="radio" id="answer-type4" name="key" defaultValue="D" />
             <label htmlFor="answer-type4">D</label>
-          </>
-        )}
-        {props.problem.key === "E" ? (
-          <>
-            <input
-              type="radio"
-              id="answer-type5"
-              name="key"
-              defaultValue="E"
-              defaultChecked
-            />
-            <label htmlFor="answer-type5">E</label>
-          </>
-        ) : (
-          <>
-            <input type="radio" id="answer-type5" name="key" defaultValue="E" />
-            <label htmlFor="answer-type5">E</label>
           </>
         )}
       </div>

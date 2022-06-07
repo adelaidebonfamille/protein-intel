@@ -27,7 +27,7 @@ const addProblemValidation = (data) => {
 		description: Joi.string().required(),
 		key: Joi.string().required(),
 		type: Joi.string().required(),
-		choice: Joi.array().required().min(5).max(5),
+		choice: Joi.array().required().min(4).max(4),
 	});
 	return schema.validate(data);
 };

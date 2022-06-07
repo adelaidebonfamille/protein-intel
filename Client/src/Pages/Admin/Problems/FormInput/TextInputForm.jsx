@@ -18,8 +18,7 @@ const TextInputForm = (props) => {
         <textarea name="choice-1" id="" cols="60" rows="2" required></textarea>B{" "}
         <textarea name="choice-2" id="" cols="60" rows="2" required></textarea>C{" "}
         <textarea name="choice-3" id="" cols="60" rows="2" required></textarea>D{" "}
-        <textarea name="choice-4" id="" cols="60" rows="2" required></textarea>E{" "}
-        <textarea name="choice-5" id="" cols="60" rows="2" required></textarea>
+        <textarea name="choice-4" id="" cols="60" rows="2" required></textarea>
       </div>
       <p>Right Answer</p>
       <div className={styles.keys}>
@@ -34,9 +33,6 @@ const TextInputForm = (props) => {
 
         <input type="radio" id="answer-type4" name="key" value="D" required />
         <label htmlFor="answer-type4">D</label>
-
-        <input type="radio" id="answer-type5" name="key" value="E" required />
-        <label htmlFor="answer-type5">E</label>
       </div>
       <br />
       <button type="submit">Add Problem</button>
