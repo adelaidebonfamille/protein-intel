@@ -21,7 +21,7 @@ const Login = () => {
         // redirect to login page after 3 second
         setTimeout(() => {
           navigate("/profile");
-        }, 3000);
+        }, 1000);
       }
     });
   };

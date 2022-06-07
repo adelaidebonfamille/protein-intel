@@ -30,7 +30,7 @@ const Register = () => {
           //redirect to login page after 5 second
           setTimeout(() => {
             navigate("/login");
-          }, 5000);
+          }, 1000);
         }
       });
   };
