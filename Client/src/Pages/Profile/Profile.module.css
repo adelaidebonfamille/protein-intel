@@ -16,12 +16,13 @@
   justify-content: center;
   background-color: white;
   padding: 3rem;
-  box-shadow: 0 5px 10px rgba(0,0,0, 0.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-.title h1, .title h4 {
+.title h1,
+.title h4 {
   color: #5e5ff5;
-  margin-bottom: .25rem;
+  margin-bottom: 0.25rem;
 }
 
 .form-container {
@@ -140,4 +141,19 @@
 
 .form-container form input:not(.disabled) {
   background: #5e5ef53d;
+}
+.message {
+  display: flex;
+  margin-top: 50px;
+  border: none;
+  color: rgb(255, 255, 255);
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  background-color: rgb(76, 243, 61);
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  text-align: center;
 }

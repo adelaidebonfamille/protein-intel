@@ -58,7 +58,7 @@ const Login = () => {
               </Link>
 
               {isError && <div className={styles.error}>{isError}</div>}
-              {isMessage && <div className={styles.messsage}>{isMessage}</div>}
+              {isMessage && <div className={styles.message}>{isMessage}</div>}
 
               <button
                 type="submit"

@@ -10,6 +10,7 @@ const Profile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [kpmName, setKpmName] = useState("Tidak Ada File Terpilih");
   const [isLoading, setIsLoading] = useState(false);
+  const [isMessage, setIsMessage] = useState(null);
 
   const [name, setName] = useState("");
   const [nim, setNim] = useState("");
@@ -68,6 +69,7 @@ const Profile = () => {
 
     try {
       const res = await axios.patch(`${baseUrl}/profile`, formData, config);
+      setIsMessage(res.data.message);
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -87,7 +89,12 @@ const Profile = () => {
         <p>Complete all data here to start Protein Exam</p>
         <br />
         <h4>Join Protein Whatsapp Group (mandatory)</h4>
-        <a href="https://chat.whatsapp.com/J8j8pSh1sdF3rWCETu1BWsp" target="_blank">https://chat.whatsapp.com/J8j8pSh1sdF3rWCETu1BWs</a>
+        <a
+          href="https://chat.whatsapp.com/J8j8pSh1sdF3rWCETu1BWsp"
+          target="_blank"
+        >
+          https://chat.whatsapp.com/J8j8pSh1sdF3rWCETu1BWs
+        </a>
       </div>
       <form>
         <label htmlFor="name">Nama</label>
@@ -151,10 +158,16 @@ const Profile = () => {
             hidden
             id="kpm"
             name="kpm"
-            accept=".png .jpg .jpeg .pdf .docx .doc"
+            accept=".png,.jpg,.jpeg,.pdf,.docx,.doc"
             onChange={fileChangedHandler}
           />
         </div>
+
+        {isMessage && (
+          <div className={styles.message}>
+            <p>{isMessage}</p>
+          </div>
+        )}
 
         <button type="submit">Submit</button>
       </form>

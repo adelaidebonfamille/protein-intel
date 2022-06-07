@@ -100,7 +100,7 @@ const Register = () => {
                 </div>
               )}
               {isMessage && (
-                <div className={`${styles["input-field"]} ${styles.messsage}`}>
+                <div className={`${styles["input-field"]} ${styles.message}`}>
                   <span>{`${isMessage}`}</span>
                 </div>
               )}
