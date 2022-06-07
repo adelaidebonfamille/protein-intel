@@ -21,7 +21,6 @@ const startTest = async (req, res, next) => {
 	}
 	if (!user) return next(new Error("User not found"));
 
-<<<<<<< HEAD
 	const { error } = validation.startTestValidation({
 		faculty: user.faculty,
 		major: user.major,
@@ -33,10 +32,6 @@ const startTest = async (req, res, next) => {
 		return next(
 			new Error("Please Complete Your Profile First Before Starting Exam")
 		);
-=======
-	// const { error } = validation.startTestValidation(user);
-	// if (error) return next(new Error(error.details[0].message));
->>>>>>> 44815da780b7d6a9583bf20236fc872143f00870
 
 	let existingTest;
 	try {

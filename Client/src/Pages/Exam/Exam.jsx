@@ -43,14 +43,8 @@ const Exam = () => {
     setSelectedBatch({});
   };
 
-<<<<<<< HEAD
-  const startTest = async (e) => {
-    setIsLoading(true);
-    await axios
-=======
   const startTest = (e) => {
     axios
->>>>>>> dd83c60caf45357ddc81e2105bbb083324ad5ed4
       .post(
         baseUrl,
         {
@@ -67,13 +61,6 @@ const Exam = () => {
         setIsNotStarted(false);
         console.log(res.data.message);
       })
-<<<<<<< HEAD
-      .then(() => {
-        setIsLoading(false);
-        setIsNotStarted(false);
-      })
-=======
->>>>>>> dd83c60caf45357ddc81e2105bbb083324ad5ed4
       .catch((error) => {
         return alert(error);
       });
