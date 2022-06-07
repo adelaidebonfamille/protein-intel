@@ -15,14 +15,7 @@ const kpmUpload = multer({
 			return cb(new Error("File is too large"));
 		}
 		let ext = path.extname(file.originalname);
-		if (
-			ext !== ".png" &&
-			ext !== ".jpg" &&
-			ext !== ".jpeg" &&
-			ext !== ".pdf" &&
-			ext !== ".docx" &&
-			ext !== ".doc"
-		) {
+		if (ext !== ".png" && ext !== ".jpg" && ext !== ".jpeg" && ext !== ".pdf") {
 			return cb(new Error("Only images, pdf and docs are allowed"));
 		}
 		cb(null, true);
