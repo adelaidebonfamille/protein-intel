@@ -4,6 +4,8 @@ const Score = require("../models/score.model");
 const Batch = require("../models/batch.model");
 const User = require("../models/user.model");
 
+const validation = require("../utility/validation");
+
 const toeflConversionTable = require("../utility/toefl-conversion-table");
 const randomizeArrayAlgorithm = require("../utility/randomize-array-algorithm");
 
@@ -18,6 +20,9 @@ const startTest = async (req, res, next) => {
 		return next(error);
 	}
 	if (!user) return next(new Error("User not found"));
+
+	const { error } = validation.startTestValidation(user);
+	if (error) return next(new Error(error.details[0].message));
 
 	let existingTest;
 	try {
@@ -266,9 +271,7 @@ const saveTestAnswer = async (req, res, next) => {
 		testType !== "listening" &&
 		testType !== "structure"
 	) {
-		return next(
-			new Error("Test type must be reading, listening or structure")
-		);
+		return next(new Error("Test type must be reading, listening or structure"));
 	}
 
 	let test;
@@ -287,13 +290,15 @@ const saveTestAnswer = async (req, res, next) => {
 		return next(new Error("Sub test is over"));
 
 	let answerIndex = -1;
-	 for (let i = 0; i < test.answers[testType].length; i++) {
-		 if (test.answers[testType][i].problemId.toString() === testAnswers.problemId) {
-			 answerIndex = i;
-			 break;
-		 }
-	 }
-	 if (answerIndex === -1) return next(new Error("Problem not found"));
+	for (let i = 0; i < test.answers[testType].length; i++) {
+		if (
+			test.answers[testType][i].problemId.toString() === testAnswers.problemId
+		) {
+			answerIndex = i;
+			break;
+		}
+	}
+	if (answerIndex === -1) return next(new Error("Problem not found"));
 
 	const insertedAnswer = {
 		problemId: test.answers[testType][answerIndex].problemId,
@@ -319,14 +324,18 @@ const findTestByNim = async (req, res, next) => {
 	const { nim } = req.user;
 
 	try {
-		let test
-		test = await Test.findOne({ nim }, { answers: 0 })
+		let test;
+		test = await Test.findOne({ nim }, { answers: 0 });
 		if (!test) return next(new Error("Test not found"));
 
 		const testGroups = ["reading", "listening", "structure"];
 
 		testGroups.map((testGroup) => {
-			if (!test.testTime[testGroup].isOver && test.testTime[testGroup].timeLeft && (new Date(test.testTime[testGroup].timeLeft) < Date.now())) {
+			if (
+				!test.testTime[testGroup].isOver &&
+				test.testTime[testGroup].timeLeft &&
+				new Date(test.testTime[testGroup].timeLeft) < Date.now()
+			) {
 				test.testTime[testGroup].isOver = true;
 			}
 		});
@@ -337,17 +346,16 @@ const findTestByNim = async (req, res, next) => {
 
 		try {
 			test = await Test.findOneAndUpdate(
-				{nim},
+				{ nim },
 				{
-					testTime: test.testTime, 
-					isTestOver: test.isTestOver
+					testTime: test.testTime,
+					isTestOver: test.isTestOver,
 				},
-				{new: true}
+				{ new: true }
 			);
 		} catch (error) {
 			return next(error);
 		}
-			
 
 		res.json({ test, message: "Test found" });
 	} catch (error) {
@@ -362,11 +370,7 @@ const endTestAndCalculateScore = async (req, res, next) => {
 	try {
 		test = await Test.findOne({ nim });
 		if (!test) return next(new Error("Test not found"));
-		await Test.findOneAndUpdate(
-			{ nim },
-			{ isTestOver: true },
-			{ new: true }
-		);
+		await Test.findOneAndUpdate({ nim }, { isTestOver: true }, { new: true });
 	} catch (error) {
 		return next(error);
 	}
@@ -412,10 +416,13 @@ const endTestAndCalculateScore = async (req, res, next) => {
 		answerGroupScore[answerGroup] =
 			toeflConversionTable[userScore[answerGroup]][answerGroup];
 	}
-	totalScore =
-		Math.round((answerGroupScore.reading +
+	totalScore = Math.round(
+		((answerGroupScore.reading +
 			answerGroupScore.listening +
-			answerGroupScore.structure) * 10 / 3)
+			answerGroupScore.structure) *
+			10) /
+			3
+	);
 
 	if (totalScore < 310) totalScore = 310;
 
@@ -431,15 +438,12 @@ const endTestAndCalculateScore = async (req, res, next) => {
 		return next(error);
 	}
 
-	res.json({message: "successfully ended test and calculated score"})
+	res.json({ message: "successfully ended test and calculated score" });
 };
 
 const getAllActiveBatch = async (req, res, next) => {
 	try {
-		const activeBatch = await Batch.find(
-			{ isActive: true },
-			{ isActive: 0 }
-		);
+		const activeBatch = await Batch.find({ isActive: true }, { isActive: 0 });
 
 		res.json({ activeBatch, message: "success getting active batch" });
 	} catch (error) {
@@ -463,10 +467,15 @@ const getTestProblems = async (req, res, next) => {
 
 	let testProblems;
 	try {
-		testProblems = await Promise.all(test.answers[testGroup].map(async (answer) => {
-			const problem = await Problem.findOne({ _id: answer.problemId }, { key: 0 });
-			return problem; 
-		}));
+		testProblems = await Promise.all(
+			test.answers[testGroup].map(async (answer) => {
+				const problem = await Problem.findOne(
+					{ _id: answer.problemId },
+					{ key: 0 }
+				);
+				return problem;
+			})
+		);
 	} catch (error) {
 		return next(error);
 	}
