@@ -43,8 +43,8 @@ const Exam = () => {
     setSelectedBatch({});
   };
 
-  const startTest = async (e) => {
-    await axios
+  const startTest = (e) => {
+    axios
       .post(
         baseUrl,
         {
@@ -56,14 +56,13 @@ const Exam = () => {
         }
       )
       .then((res) => {
+        if (res.data.error) return alert(res.data.error);
         setTest(res.data.test);
+        setIsNotStarted(false);
         console.log(res.data.message);
       })
-      .then(() => {
-        setIsNotStarted(false);
-      })
       .catch((error) => {
-        console.log(error);
+        return alert(error);
       });
   };
 
