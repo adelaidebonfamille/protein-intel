@@ -48,6 +48,7 @@ db.connectToDatabase()
 			console.log(`Server running on port ${PORT}`);
 		});
 		server.keepAliveTimeout = 61 * 1000;
+		server.headersTimeout = 122 * 1000;
 	})
 	.catch((err) => {
 		console.log(err);
