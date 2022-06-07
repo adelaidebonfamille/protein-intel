@@ -15,26 +15,30 @@ const userRoutes = require("./routers/user.routes");
 
 const app = express();
 
-app.use(cors());
+try {
+	app.use(cors());
 
-dotenv.config();
+	dotenv.config();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
 
-app.use("/problems/files", express.static("./problem-data/files"));
+	app.use("/problems/files", express.static("./problem-data/files"));
 
-app.use("/api/auth", authRoutes);
+	app.use("/api/auth", authRoutes);
 
-app.use(verifyTokenMiddleware);
+	app.use(verifyTokenMiddleware);
 
-app.use("/api/admin", verifyRolesMiddleware.bind(null, "admin"), adminRoutes);
+	app.use("/api/admin", verifyRolesMiddleware.bind(null, "admin"), adminRoutes);
 
-app.use("/api/user", verifyRolesMiddleware.bind(null, "user"), userRoutes);
+	app.use("/api/user", verifyRolesMiddleware.bind(null, "user"), userRoutes);
 
-app.use("/api/test", verifyRolesMiddleware.bind(null, "user"), testRoutes);
+	app.use("/api/test", verifyRolesMiddleware.bind(null, "user"), testRoutes);
 
-app.use(errorHandlerMiddleware);
+	app.use(errorHandlerMiddleware);
+} catch (error) {
+	console.log(error);
+}
 
 const PORT = process.env.PORT || 5000;
 
