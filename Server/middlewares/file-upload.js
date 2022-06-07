@@ -38,6 +38,7 @@ const problemFileUpload = multer({
 	}),
 	fileFilter: (req, file, cb) => {
 		//limit file size to 10MB
+		console.log(file);
 		if (file.size > 10485760) {
 			return cb(new Error("File size exceeded"));
 		}

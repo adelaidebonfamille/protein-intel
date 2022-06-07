@@ -33,9 +33,7 @@ const addProblem = async (req, res, next) => {
 
 	for (let c of choice) {
 		if (c === "") {
-			return next(
-				new Error("Each choice must have at least one character")
-			);
+			return next(new Error("Each choice must have at least one character"));
 		}
 	}
 
@@ -53,6 +51,7 @@ const addProblem = async (req, res, next) => {
 
 	try {
 		await problem.save();
+		console.log(associatedFile);
 		res.json({ message: "Problem added successfully" });
 	} catch (error) {
 		return next(error);
@@ -102,9 +101,7 @@ const updateProblemById = async (req, res, next) => {
 
 	for (let c of req.body.choice) {
 		if (c === "") {
-			return next(
-				new Error("Each choice must have at least one character")
-			);
+			return next(new Error("Each choice must have at least one character"));
 		}
 	}
 
