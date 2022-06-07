@@ -60,7 +60,6 @@ const startTestValidation = (data) => {
 		major: Joi.string().required(),
 		entryYear: Joi.number().required(),
 		phone: Joi.string().required(),
-		kpm: Joi.string().required(),
 	});
 	return schema.validate(data);
 };
