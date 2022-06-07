@@ -37,6 +37,7 @@ const problemFileUpload = multer({
 		},
 	}),
 	fileFilter: (req, file, cb) => {
+		git;
 		//limit file size to 10MB
 		if (file.size > 10485760) {
 			return cb(new Error("File size exceeded"));
