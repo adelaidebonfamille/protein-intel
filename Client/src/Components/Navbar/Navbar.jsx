@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <nav className={styles.nav}>
-      <div>
+      <div className={styles.logoContainer}>
         <Link className={styles.logo} to={"/"}>
           <img src={logo} alt="intel-logo" />
           <h1 className={styles["logo-text"]}>
@@ -23,6 +23,7 @@ const Navbar = () => {
           </h1>
         </Link>
       </div>
+
       <ul className={styles.link1}>
         <li>
           <Link to={"/"}>Home</Link>

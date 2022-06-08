@@ -5,8 +5,11 @@
   align-items: center;
   color: black;
   align-items: center;
-
   font-family: "Inter", sans-serif;
+}
+.logoContainer {
+  margin: 0;
+  padding: 0;
 }
 .logo {
   display: flex;
@@ -42,17 +45,16 @@
   text-decoration: none;
 }
 
-.nav .link1 {
+.link1 {
   display: flex;
   list-style: none;
-  width: 24%;
+  gap: 3rem;
   justify-content: space-between;
 }
 
-.nav .link2 {
+.link2 {
   display: flex;
   list-style: none;
-  width: 12%;
   justify-content: space-between;
   gap: 1rem;
   align-items: center;
@@ -106,4 +108,18 @@
 .nav ul li a:hover {
   color: #5e5ff5;
   font: bold;
+}
+.hamburger {
+  visibility: hidden;
+  list-style: none;
+  height: auto;
+}
+@media (max-width: 768px) {
+  .nav .link1,
+  .nav .link2 {
+    display: none;
+  }
+  .nav {
+    justify-content: space-between;
+  }
 }
