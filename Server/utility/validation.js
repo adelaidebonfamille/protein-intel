@@ -42,10 +42,11 @@ const addBatchValidation = (data) => {
 
 const updateUserValidation = (data) => {
   const schema = Joi.object({
-    faculty: Joi.string().required(),
-    major: Joi.string().required(),
-    entryYear: Joi.number().required(),
-    phone: Joi.string().required(),
+    faculty: Joi.string(),
+    major: Joi.string(),
+    entryYear: Joi.number(),
+    phone: Joi.string(),
+    kpm: Joi.string(),
   });
   return schema.validate(data);
 };
