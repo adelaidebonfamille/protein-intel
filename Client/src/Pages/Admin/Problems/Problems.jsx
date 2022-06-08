@@ -76,7 +76,7 @@ const Problems = () => {
     formData.append("key", e.target.key.value);
     formData.append("type", e.target.type.value);
 
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 4; i++) {
       formData.append("choice[]", e.target[`choice-${i}`].value);
     }
 
