@@ -53,6 +53,7 @@
 .error {
   display: flex;
   margin-top: 35px;
+  padding: 1rem;
   border: none;
   outline: rgb(247, 48, 48) 3px solid;
   color: rgb(247, 48, 48);
