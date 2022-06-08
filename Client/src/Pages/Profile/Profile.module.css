@@ -144,7 +144,7 @@
 }
 .message {
   display: flex;
-  margin-top: 50px;
+  margin: 10px 0;
   border: none;
   color: rgb(255, 255, 255);
   font-size: 1rem;
