@@ -20,7 +20,7 @@ const ChooseBatch = (props) => (
       ))}
       {props.allActiveBatch.length == 0 && (
         <div className={styles.error}>
-          <p>There are no active batch right now, please come back later</p>
+          There are no active batch right now, please come back again later
         </div>
       )}
     </div>
