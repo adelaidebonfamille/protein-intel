@@ -9,7 +9,9 @@ const Scores = () => {
       `${import.meta.env.VITE_API_URL}/admin/scores`) ||
     "http://localhost:5000/api/admin/scores";
 
-  const [scores, setScores] = useState([]);
+  const [allScores, setAllScores] = useState([]);
+  const [selectedBatch, setSelectedBatch] = useState("");
+  const [selectedScores, setSelectedScores] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getAllScore = async () => {
@@ -18,9 +20,13 @@ const Scores = () => {
         headers: { "auth-token": localStorage.getItem("token") },
       })
       .then((res) => {
-        setScores((prev) => {
-          let newScores = [...res.data.userScore];
-          newScores.sort((a, b) => b.totalScore - a.totalScore);
+        setAllScores((prev) => {
+          let newScores = [...res.data.allBatchScore];
+          newScores.map((scorePerBatch) => {
+            scorePerBatch.batchScore.sort(
+              (a, b) => b.totalScore - a.totalScore
+            );
+          });
 
           return newScores;
         });
@@ -34,6 +40,18 @@ const Scores = () => {
   };
 
   useEffect(() => {
+    setSelectedScores(
+      ...allScores
+        .filter(
+          (batchAndScore) =>
+            selectedBatch === "" ||
+            batchAndScore.batchName === selectedBatch ||
+            batchAndScore.batchId.toString() === selectedBatch
+        )
+        .map((filteredBatchAndScore) => filteredBatchAndScore.batchScore)
+    );
+  }, [allScores, selectedBatch]);
+  useEffect(() => {
     getAllScore();
   }, []);
 
@@ -42,12 +60,58 @@ const Scores = () => {
       <Link to="/admin">
         <div className={styles["go-back-home"]}>Go back to Admin Homepage</div>
       </Link>
+      <div>
+        <h4>Select Batch Id or name</h4>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSelectedBatch(e.target.batch.value);
+          }}
+        >
+          <input type="text" name="batch" />
+          <button type="submit">Select Batch</button>
+        </form>
+      </div>
       {!loading &&
-        scores.map((score, index) => {
+        selectedScores?.map((score, index) => {
           return (
             <div className={styles.score} key={index}>
-              <p>NIM {score.nim}</p>
-              <p>score {score.totalScore}</p>
+              <tr>
+                <th>NIM</th>
+                <td>{score.nim}</td>
+              </tr>
+              <tr>
+                <th>Name</th>
+                <td>{score.name}</td>
+              </tr>
+              <tr>
+                <th>Score</th>
+                <td>{score.totalScore}</td>
+              </tr>
+              <tr>
+                <th>Reading</th>
+                <td>{score.subTestScore.reading}</td>
+              </tr>
+              <tr>
+                <th>Listening</th>
+                <td>{score.subTestScore.listening}</td>
+              </tr>
+              <tr>
+                <th>Structure</th>
+                <td>{score.subTestScore.structure}</td>
+              </tr>
+              <tr>
+                <th>Faculty</th>
+                <td>{score.faculty}</td>
+              </tr>
+              <tr>
+                <th>Major</th>
+                <td>{score.major}</td>
+              </tr>
+              <tr>
+                <th>Batch Id</th>
+                <td>{score.batchId}</td>
+              </tr>
             </div>
           );
         })}

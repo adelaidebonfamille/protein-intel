@@ -50,3 +50,10 @@
   font-size: 1.25rem;
   border: solid 1px #5e5ff5;
 }
+td, th {
+  text-align: left;
+}
+
+th + td {
+  padding-left: 1rem;
+}

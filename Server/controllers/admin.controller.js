@@ -184,11 +184,11 @@ const getAllUserScore = async (req, res, next) => {
 	//join batch scoreAndUserData
 	const batchScoreAndUserData = allBatch.map((batch) => {
 		const batchScore = scoreAndUserData.filter(
-			(score) => score.batchId === batch._id
+			(score) => score.batchId === batch._id.toString()
 		);
 		return {
 			batchId: batch._id,
-			batchName: batch.name,
+			batchName: batch.batch,
 			batchScore,
 		};
 	});

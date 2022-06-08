@@ -138,6 +138,9 @@
   gap: 4rem;
   margin: 5rem 0;
 }
+.problemSection img {
+  width: 100%;
+}
 .problem-container {
   display: flex;
   flex-direction: column;
