@@ -38,7 +38,7 @@ export const AuthProvider = (props) => {
 
     return {
       error: null,
-      message: "Successfully Registered, redirecting in 5 seconds",
+      message: "Successfully Registered, redirecting...",
     };
   };
 
