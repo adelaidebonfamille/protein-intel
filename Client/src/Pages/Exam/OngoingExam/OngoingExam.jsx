@@ -162,27 +162,25 @@ const OngoingExam = () => {
               </div>
             )}
             <div>
-              <div className={styles["menu-container"]}>
-                <div className={styles.menu}>
-                  <Timer time={time} />
-                  <div className={styles.problemGrid}>
-                    {problems.map((problem, index) => {
-                      return (
-                        <a
-                          href={`#${index + 1}`}
-                          className={styles.gridItem}
-                          key={index}
-                        >
-                          <p>{index + 1}</p>
-                          {answers.find(
-                            (answer) =>
-                              answer.problemId === problem._id &&
-                              answer.answer !== ""
-                          ) && <span></span>}
-                        </a>
-                      );
-                    })}
-                  </div>
+              <div className={styles.menu}>
+                <Timer time={time} />
+                <div className={styles.problemGrid}>
+                  {problems.map((problem, index) => {
+                    return (
+                      <a
+                        href={`#${index + 1}`}
+                        className={styles.gridItem}
+                        key={index}
+                      >
+                        <p>{index + 1}</p>
+                        {answers.find(
+                          (answer) =>
+                            answer.problemId === problem._id &&
+                            answer.answer !== ""
+                        ) && <span></span>}
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
               <div className={styles.problemSection}>
