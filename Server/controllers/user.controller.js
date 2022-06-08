@@ -5,21 +5,23 @@ const User = require("../models/user.model");
 const validation = require("../utility/validation");
 
 const updateUserData = async (req, res, next) => {
+	const { faculty, major, entryYear, phone } = req.body;
 	const nim = req.user.nim;
 	let kpm = "";
 	if (req.file !== undefined) {
 		kpm = req.file.filename;
 	}
 
-	const { error } = validation.updateUserValidation(req.body);
-	if (error) return next(error.details[0]);
-
 	try {
 		await User.findOneAndUpdate(
 			{ nim },
 			{
 				$set: {
-					...req.body,
+					faculty,
+					major,
+					entryYear,
+					phone,
+
 					kpm,
 				},
 			}
