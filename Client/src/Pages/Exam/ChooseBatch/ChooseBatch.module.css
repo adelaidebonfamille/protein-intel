@@ -49,3 +49,18 @@
   transition: 0.2s ease;
   transform: scale(1.01);
 }
+
+.error {
+  display: flex;
+  margin-top: 35px;
+  border: none;
+  outline: rgb(247, 48, 48) 3px solid;
+  color: rgb(247, 48, 48);
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  background-color: rgb(255, 255, 255);
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+}

@@ -19,7 +19,9 @@ const ChooseBatch = (props) => (
         </div>
       ))}
       {props.allActiveBatch.length == 0 && (
-        <p>Connection Error, or there are no available batch</p>
+        <div className={styles.error}>
+          <p>There are no active batch right now, please come back later</p>
+        </div>
       )}
     </div>
   </div>
