@@ -11,6 +11,7 @@ const Profile = () => {
   const [kpmName, setKpmName] = useState("Tidak Ada File Terpilih");
   const [isLoading, setIsLoading] = useState(false);
   const [isMessage, setIsMessage] = useState(null);
+  const [isMessage2, setIsMessage2] = useState(null);
 
   const [name, setName] = useState("");
   const [nim, setNim] = useState("");
@@ -80,6 +81,24 @@ const Profile = () => {
     event.preventDefault();
     setSelectedFile(event.target.files[0]);
     setKpmName(event.target.files[0].name);
+  };
+
+  const passwordChangedHandler = (e) => {
+    e.preventDefault();
+
+    axios
+      .patch(`${baseUrl}/password`, {
+        oldPassword: oldPassword.current.value,
+        newPassword: newPassword.current.value,
+        newConfirmPassword: newConfirmPassword.current.value,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setIsMessage2(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -174,7 +193,7 @@ const Profile = () => {
 
       <div className={styles.border}></div>
 
-      <form action="" className={styles.changepass}>
+      <form onSubmit={passwordChangedHandler} className={styles.changepass}>
         <h3>Change Password</h3>
         <label htmlFor="oldPassword">Old Password</label>
         <input
@@ -187,7 +206,7 @@ const Profile = () => {
         <label htmlFor="password">New Password</label>
         <input
           type="password"
-          name="NewPassword"
+          name="newPassword"
           id="newPassword"
           ref={password}
         />
@@ -199,6 +218,12 @@ const Profile = () => {
           id="newConfirmPassword"
           ref={confirmPassword}
         />
+
+        {isMessage2 && (
+          <div className={styles.message}>
+            <p>{isMessage2}</p>
+          </div>
+        )}
       </form>
     </div>
   );

@@ -13,4 +13,6 @@ router.patch(
 
 router.get("/score", userController.getUserScore);
 
+router.patch("/password", userController.changePassword);
+
 module.exports = router;
