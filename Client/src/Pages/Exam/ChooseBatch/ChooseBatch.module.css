@@ -63,4 +63,5 @@
   transition: all 0.3s ease;
   align-items: center;
   justify-content: center;
+  padding: 2rem;
 }

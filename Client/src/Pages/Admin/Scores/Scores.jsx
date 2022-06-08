@@ -19,7 +19,8 @@ const Scores = () => {
       })
       .then((res) => {
         setScores((prev) => {
-          let newScores = [...res.data.userScore];
+          console.log(res.data.allBatchScore)
+          let newScores = [...res.data.allBatchScore];
           newScores.sort((a, b) => b.totalScore - a.totalScore);
 
           return newScores;
