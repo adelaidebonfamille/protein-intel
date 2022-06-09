@@ -17,7 +17,6 @@ const sendMail = async (content) => {
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
     ...content,
-    text: "Hello world?", // plain text body
   });
 };
 

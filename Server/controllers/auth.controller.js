@@ -144,8 +144,8 @@ const forgotPassword = async (req, res, next) => {
     emailSender({
       to: user.email,
       subject: "Reset Password",
-
       html: `<p>Click <a href="${resetPasswordLink}">here</a> to reset your password</p>`,
+      text: `Click here to reset your password: ${resetPasswordLink}`,
     });
   } catch (error) {
     return next(error);
