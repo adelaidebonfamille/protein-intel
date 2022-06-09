@@ -3,8 +3,8 @@ const nodemailer = require("nodemailer");
 
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport({
-  host: "smtp.office365.com",
-  name: "Office 365",
+  service: "hotmail",
+  name: "smtp.office365.com",
   secure: false, // true for 465, false for other ports
   auth: {
     user: process.env.EMAIL_USER, // generated email address
