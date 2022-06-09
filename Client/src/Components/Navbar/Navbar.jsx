@@ -13,6 +13,10 @@ const Navbar = () => {
     setShowMenu((prev) => !prev);
   };
 
+  const clickMenuHandler = () => {
+    setShowMenu(false);
+  };
+
   const onLogoutHandler = () => {
     authCtx.logout();
   };
@@ -106,7 +110,11 @@ const Navbar = () => {
           )}
         </ul>
       </nav>
-      <ul className={`${styles.menu} ${!showMenu && styles.hideMenu}`}>
+
+      <ul
+        className={`${styles.menu} ${!showMenu && styles.hideMenu}`}
+        onClick={clickMenuHandler}
+      >
         <Link to={"/"}>Home</Link>
         {authCtx.userData && authCtx.userData.role === "admin" ? (
           <>
