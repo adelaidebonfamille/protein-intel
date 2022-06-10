@@ -219,6 +219,10 @@ const Profile = () => {
           ref={confirmPassword}
         />
 
+        <div className={styles.file}>
+          <button type="submit">Change Password</button>
+        </div>
+
         {isMessage2 && (
           <div className={styles.message}>
             <p>{isMessage2}</p>

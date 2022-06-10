@@ -27,7 +27,7 @@ const userRegister = async (req, res, next) => {
   if (error) return next(error.details[0]);
 
   if (!/^\d{14}$/.test(nim)) {
-    return next(new Error("each character in NIM must be a number"));
+    return next(new Error("Each character in NIM must be a number"));
   }
 
   let existingUserByNim;
