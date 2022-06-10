@@ -12,18 +12,21 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isMessage, setIsMessage] = useState(null);
   const [isMessage2, setIsMessage2] = useState(null);
+  const [isError, setIsError] = useState(false);
+  const [isError2, setIsError2] = useState(false);
 
   const [name, setName] = useState("");
   const [nim, setNim] = useState("");
   const [email, setEmail] = useState("");
 
-  const password = useRef();
-  const confirmPassword = useRef();
-  const oldPassword = useRef();
   const faculty = useRef();
   const major = useRef();
   const entryYear = useRef();
   const phone = useRef();
+
+  const oldPassword = useRef();
+  const newPassword = useRef();
+  const newConfirmPassword = useRef();
 
   useEffect(() => {
     setIsLoading(true);
@@ -70,10 +73,12 @@ const Profile = () => {
 
     try {
       const res = await axios.patch(`${baseUrl}/profile`, formData, config);
+      if (res.data.error) return setIsError(res.data.error);
       setIsMessage(res.data.message);
       console.log(res.data);
     } catch (err) {
       console.log(err);
+      setIsError(err.message);
     }
   };
 
@@ -87,17 +92,27 @@ const Profile = () => {
     e.preventDefault();
 
     axios
-      .patch(`${baseUrl}/password`, {
-        oldPassword: oldPassword.current.value,
-        newPassword: newPassword.current.value,
-        newConfirmPassword: newConfirmPassword.current.value,
-      })
+      .patch(
+        `${baseUrl}/password`,
+        {
+          oldPassword: oldPassword.current.value,
+          newPassword: newPassword.current.value,
+          newConfirmPassword: newConfirmPassword.current.value,
+        },
+        {
+          headers: {
+            "auth-token": localStorage.getItem("token"),
+          },
+        }
+      )
       .then((res) => {
         console.log(res.data);
+        if (res.data.error) return setIsError2(res.data.error);
         setIsMessage2(res.data.message);
       })
       .catch((err) => {
         console.log(err);
+        setIsError2(err.message);
       });
   };
 
@@ -188,6 +203,12 @@ const Profile = () => {
           </div>
         )}
 
+        {isError && (
+          <div className={styles.error}>
+            <p>{isError}</p>
+          </div>
+        )}
+
         <button type="submit">Submit</button>
       </form>
 
@@ -208,7 +229,7 @@ const Profile = () => {
           type="password"
           name="newPassword"
           id="newPassword"
-          ref={password}
+          ref={newPassword}
         />
 
         <label htmlFor="confirmPassword">New Confirm Password</label>
@@ -216,7 +237,7 @@ const Profile = () => {
           type="password"
           name="newConfirmPassword"
           id="newConfirmPassword"
-          ref={confirmPassword}
+          ref={newConfirmPassword}
         />
 
         <div className={styles.file}>
@@ -226,6 +247,12 @@ const Profile = () => {
         {isMessage2 && (
           <div className={styles.message}>
             <p>{isMessage2}</p>
+          </div>
+        )}
+
+        {isError2 && (
+          <div className={styles.error}>
+            <p>{isError2}</p>
           </div>
         )}
       </form>
