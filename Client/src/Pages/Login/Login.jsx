@@ -18,7 +18,6 @@ const Login = () => {
       } else {
         setIsMessage(res.message);
         setIsError(null);
-        // redirect to login page after 3 second
         setTimeout(() => {
           navigate("/profile");
         }, 1000);
