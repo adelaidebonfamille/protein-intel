@@ -109,6 +109,10 @@ const Scores = () => {
                 <td>{score.major}</td>
               </tr>
               <tr>
+                <th>Entry Year</th>
+                <td>{score.entryYear}</td>
+              </tr>
+              <tr>
                 <th>Batch Id</th>
                 <td>{score.batchId}</td>
               </tr>
