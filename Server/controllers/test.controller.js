@@ -96,17 +96,17 @@ const startTest = async (req, res, next) => {
 
   const testTime = {
     reading: {
-      time: 60, //minutes
+      time: 55, //minutes
       timeLeft: null,
       isOver: false,
     },
     listening: {
-      time: 60, //minutes
+      time: 35, //minutes
       timeLeft: null,
       isOver: false,
     },
     structure: {
-      time: 45, //minutes
+      time: 25, //minutes
       timeLeft: null,
       isOver: false,
     },
