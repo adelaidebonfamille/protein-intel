@@ -73,7 +73,10 @@ const Scores = () => {
         </form>
       </div>
       {!loading &&
-        selectedScores?.map((score, index) => {
+        <>
+          <h3>Total {selectedScores?.length} scores</h3>
+        
+        {selectedScores?.map((score, index) => {
           return (
             <div className={styles.score} key={index}>
               <tr>
@@ -119,6 +122,9 @@ const Scores = () => {
             </div>
           );
         })}
+        </>
+        
+        }
     </div>
   );
 };
