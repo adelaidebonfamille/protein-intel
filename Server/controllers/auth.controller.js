@@ -11,7 +11,7 @@ const User = require("../models/user.model");
 
 const userRegister = async (req, res, next) => {
   let { nim, password, confirmPassword, name, email } = req.body;
-  email = email.toLowerCase();
+  email = email.toLowerCase().trim();
 
   //check if password and confirmPassword are the same
   if (password !== confirmPassword) {
