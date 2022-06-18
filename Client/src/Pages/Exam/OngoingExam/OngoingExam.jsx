@@ -165,6 +165,7 @@ const OngoingExam = () => {
               <div className={styles.menu}>
                 <Timer time={time} />
                 <div className={styles.problemGrid}>
+                  <div>
                   {problems.map((problem, index) => {
                     return (
                       <a
@@ -181,6 +182,8 @@ const OngoingExam = () => {
                       </a>
                     );
                   })}
+                  </div>
+                  
                 </div>
               </div>
               <div className={styles.problemSection}>
