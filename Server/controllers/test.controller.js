@@ -371,14 +371,6 @@ const findTestByNim = async (req, res, next) => {
 
   if (!test) return next(new Error("Test not found"));
 
-  let isBatchActive;
-  try {
-    isBatchActive = await Batch.findById(test.batchId).isActive;
-  } catch (error) {
-    return next(error);
-  }
-  if (!isBatchActive) return endTestAndCalculateScore(req, res, next);
-
   const testGroups = ["reading", "listening", "structure"];
 
   testGroups.map((testGroup) => {
