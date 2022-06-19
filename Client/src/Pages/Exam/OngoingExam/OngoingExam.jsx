@@ -163,7 +163,7 @@ const OngoingExam = () => {
             )}
             <div>
               <div className={styles.menu}>
-                <Timer time={time} />
+                <Timer endSubTest={endSubTest} time={time} />
                 <div className={styles.problemGrid}>
                   {problems.map((problem, index) => {
                     return (

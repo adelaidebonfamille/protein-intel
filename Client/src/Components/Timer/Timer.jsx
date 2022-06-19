@@ -2,9 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTimer } from "react-timer-hook";
 
+import axios from "axios";
+
 import styles from "./Timer.module.css";
 
-const Timer = ({ time }) => {
+const Timer = ({ time, endSubTest }) => {
   const navigate = useNavigate();
 
   const {
@@ -19,7 +21,7 @@ const Timer = ({ time }) => {
     restart,
   } = useTimer({
     expiryTimestamp: time,
-    onExpire: () => navigate("/exam"),
+    onExpire: endSubTest,
     autoStart: true,
   });
 
