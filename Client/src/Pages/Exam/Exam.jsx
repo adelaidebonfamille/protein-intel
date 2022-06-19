@@ -93,8 +93,8 @@ const Exam = () => {
     <div>
       {!isLoading ? (
         <>
-          {(Object.keys(test).length == 0 &&
-          Object.keys(selectedBatch).length == 0) || test.isTestOver ? (
+          {Object.keys(test).length == 0 &&
+          Object.keys(selectedBatch).length == 0 ? (
             <ChooseBatch
               allActiveBatch={allActiveBatch}
               selectBatch={selectBatch}
