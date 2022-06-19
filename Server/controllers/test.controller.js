@@ -153,6 +153,14 @@ const startSubTest = async (req, res, next) => {
   }
   if (!test) return next(new Error("Test not found"));
 
+  let isBatchActive;
+  try {
+    isBatchActive = await Batch.findById(test.batchId).isActive;
+  } catch (error) {
+    return next(error);
+  }
+  if (!isBatchActive) return endTestAndCalculateScore(req, res, next);
+
   //check if test is over
   if (test.isTestOver) return next(new Error("Test is over"));
 
@@ -200,6 +208,14 @@ const continueSubTest = async (req, res, next) => {
   }
   if (!test) return next(new Error("Test not found"));
   if (test.isTestOver) return next(new Error("Test is over"));
+
+  let isBatchActive;
+  try {
+    isBatchActive = await Batch.findById(test.batchId).isActive;
+  } catch (error) {
+    return next(error);
+  }
+  if (!isBatchActive) return endTestAndCalculateScore(req, res, next);
 
   //check if sub test alredy started
   if (test.testTime[testGroup].timeLeft === null) {
@@ -304,6 +320,14 @@ const saveTestAnswer = async (req, res, next) => {
   if (test.testTime[testType].isOver)
     return next(new Error("Sub test is over"));
 
+  let isBatchActive;
+  try {
+    isBatchActive = await Batch.findById(test.batchId).isActive;
+  } catch (error) {
+    return next(error);
+  }
+  if (!isBatchActive) return endTestAndCalculateScore(req, res, next);
+
   let answerIndex = -1;
   for (let i = 0; i < test.answers[testType].length; i++) {
     if (
@@ -338,44 +362,53 @@ const saveTestAnswer = async (req, res, next) => {
 const findTestByNim = async (req, res, next) => {
   const { nim } = req.user;
 
+  let test;
   try {
-    let test;
     test = await Test.findOne({ nim }, { answers: 0 });
-    if (!test) return next(new Error("Test not found"));
-
-    const testGroups = ["reading", "listening", "structure"];
-
-    testGroups.map((testGroup) => {
-      if (
-        !test.testTime[testGroup].isOver &&
-        test.testTime[testGroup].timeLeft &&
-        new Date(test.testTime[testGroup].timeLeft) < Date.now()
-      ) {
-        test.testTime[testGroup].isOver = true;
-      }
-    });
-
-    if (testGroups.every((testGroup) => test.testTime[testGroup].isOver)) {
-      test.isTestOver = true;
-    }
-
-    try {
-      test = await Test.findOneAndUpdate(
-        { nim },
-        {
-          testTime: test.testTime,
-          isTestOver: test.isTestOver,
-        },
-        { new: true }
-      );
-    } catch (error) {
-      return next(error);
-    }
-
-    res.json({ test, message: "Test found" });
   } catch (error) {
     return next(error);
   }
+
+  if (!test) return next(new Error("Test not found"));
+
+  let isBatchActive;
+  try {
+    isBatchActive = await Batch.findById(test.batchId).isActive;
+  } catch (error) {
+    return next(error);
+  }
+  if (!isBatchActive) return endTestAndCalculateScore(req, res, next);
+
+  const testGroups = ["reading", "listening", "structure"];
+
+  testGroups.map((testGroup) => {
+    if (
+      !test.testTime[testGroup].isOver &&
+      test.testTime[testGroup].timeLeft &&
+      new Date(test.testTime[testGroup].timeLeft) < Date.now()
+    ) {
+      test.testTime[testGroup].isOver = true;
+    }
+  });
+
+  if (testGroups.every((testGroup) => test.testTime[testGroup].isOver)) {
+    test.isTestOver = true;
+  }
+
+  try {
+    test = await Test.findOneAndUpdate(
+      { nim },
+      {
+        testTime: test.testTime,
+        isTestOver: test.isTestOver,
+      },
+      { new: true }
+    );
+  } catch (error) {
+    return next(error);
+  }
+
+  res.json({ test, message: "Test found" });
 };
 
 const endTestAndCalculateScore = async (req, res, next) => {
