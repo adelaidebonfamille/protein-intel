@@ -73,7 +73,10 @@ const Scores = () => {
         </form>
       </div>
       {!loading &&
-        selectedScores?.map((score, index) => {
+        <>
+          <h3>Total {selectedScores?.length} scores</h3>
+        
+        {selectedScores?.map((score, index) => {
           return (
             <div className={styles.score} key={index}>
               <tr>
@@ -109,12 +112,19 @@ const Scores = () => {
                 <td>{score.major}</td>
               </tr>
               <tr>
+                <th>Entry Year</th>
+                <td>{score.entryYear}</td>
+              </tr>
+              <tr>
                 <th>Batch Id</th>
                 <td>{score.batchId}</td>
               </tr>
             </div>
           );
         })}
+        </>
+        
+        }
     </div>
   );
 };

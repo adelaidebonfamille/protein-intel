@@ -177,6 +177,7 @@ const getAllUserScore = async (req, res, next) => {
 			},
 			faculty: user.faculty,
 			major: user.major,
+			entryYear: user.entryYear,
 			batchId: test.batchId,
 		};
 	});
