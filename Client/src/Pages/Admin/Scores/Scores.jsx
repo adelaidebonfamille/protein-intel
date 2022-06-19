@@ -79,7 +79,7 @@ const Scores = () => {
         {selectedScores?.map((score, index) => {
           return (
             <div className={styles.score} key={index}>
-              <h5>Rank {key+1}</h5>
+              <h5>Rank {index+1}</h5>
               <tr>
                 <th>NIM</th>
                 <td>{score.nim}</td>
