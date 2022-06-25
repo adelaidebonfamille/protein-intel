@@ -150,7 +150,7 @@ const Problems = () => {
     for (let i = 1; i <= 4; i++) {
       formData.append("choice[]", e.target[`choice-${i}`].value);
     }
-
+    //fad
     if (selectedFile) {
       formData.append("problem", selectedFile);
     }
