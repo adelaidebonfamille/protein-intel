@@ -165,6 +165,12 @@ const getAllUserScore = async (req, res, next) => {
 	const scoreAndUserData = allUserScore.map((score) => {
 		const user = allUser.find((user) => user.nim === score.nim);
 		const test = allTest.find((test) => test.nim === score.nim);
+		if (!test) {
+			res.json({
+				message: "No User have started test",
+				allBatchScore: []
+			})
+		}
 
 		return {
 			nim: score.nim,
