@@ -1,15 +1,28 @@
 import styles from "./TextInputForm.module.css";
+import { useId } from "react";
 
 const TextInputForm = (props) => {
+  const questionPreviewId = useId();
+
+  const updatePreview = (e, id) => {
+    document.getElementById(id).innerHTML = e.target.value;//ini jago jago gek ado yang nackal masuki element aneh
+  }
+
   return (
     <form onSubmit={props.handler}>
       {props.children}
       <p>Question</p>
+      <div className={styles["question-preview"]}>
+        <p>Question Preview</p>
+        <div id={questionPreviewId}>
+        </div>
+      </div>
       <textarea
         name="description"
         id=""
         cols="60"
         rows="10"
+        onKeyUp={(e)=>{ updatePreview(e, questionPreviewId) }} 
         required
       ></textarea>
       <p>Options</p>

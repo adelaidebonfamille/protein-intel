@@ -22,7 +22,7 @@ import Scores from "./Pages/Admin/Scores/Scores";
 import Batch from "./Pages/Admin/Batch/Batch";
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
-//fadhil
+
 function App() {
   const authCtx = useContext(AuthContext);
   useEffect(() => {

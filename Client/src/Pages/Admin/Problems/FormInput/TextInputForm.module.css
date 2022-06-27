@@ -1,3 +1,7 @@
+* {
+  outline: 2px solid rgba(0, 100, 0, 50);
+}
+
 .text-inputs {
   display: flex;
   flex-direction: column;
