@@ -155,7 +155,7 @@ const startSubTest = async (req, res, next) => {
 
   let isBatchActive;
   try {
-    isBatchActive = await Batch.findById(test.batchId).isActive;
+    isBatchActive = (await Batch.findById(test.batchId)).isActive;
   } catch (error) {
     return next(error);
   }
@@ -211,7 +211,7 @@ const continueSubTest = async (req, res, next) => {
 
   let isBatchActive;
   try {
-    isBatchActive = await Batch.findById(test.batchId).isActive;
+    isBatchActive = (await Batch.findById(test.batchId)).isActive;
   } catch (error) {
     return next(error);
   }
@@ -322,7 +322,7 @@ const saveTestAnswer = async (req, res, next) => {
 
   let isBatchActive;
   try {
-    isBatchActive = await Batch.findById(test.batchId).isActive;
+    isBatchActive = (await Batch.findById(test.batchId)).isActive;
   } catch (error) {
     return next(error);
   }
