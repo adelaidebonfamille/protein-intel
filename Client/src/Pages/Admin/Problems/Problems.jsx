@@ -1,7 +1,7 @@
 import styles from "./Problems.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 
 import TextInputForm from "./FormInput/TextInputForm";
 import CategoryInput from "./FormInput/CategoryInput";
@@ -357,7 +357,7 @@ const Problems = () => {
                   </>
                 )}
                 <h4>Question</h4>
-                <pre>{problem.description}</pre>
+                <div className={styles.description} dangerouslySetInnerHTML={{__html: problem.description}}></div>
                 <h4>Choice</h4>
                 <ol type="A">
                   {problem.choice.map((choice, index) => (

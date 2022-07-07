@@ -32,6 +32,10 @@ const addProblem = async (req, res, next) => {
 	});
 	if (error) return next(error.details[0]);
 
+  if (/<\/?(?!\/?(?:[bi]|br)\/?>).*\/?>/.test(description)) {
+    return next(new Error("You cant put other html tag except b, i, and br"))
+  }
+
 	for (let c of choice) {
 		if (c === "") {
 			return next(new Error("Each choice must have at least one character"));
@@ -99,6 +103,10 @@ const updateProblemById = async (req, res, next) => {
 
 	const { error } = validation.addProblemValidation(req.body);
 	if (error) return next(error.details[0]);
+
+  if (/<\/?(?!\/?(?:[bi]|br)\/?>).*\/?>/.test(req.body.description)) {
+    return next(new Error("You cant put other html tag except b, i, and br"))
+  }
 
 	for (let c of req.body.choice) {
 		if (c === "") {

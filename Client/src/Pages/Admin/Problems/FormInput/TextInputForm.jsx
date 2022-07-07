@@ -1,21 +1,49 @@
 import styles from "./TextInputForm.module.css";
-import { useId } from "react";
+import { useId, useState } from "react";
 
 const TextInputForm = (props) => {
   const questionPreviewId = useId();
+  const [isQuestionInputWrong, setIsQuestionInputWrong] = useState();
 
+  const submitProblem = (e) => {
+    e.preventDefault();
+    
+    if (!isQuestionInputWrong) {
+      props.handler(e);
+    }
+  }
   const updatePreview = (e, id) => {
-    document.getElementById(id).innerHTML = e.target.value;//ini jago jago gek ado yang nackal masuki element aneh
+    if (/<\/?(?!\/?(?:[bi]|br)\/?>).*\/?>/.test(e.target.value)) {
+      document.getElementById(id).style.color = "red";
+      document.getElementById(id).innerHTML = "INPUT SALAH"
+      setIsQuestionInputWrong(true);
+    } else {
+      document.getElementById(id).style.color = "black";
+      document.getElementById(id).innerHTML = e.target.value;//ini jago jago gek ado yang nackal masuki element aneh
+      setIsQuestionInputWrong(false);
+    }
   }
 
   return (
-    <form onSubmit={props.handler}>
+    <form onSubmit={submitProblem}>
       {props.children}
       <p>Question</p>
+      <br/>
       <div className={styles["question-preview"]}>
-        <p>Question Preview</p>
-        <div className={styles.preview} id={questionPreviewId}>
-        </div>
+        <h5>Question Preview</h5>
+        <div className={styles.preview} id={questionPreviewId}></div>
+        <table>
+          <tr>
+            <td>&lt;b&gt;&lt;/b&gt;</td>
+            <td><b>Bold</b></td>
+            <td>&lt;br/&gt;</td>
+            <td>Enter</td>
+          </tr>
+          <tr>
+            <td>&lt;i&gt;&lt;/i&gt;</td>
+            <td><i>Italic</i></td>
+          </tr>
+        </table>
       </div>
       <textarea
         name="description"
@@ -48,6 +76,11 @@ const TextInputForm = (props) => {
         <label htmlFor="answer-type4">D</label>
       </div>
       <br />
+      {isQuestionInputWrong ? (
+        <div className={styles["question-preview-wrong"]}>MASUKAN PADA BAGIAN QUESTION SALAH, SILAHKAN DIPERIKSA KEMBALI</div>
+      ):(
+        <div></div>
+      )}
       <button type="submit">Add Problem</button>
     </form>
   );

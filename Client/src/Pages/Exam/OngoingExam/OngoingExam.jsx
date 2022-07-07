@@ -225,7 +225,7 @@ const OngoingExam = () => {
                         )}
                         <div className={styles.desc}>
                           <p>{problemIndex + 1}.</p>
-                          <pre>{problem.description}</pre>
+                          <div dangerouslySetInnerHTML={{__html: problem.description}}></div>
                         </div>
                         <div className={styles["radio-list"]}>
                           {problem.choice.map((choice, index) => {

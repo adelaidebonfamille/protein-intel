@@ -1,3 +1,25 @@
+.question-preview td:nth-child(2n) {
+  padding-right: 8rem;
+}
+
+.question-preview td:nth-child(2n+1) {
+  padding-right: 2rem;
+}
+
+.question-preview table {
+  padding-bottom: 1rem;
+}
+
+.question-preview-wrong {
+  color: red;
+}
+
+.preview {
+  background-color: beige;
+  padding: .25rem;
+  min-height: 1rem;
+}
+
 .text-inputs {
   display: flex;
   flex-direction: column;
