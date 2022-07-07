@@ -1,3 +1,7 @@
+.preview {
+  background-color: beige;
+}
+
 .text-inputs {
   display: flex;
   flex-direction: column;

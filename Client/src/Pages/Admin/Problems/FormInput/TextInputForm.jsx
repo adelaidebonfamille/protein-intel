@@ -14,7 +14,7 @@ const TextInputForm = (props) => {
       <p>Question</p>
       <div className={styles["question-preview"]}>
         <p>Question Preview</p>
-        <div id={questionPreviewId}>
+        <div className={styles.preview} id={questionPreviewId}>
         </div>
       </div>
       <textarea
