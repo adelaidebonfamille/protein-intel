@@ -1,5 +1,6 @@
 .preview {
   background-color: beige;
+  min-height: 3rem;
 }
 
 .text-inputs {
