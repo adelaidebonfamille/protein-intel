@@ -62,8 +62,6 @@ const Profile = () => {
     formData.append("entryYear", entryYear.current.value);
     formData.append("phone", phone.current.value);
 
-    console.log(formData);
-
     const config = {
       headers: {
         "content-type": "multipart/form-data",
@@ -75,9 +73,7 @@ const Profile = () => {
       const res = await axios.patch(`${baseUrl}/profile`, formData, config);
       if (res.data.error) return setIsError(res.data.error);
       setIsMessage(res.data.message);
-      console.log(res.data);
     } catch (err) {
-      console.log(err);
       setIsError(err.message);
     }
   };
