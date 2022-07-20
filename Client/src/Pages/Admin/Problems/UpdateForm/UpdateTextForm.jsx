@@ -17,7 +17,7 @@ const UpdateTextForm = (props) => {
   }
 
   const updatePreview = (e, id) => {
-    if (/<\/?(?!\/?(?:[bi]|br)\/?>).*\/?>/.test(e.target.value)) {
+    if (/<\/?(?!\/?(?:[bi]|sup|sub|br)\/?>).*\/?>/.test(e.target.value)) {
       document.getElementById(id).style.color = "red";
       document.getElementById(id).innerHTML = "INPUT SALAH"
       setIsQuestionInputWrong(true);
@@ -173,19 +173,25 @@ const UpdateTextForm = (props) => {
           <tr>
             <td>&lt;b&gt;&lt;/b&gt;</td>
             <td><b>Bold</b></td>
-            <td>&lt;br/&gt;</td>
-            <td>Enter</td>
+            <td>&lt;sup&gt;&lt;/sup&gt;</td>
+            <td>when<sup>2</sup></td>
           </tr>
           <tr>
             <td>&lt;i&gt;&lt;/i&gt;</td>
             <td><i>Italic</i></td>
+            <td>&lt;sub&gt;&lt;/sub&gt;</td>
+            <td>goes<sub>2</sub></td>
+          </tr>
+          <tr>
+            <td>&lt;br/&gt;</td>
+            <td>Enter</td>
           </tr>
         </table>
       </div>
       <textarea
         name="description"
         defaultValue={props.problem.description}
-        onKeyUp={(e)=>{ updatePreview(e, questionPreviewId) }} 
+        onChange={(e)=>{ updatePreview(e, questionPreviewId) }} 
         id=""
         cols="60"
         rows="10"

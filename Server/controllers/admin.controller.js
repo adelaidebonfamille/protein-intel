@@ -32,8 +32,8 @@ const addProblem = async (req, res, next) => {
 	});
 	if (error) return next(error.details[0]);
 
-  if (/<\/?(?!\/?(?:[bi]|br)\/?>).*\/?>/.test(description)) {
-    return next(new Error("You cant put other html tag except b, i, and br"))
+  if (/<\/?(?!\/?(?:[bi]|sup|sub|br)\/?>).*\/?>/.test(description)) {
+    return next(new Error("You cant put other html tag except b, i, sub, sup and br"))
   }
 
 	for (let c of choice) {
@@ -104,7 +104,7 @@ const updateProblemById = async (req, res, next) => {
 	const { error } = validation.addProblemValidation(req.body);
 	if (error) return next(error.details[0]);
 
-  if (/<\/?(?!\/?(?:[bi]|br)\/?>).*\/?>/.test(req.body.description)) {
+  if (/<\/?(?!\/?(?:[bi]|sup|sub|br)\/?>).*\/?>/.test(req.body.description)) {
     return next(new Error("You cant put other html tag except b, i, and br"))
   }
 
