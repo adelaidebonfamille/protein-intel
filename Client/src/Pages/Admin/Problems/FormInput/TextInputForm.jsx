@@ -7,43 +7,51 @@ const TextInputForm = (props) => {
 
   const submitProblem = (e) => {
     e.preventDefault();
-    
+
     if (!isQuestionInputWrong) {
       props.handler(e);
     }
-  }
+  };
   const updatePreview = (e, id) => {
     if (/<\/?(?!\/?(?:[bi]|sup|sub|br)\/?>).*\/?>/.test(e.target.value)) {
       document.getElementById(id).style.color = "red";
-      document.getElementById(id).innerHTML = "INPUT SALAH"
+      document.getElementById(id).innerHTML = "INPUT SALAH";
       setIsQuestionInputWrong(true);
     } else {
       document.getElementById(id).style.color = "black";
-      document.getElementById(id).innerHTML = e.target.value;//ini jago jago gek ado yang nackal masuki element aneh
+      document.getElementById(id).innerHTML = e.target.value; //ini jago jago gek ado yang nackal masuki element aneh
       setIsQuestionInputWrong(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={submitProblem}>
       {props.children}
       <p>Question</p>
-      <br/>
+      <br />
       <div className={styles["question-preview"]}>
         <h5>Question Preview</h5>
         <div className={styles.preview} id={questionPreviewId}></div>
         <table>
           <tr>
-            <td>&lt;b&gt;&lt;/b&gt;</td>
-            <td><b>Bold</b></td>
-            <td>&lt;sup&gt;&lt;/sup&gt;</td>
-            <td>when<sup>2</sup></td>
+            <td>&lt;b&gt;Bold&lt;/b&gt;</td>
+            <td>
+              <b>Bold</b>
+            </td>
+            <td>when&lt;sup&gt;2&lt;/sup&gt;</td>
+            <td>
+              when<sup>2</sup>
+            </td>
           </tr>
           <tr>
-            <td>&lt;i&gt;&lt;/i&gt;</td>
-            <td><i>Italic</i></td>
-            <td>&lt;sub&gt;&lt;/sub&gt;</td>
-            <td>goes<sub>2</sub></td>
+            <td>&lt;i&gt;italic&lt;/i&gt;</td>
+            <td>
+              <i>Italic</i>
+            </td>
+            <td>goes&lt;sub&gt;2&lt;/sub&gt;</td>
+            <td>
+              goes<sub>2</sub>
+            </td>
           </tr>
           <tr>
             <td>&lt;br/&gt;</td>
@@ -56,7 +64,9 @@ const TextInputForm = (props) => {
         id=""
         cols="60"
         rows="10"
-        onChange={(e)=>{ updatePreview(e, questionPreviewId) }} 
+        onChange={(e) => {
+          updatePreview(e, questionPreviewId);
+        }}
         required
       ></textarea>
       <p>Options</p>
@@ -83,8 +93,10 @@ const TextInputForm = (props) => {
       </div>
       <br />
       {isQuestionInputWrong ? (
-        <div className={styles["question-preview-wrong"]}>MASUKAN PADA BAGIAN QUESTION SALAH, SILAHKAN DIPERIKSA KEMBALI</div>
-      ):(
+        <div className={styles["question-preview-wrong"]}>
+          MASUKAN PADA BAGIAN QUESTION SALAH, SILAHKAN DIPERIKSA KEMBALI
+        </div>
+      ) : (
         <div></div>
       )}
       <button type="submit">Add Problem</button>
