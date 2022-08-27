@@ -16,6 +16,7 @@ const Register = () => {
       .register(
         e.target.email.value,
         e.target.name.value,
+        e.target.university.value,
         e.target.nim.value,
         e.target.password.value,
         e.target.confirmPassword.value
@@ -60,6 +61,16 @@ const Register = () => {
                   placeholder="Masukkan Email"
                   required
                   name="email"
+                />
+              </div>
+
+              <div className={styles["input-field"]}>
+                <p>Universitas/Instansi (masukkan nama lengkap)</p>
+                <input
+                  type="text"
+                  placeholder="Universitas Sriwijaya"
+                  required
+                  name="university"
                 />
               </div>
 

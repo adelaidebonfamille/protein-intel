@@ -16,6 +16,7 @@ const Profile = () => {
   const [isError2, setIsError2] = useState(false);
 
   const [name, setName] = useState("");
+  const [university, setUniversity] = useState("");
   const [nim, setNim] = useState("");
   const [email, setEmail] = useState("");
 
@@ -38,6 +39,7 @@ const Profile = () => {
       })
       .then((res) => {
         setName(res.data.user.name);
+        setUniversity(res.data.user.university);
         setNim(res.data.user.nim);
         setEmail(res.data.user.email);
         if (res.data.user.faculty)
@@ -134,6 +136,16 @@ const Profile = () => {
           value={name}
           disabled
           id="name"
+          className={styles.disabled}
+        />
+
+        <label htmlFor="university">Universitas</label>
+        <input
+          type="text"
+          name="university"
+          value={university}
+          disabled
+          id="nim"
           className={styles.disabled}
         />
 

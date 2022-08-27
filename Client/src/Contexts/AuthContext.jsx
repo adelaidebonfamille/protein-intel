@@ -20,13 +20,14 @@ export const AuthProvider = (props) => {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
-  const register = async (email, name, nim, password, confirmPassword) => {
+  const register = async (email, name, university, nim, password, confirmPassword) => {
     try {
       const response = await axios.post(`${BASE_URL}/register`, {
         email,
         name,
         password,
         confirmPassword,
+        university,
         nim,
       });
       if (response.data.error) {
