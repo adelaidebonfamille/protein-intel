@@ -10,7 +10,7 @@ const emailSender = require("../utility/node-mailer");
 const User = require("../models/user.model");
 
 const userRegister = async (req, res, next) => {
-  let { nim, password, confirmPassword, name, email } = req.body;
+  let { university, nim, password, confirmPassword, name, email } = req.body;
   email = email.toLowerCase().trim();
 
   //check if password and confirmPassword are the same
@@ -23,6 +23,7 @@ const userRegister = async (req, res, next) => {
     password,
     name,
     email,
+    university,
   });
   if (error) return next(error.details[0]);
 
@@ -54,6 +55,7 @@ const userRegister = async (req, res, next) => {
     password: hashedPassword,
     name,
     email,
+    university,
   });
 
   try {
