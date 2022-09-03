@@ -139,16 +139,6 @@ const Profile = () => {
           className={styles.disabled}
         />
 
-        <label htmlFor="university">Universitas</label>
-        <input
-          type="text"
-          name="university"
-          value={university}
-          disabled
-          id="nim"
-          className={styles.disabled}
-        />
-
         <label htmlFor="nim">NIM</label>
         <input
           type="text"
@@ -171,6 +161,9 @@ const Profile = () => {
       </form>
       <form onSubmit={updateProfileHandler}>
         {isLoading && <div className={styles.loading}>Loading...</div>}
+
+        <label htmlFor="university">Universitas</label>
+        <input type="text" name="university" id="university" ref={university} />
 
         <label htmlFor="faculty">Fakultas</label>
         <input type="text" name="faculty" id="faculty" ref={faculty} />
