@@ -16,10 +16,10 @@ const Profile = () => {
   const [isError2, setIsError2] = useState(false);
 
   const [name, setName] = useState("");
-  const [university, setUniversity] = useState("");
   const [nim, setNim] = useState("");
   const [email, setEmail] = useState("");
 
+  const university = useRef();
   const faculty = useRef();
   const major = useRef();
   const entryYear = useRef();
@@ -39,9 +39,10 @@ const Profile = () => {
       })
       .then((res) => {
         setName(res.data.user.name);
-        setUniversity(res.data.user.university);
         setNim(res.data.user.nim);
         setEmail(res.data.user.email);
+        if (res.data.user.university)
+          university.current.value = res.data.user.university;
         if (res.data.user.faculty)
           faculty.current.value = res.data.user.faculty;
         if (res.data.user.major) major.current.value = res.data.user.major;
