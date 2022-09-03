@@ -60,6 +60,7 @@ const Profile = () => {
     const formData = new FormData();
 
     formData.append("kpm", selectedFile);
+    formData.append("university", university.current.value);
     formData.append("faculty", faculty.current.value);
     formData.append("major", major.current.value);
     formData.append("entryYear", entryYear.current.value);
