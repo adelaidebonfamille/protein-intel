@@ -22,6 +22,7 @@ import Scores from "./Pages/Admin/Scores/Scores";
 import Batch from "./Pages/Admin/Batch/Batch";
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
+import AdminResetPassword from "./Pages/Admin/ResetPassword/ResetPassword";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -47,6 +48,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
 
         <Route element={<RequireAdmin />}>
+          <Route path="/admin/reset" element={<AdminResetPassword />} />
           <Route path="/admin/problems" element={<Problems />} />
           <Route path="/admin/scores" element={<Scores />} />
           <Route path="/admin/batch" element={<Batch />} />
