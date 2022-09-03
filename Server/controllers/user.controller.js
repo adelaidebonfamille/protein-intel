@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const validation = require("../utility/validation");
 
 const updateUserData = async (req, res, next) => {
-  const { faculty, major, entryYear, phone } = req.body;
+  const { university, faculty, major, entryYear, phone } = req.body;
   const nim = req.user.nim;
   let kpm = "";
   if (req.file !== undefined) {
@@ -15,6 +15,7 @@ const updateUserData = async (req, res, next) => {
   }
 
   validation.updateUserValidation({
+    university,
     faculty,
     major,
     entryYear,
@@ -27,6 +28,7 @@ const updateUserData = async (req, res, next) => {
       { nim },
       {
         $set: {
+          university,
           faculty,
           major,
           entryYear,

@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
     },
     university: {
         type: String,
-        required: true,
     },
     faculty: {
         type: String,
