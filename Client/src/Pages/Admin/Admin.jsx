@@ -38,6 +38,9 @@ const Admin = () => {
           <Link to="batch">
             <div className={styles["category-button"]}>Start Batch</div>
           </Link>
+          <Link to="reset-password">
+            <div className={styles["category-button"]}>Reset User Password</div>
+          </Link>
         </div>
       ) : (
         <div className={styles.container}>
