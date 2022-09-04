@@ -105,6 +105,10 @@ const Scores = () => {
                 <td>{score.subTestScore.structure}</td>
               </tr>
               <tr>
+                <th>University</th>
+                <td>{score.university}</td>
+              </tr>
+              <tr>
                 <th>Faculty</th>
                 <td>{score.faculty}</td>
               </tr>
