@@ -193,6 +193,7 @@ const getAllUserScore = async (req, res, next) => {
         listening: score.listening,
         structure: score.structure,
       },
+      university: user.university,
       faculty: user.faculty,
       major: user.major,
       entryYear: user.entryYear,
