@@ -130,7 +130,7 @@ const OngoingExam = () => {
           <div>
             <div className={styles.title}>
               <div className={styles["title-text"]}>
-                <h1>PROTEIN 2022 - {testGroup.toUpperCase()} SECTION</h1>
+                <h1>PROTEIN 2023 - {testGroup.toUpperCase()} SECTION</h1>
               </div>
             </div>
             {isSureEnding && (
@@ -181,7 +181,6 @@ const OngoingExam = () => {
                       </a>
                     );
                   })}
-                  
                 </div>
               </div>
               <div className={styles.problemSection}>
@@ -225,7 +224,11 @@ const OngoingExam = () => {
                         )}
                         <div className={styles.desc}>
                           <p>{problemIndex + 1}.</p>
-                          <div dangerouslySetInnerHTML={{__html: problem.description}}></div>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: problem.description,
+                            }}
+                          ></div>
                         </div>
                         <div className={styles["radio-list"]}>
                           {problem.choice.map((choice, index) => {

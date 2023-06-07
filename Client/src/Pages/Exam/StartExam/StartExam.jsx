@@ -13,7 +13,7 @@ const StartExam = (props) => {
       <div className={styles.content}>
         <div className={styles.title}>
           <h1>
-            Welcome To <span>Protein</span> 2022
+            Welcome To <span>Protein</span> 2023
           </h1>
           <h2>Click down below to start test</h2>
         </div>

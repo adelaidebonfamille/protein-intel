@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div className={styles.about}>
       <div className={styles["inner-section"]}>
-        <h1>Welcome To Protein 2022</h1>
+        <h1>Welcome To Protein 2023</h1>
         <p className={styles.text}>
           Proteins is TOEFL/SULIET test simulation for Sriwijaya Univesity
           Students, where students can practice solving TOEFL like problems.
