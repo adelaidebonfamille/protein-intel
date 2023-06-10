@@ -27,9 +27,9 @@ const userRegister = async (req, res, next) => {
   });
   if (error) return next(error.details[0]);
 
-  if (!/^\d{5,20}$/.test(nim)) {
-    return next(new Error("Each character in NIM must be a number"));
-  }
+  // if (!/^\d{5,20}$/.test(nim)) {
+  //   return next(new Error("Each character in NIM must be a number"));
+  // }
 
   let existingUserByNim;
   try {
