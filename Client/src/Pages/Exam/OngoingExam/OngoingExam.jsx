@@ -202,7 +202,7 @@ const OngoingExam = () => {
                                       `${import.meta.env.VITE_API_STATIC}/${
                                         problem.associatedFile
                                       }`) ||
-                                    `http://localhost:5000${problem.associatedFile}`
+                                    `http://localhost:5000/${problem.associatedFile}`
                                   }
                                   type="audio/mpeg"
                                 />
@@ -215,7 +215,7 @@ const OngoingExam = () => {
                                     `${import.meta.env.VITE_API_STATIC}/${
                                       problem.associatedFile
                                     }`) ||
-                                  `http://localhost:5000${problem.associatedFile}`
+                                  `http://localhost:5000/${problem.associatedFile}`
                                 }
                                 alt="server failed to retrieve file"
                               />
