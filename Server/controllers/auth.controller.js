@@ -27,9 +27,9 @@ const userRegister = async (req, res, next) => {
   });
   if (error) return next(error.details[0]);
 
-  if (!/^\d{5,20}$/.test(nim)) {
-    return next(new Error("Each character in NIM must be a number"));
-  }
+  // if (!/^\d{5,20}$/.test(nim)) {
+  //   return next(new Error("Each character in NIM must be a number"));
+  // }
 
   let existingUserByNim;
   try {
@@ -174,7 +174,7 @@ const forgotPassword = async (req, res, next) => {
     emailSender({
       to: user.email,
       subject: "Reset Password",
-      html: `<p>Click <a href="${resetPasswordLink}">here</a> to reset your password</p>`,
+      html: `<p>Click <a href="${resetPasswordLink}">here</a> to reset your password</p>\n or here if you can't click it : ${resetPasswordLink}`,
       text: `Click here to reset your password: ${resetPasswordLink}`,
     });
   } catch (error) {
