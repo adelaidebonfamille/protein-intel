@@ -60,10 +60,36 @@ const userRegister = async (req, res, next) => {
 
   try {
     await user.save();
-    res.json({ message: "User created successfully" });
   } catch (err) {
     return next(err);
   }
+
+  //send email
+  const token = generateToken({
+    nim: user.nim,
+    name: user.name,
+    role: "user",
+  });
+
+  const link = `${process.env.FRONTEND_URL}/verify?token=${token}`;
+
+  const mailOptions = {
+    to: user.email,
+    subject: "Verify your email",
+    html: `<h1>Verify your email</h1>
+    <p>Click the link below to verify your email</p>
+    <a href="${link}">${link}</a>`,
+  };
+
+  try {
+    await emailSender(mailOptions);
+  } catch (error) {
+    return next(error);
+  }
+
+  res.json({
+    message: "User registered successfully, please verify your email",
+  });
 };
 
 const userLogin = async (req, res, next) => {
@@ -83,6 +109,8 @@ const userLogin = async (req, res, next) => {
     return next(err);
   }
   if (!user) return next(new Error("User not found"));
+
+  if (!user.isVerified) return next(new Error("User is not verified"));
 
   let isMatch;
   try {
@@ -197,10 +225,25 @@ const resetUserPassword = async (req, res, next) => {
   }
 };
 
+const verifyUser = async (req, res, next) => {
+  const { token } = req.query;
+
+  let isVerified;
+  try {
+    isVerified = resetPassword.verifyLink(token, `${process.env.JWT_SECRET}`);
+  } catch (err) {
+    return next(err);
+  }
+  if (!isVerified) return next(new Error("Link is invalid"));
+
+  res.json({ message: "User verified successfully" });
+};
+
 module.exports = {
   register: userRegister,
   login: userLogin,
   admin: adminLogin,
   forgotPassword,
   resetPassword: resetUserPassword,
+  verify: verifyUser,
 };

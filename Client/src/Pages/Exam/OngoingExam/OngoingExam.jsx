@@ -199,7 +199,7 @@ const OngoingExam = () => {
                                 <source
                                   src={
                                     (import.meta.env.VITE_API_STATIC &&
-                                      `${import.meta.env.VITE_API_STATIC}${
+                                      `${import.meta.env.VITE_API_STATIC}/${
                                         problem.associatedFile
                                       }`) ||
                                     `http://localhost:5000${problem.associatedFile}`
@@ -212,7 +212,7 @@ const OngoingExam = () => {
                                 className={styles["image-file"]}
                                 src={
                                   (import.meta.env.VITE_API_STATIC &&
-                                    `${import.meta.env.VITE_API_STATIC}${
+                                    `${import.meta.env.VITE_API_STATIC}/${
                                       problem.associatedFile
                                     }`) ||
                                   `http://localhost:5000${problem.associatedFile}`

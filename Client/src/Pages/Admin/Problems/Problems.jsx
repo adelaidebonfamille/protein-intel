@@ -333,7 +333,7 @@ const Problems = () => {
                         <source
                           src={
                             (import.meta.env.VITE_API_STATIC &&
-                              `${import.meta.env.VITE_API_STATIC}${
+                              `${import.meta.env.VITE_API_STATIC}/${
                                 problem.associatedFile
                               }`) ||
                             `http://localhost:5000${problem.associatedFile}`
@@ -346,7 +346,7 @@ const Problems = () => {
                         className={styles["image-file"]}
                         src={
                           (import.meta.env.VITE_API_STATIC &&
-                            `${import.meta.env.VITE_API_STATIC}${
+                            `${import.meta.env.VITE_API_STATIC}/${
                               problem.associatedFile
                             }`) ||
                           `http://localhost:5000${problem.associatedFile}`
@@ -357,7 +357,10 @@ const Problems = () => {
                   </>
                 )}
                 <h4>Question</h4>
-                <div className={styles.description} dangerouslySetInnerHTML={{__html: problem.description}}></div>
+                <div
+                  className={styles.description}
+                  dangerouslySetInnerHTML={{ __html: problem.description }}
+                ></div>
                 <h4>Choice</h4>
                 <ol type="A">
                   {problem.choice.map((choice, index) => (
