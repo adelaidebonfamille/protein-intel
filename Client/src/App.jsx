@@ -28,6 +28,8 @@ function App() {
   const authCtx = useContext(AuthContext);
   useEffect(() => {
     authCtx.loadUser();
+    console.log("static : " + import.meta.env.VITE_API_STATIC);
+    console.log("api : " + import.meta.env.VITE_API_URL);
     console.log(authCtx.userData);
   }, []);
 
@@ -48,7 +50,10 @@ function App() {
         <Route path="/admin" element={<Admin />} />
 
         <Route element={<RequireAdmin />}>
-          <Route path="/admin/reset-password" element={<AdminResetPassword />} />
+          <Route
+            path="/admin/reset-password"
+            element={<AdminResetPassword />}
+          />
           <Route path="/admin/problems" element={<Problems />} />
           <Route path="/admin/scores" element={<Scores />} />
           <Route path="/admin/batch" element={<Batch />} />
