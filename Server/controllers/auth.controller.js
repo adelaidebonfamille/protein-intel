@@ -110,8 +110,6 @@ const userLogin = async (req, res, next) => {
   }
   if (!user) return next(new Error("User not found"));
 
-  if (!user.isVerified) return next(new Error("User is not verified"));
-
   let isMatch;
   try {
     isMatch = await bcrypt.compare(password, user.password);
