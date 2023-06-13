@@ -40,7 +40,7 @@ const addProblem = async (req, res, next) => {
     );
   }
 
-  for (let c of choice) {
+  for (const c of choice) {
     if (c === "") {
       return next(new Error("Each choice must have at least one character"));
     }
@@ -112,7 +112,7 @@ const updateProblemById = async (req, res, next) => {
     return next(new Error("You cant put other html tag except b, i, and br"));
   }
 
-  for (let c of req.body.choice) {
+  for (const c of req.body.choice) {
     if (c === "") {
       return next(new Error("Each choice must have at least one character"));
     }

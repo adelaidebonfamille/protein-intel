@@ -12,6 +12,7 @@ const authRoutes = require("./routers/auth.routes");
 const adminRoutes = require("./routers/admin.routes");
 const testRoutes = require("./routers/test.routes");
 const userRoutes = require("./routers/user.routes");
+const uploadRoutes = require("./routers/upload.routes");
 
 const app = express();
 
@@ -20,10 +21,14 @@ try {
 
   dotenv.config();
 
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
-
   app.use("/problems/files", express.static("./problem-data/files"));
+
+  app.use("/upload", uploadRoutes);
+
+  app.use(
+    bodyParser.json(),
+    bodyParser.urlencoded({ extended: true, limit: "100mb" })
+  );
 
   app.get("/api", (req, res) => {
     res.send("Hello World!");
