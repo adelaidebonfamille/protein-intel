@@ -28,8 +28,6 @@ function App() {
   const authCtx = useContext(AuthContext);
   useEffect(() => {
     authCtx.loadUser();
-    console.log("static : " + import.meta.env.VITE_API_STATIC);
-    console.log("api : " + import.meta.env.VITE_API_URL);
     console.log(authCtx.userData);
   }, []);
 

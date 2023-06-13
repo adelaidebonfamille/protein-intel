@@ -24,7 +24,29 @@ const Problems = () => {
     "http://localhost:5000/api/admin/problems";
 
   const fileChangedHandler = (e) => {
-    setSelectedFile(e.target.files[0]);
+    // setSelectedFile(e.target.files[0]);
+    const formData = new FormData();
+
+    formData.append("problemUpload", e.target.files[0]);
+
+    const URL =
+      (import.meta.env.VITE_API_STATIC &&
+        `${import.meta.env.VITE_API_STATIC}/upload/problem`) ||
+      "http://localhost:5000/upload/problem";
+
+    console.log(URL);
+
+    axios
+      .post(URL, formData, {
+        headers: { "auth-token": localStorage.getItem("token") },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setSelectedFile(res.data.problem);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const fileCanceledHandler = (e) => {
     setSelectedFile(null);
@@ -70,29 +92,30 @@ const Problems = () => {
   const addProblemHandler = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-
-    formData.append("description", e.target.description.value);
-    formData.append("key", e.target.key.value);
-    formData.append("type", e.target.type.value);
-
-    for (let i = 1; i <= 4; i++) {
-      formData.append("choice[]", e.target[`choice-${i}`].value);
-    }
-
-    if (selectedFile) {
-      formData.append("problem", selectedFile);
+    let choice = [];
+    for (let i = 0; i < 4; i++) {
+      choice[i] = e.target[`choice-${i + 1}`].value;
     }
 
     setIsLoading(true);
     let response;
     try {
-      response = await axios.post(baseUrl, formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-          "auth-token": localStorage.getItem("token"),
+      response = await axios.post(
+        baseUrl,
+        {
+          description: e.target.description.value,
+          key: e.target.key.value,
+          type: e.target.type.value,
+          problemPath: selectedFile,
+          choice: choice,
         },
-      });
+        {
+          headers: {
+            "auth-token": localStorage.getItem("token"),
+          },
+        }
+      );
+      setSelectedFile(null);
     } catch (error) {
       return console.log(error);
     }
@@ -141,34 +164,35 @@ const Problems = () => {
     setIsLoading(true);
     e.preventDefault();
 
-    const formData = new FormData();
-
-    formData.append("description", e.target.description.value);
-    formData.append("key", e.target.key.value);
-    formData.append("type", e.target.type.value);
-
-    for (let i = 1; i <= 4; i++) {
-      formData.append("choice[]", e.target[`choice-${i}`].value);
+    let choice = [];
+    for (let i = 0; i < 4; i++) {
+      choice[i] = e.target[`choice-${i + 1}`].value;
     }
 
-    if (selectedFile) {
-      formData.append("problem", selectedFile);
-    }
+    console.log(e.target.description.value);
 
     let response;
     try {
       response = await axios.patch(
         `${baseUrl}/${e.target.id.value}`,
-        formData,
+        {
+          description: e.target.description.value,
+          key: e.target.key.value,
+          type: e.target.type.value,
+          choice: choice,
+          problemPath: selectedFile,
+        },
         {
           headers: {
-            "content-type": "multipart/form-data",
             "auth-token": localStorage.getItem("token"),
           },
         }
       );
     } catch (error) {
       return console.log(error);
+    } finally {
+      setSelectedFile(null);
+      setIsLoading(false);
     }
     if (!response) {
       return console.log("error Connecting to server");
