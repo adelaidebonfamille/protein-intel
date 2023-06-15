@@ -199,10 +199,10 @@ const OngoingExam = () => {
                                 <source
                                   src={
                                     (import.meta.env.VITE_API_STATIC &&
-                                      `${import.meta.env.VITE_API_STATIC}${
+                                      `${import.meta.env.VITE_API_STATIC}/${
                                         problem.associatedFile
                                       }`) ||
-                                    `http://localhost:5000${problem.associatedFile}`
+                                    `http://localhost:5000/${problem.associatedFile}`
                                   }
                                   type="audio/mpeg"
                                 />
@@ -212,10 +212,10 @@ const OngoingExam = () => {
                                 className={styles["image-file"]}
                                 src={
                                   (import.meta.env.VITE_API_STATIC &&
-                                    `${import.meta.env.VITE_API_STATIC}${
+                                    `${import.meta.env.VITE_API_STATIC}/${
                                       problem.associatedFile
                                     }`) ||
-                                  `http://localhost:5000${problem.associatedFile}`
+                                  `http://localhost:5000/${problem.associatedFile}`
                                 }
                                 alt="server failed to retrieve file"
                               />

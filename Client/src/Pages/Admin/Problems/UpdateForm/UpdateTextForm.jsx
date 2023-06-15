@@ -78,7 +78,7 @@ const UpdateTextForm = (props) => {
                 <source
                   src={
                     (import.meta.env.VITE_API_STATIC &&
-                      `${import.meta.env.VITE_API_STATIC}${
+                      `${import.meta.env.VITE_API_STATIC}/${
                         props.problem.associatedFile
                       }`) ||
                     `http://localhost:5000${props.problem.associatedFile}`
@@ -94,7 +94,7 @@ const UpdateTextForm = (props) => {
               <img
                 src={
                   (import.meta.env.VITE_API_STATIC &&
-                    `${import.meta.env.VITE_API_STATIC}${
+                    `${import.meta.env.VITE_API_STATIC}/${
                       props.problem.associatedFile
                     }`) ||
                   `http://localhost:5000${props.problem.associatedFile}`

@@ -6,6 +6,7 @@ dotenv.config();
 let mongodbUrl = process.env.DEV_DB_CONNECT;
 
 async function connectToDatabase() {
+  console.log("DB:", process.env.DB_CONNECT);
   if (process.env.DB_CONNECT) {
     mongodbUrl = `${process.env.DB_CONNECT}`;
   }

@@ -48,7 +48,10 @@ function App() {
         <Route path="/admin" element={<Admin />} />
 
         <Route element={<RequireAdmin />}>
-          <Route path="/admin/reset-password" element={<AdminResetPassword />} />
+          <Route
+            path="/admin/reset-password"
+            element={<AdminResetPassword />}
+          />
           <Route path="/admin/problems" element={<Problems />} />
           <Route path="/admin/scores" element={<Scores />} />
           <Route path="/admin/batch" element={<Batch />} />

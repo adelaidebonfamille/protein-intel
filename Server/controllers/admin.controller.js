@@ -21,10 +21,9 @@ const readAllProblems = async (req, res, next) => {
 };
 
 const addProblem = async (req, res, next) => {
-  const { description, key, type, choice } = req.body;
+  const { description, key, type, choice, problemPath } = req.body;
 
-  const associatedFile =
-    req.file !== undefined ? `/problems/files/${req.file.filename}` : "";
+  console.log(problemPath);
 
   const { error } = validation.addProblemValidation({
     description,
@@ -40,7 +39,7 @@ const addProblem = async (req, res, next) => {
     );
   }
 
-  for (let c of choice) {
+  for (const c of choice) {
     if (c === "") {
       return next(new Error("Each choice must have at least one character"));
     }
@@ -53,7 +52,7 @@ const addProblem = async (req, res, next) => {
   const problem = new Problem({
     description,
     key,
-    associatedFile,
+    associatedFile: problemPath,
     type,
     choice,
   });
@@ -88,48 +87,47 @@ const deleteProblemById = async (req, res, next) => {
 
 const updateProblemById = async (req, res, next) => {
   const { id } = req.params;
+  const { description, type, choice, key, problemPath } = req.body;
 
   const existingProblem = await Problem.findById(id);
   if (!existingProblem) return next(new Error("Problem not found"));
 
   let file;
-  if (req.file !== undefined) {
-    file = `/problems/files/${req.file.filename}`;
-
-    try {
-      moveDeletedFile(existingProblem.associatedFile);
-    } catch (error) {
-      return next(error);
-    }
+  if (problemPath) {
+    file = problemPath;
   } else {
     file = existingProblem.associatedFile;
   }
 
-  const { error } = validation.addProblemValidation(req.body);
+  const { error } = validation.addProblemValidation({
+    description,
+    key,
+    type,
+    choice,
+  });
   if (error) return next(error.details[0]);
 
   if (/<\/?(?!\/?(?:[bi]|sup|sub|br)\/?>).*\/?>/.test(req.body.description)) {
     return next(new Error("You cant put other html tag except b, i, and br"));
   }
 
-  for (let c of req.body.choice) {
+  for (const c of choice) {
     if (c === "") {
       return next(new Error("Each choice must have at least one character"));
     }
   }
 
-  if (
-    req.body.type !== "listening" &&
-    req.body.type !== "reading" &&
-    req.body.type !== "structure"
-  ) {
+  if (type !== "listening" && type !== "reading" && type !== "structure") {
     return next(new Error("Type must be listening, reading or structure"));
   }
 
   try {
     await Problem.findByIdAndUpdate(id, {
       $set: {
-        ...req.body,
+        description,
+        type,
+        choice,
+        key,
         associatedFile: file,
       },
     });
