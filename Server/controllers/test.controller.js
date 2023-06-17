@@ -90,9 +90,9 @@ const startTest = async (req, res, next) => {
   }));
 
   const testAnswers = {
-    reading: randomizeArrayAlgorithm(readingAnswersFilled, 50),
-    listening: randomizeArrayAlgorithm(listeningAnswersFilled, 50),
-    structure: randomizeArrayAlgorithm(structureAnswersFilled, 40),
+    reading: readingAnswersFilled,
+    listening: listeningAnswersFilled,
+    structure: structureAnswersFilled,
   };
 
   const testTime = {
