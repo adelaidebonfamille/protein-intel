@@ -11,7 +11,7 @@ const TestSchema = new mongoose.Schema({
         required: true,
     },
     testTime: {
-        type: Number,
+        type: Object,
         required: true,
     },
     isTestOver: {
