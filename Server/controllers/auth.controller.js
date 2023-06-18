@@ -10,7 +10,6 @@ const emailSender = require("../utility/node-mailer");
 const User = require("../models/user.model");
 
 const userRegister = async (req, res, next) => {
-  return next(new Error("Registration is closed"));
   let { university, nim, password, confirmPassword, name, email } = req.body;
   email = email.toLowerCase().trim();
 
