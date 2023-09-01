@@ -127,7 +127,7 @@ const Profile = () => {
           href="https://chat.whatsapp.com/GDwWZ3mw2d0GSXSJuQfFNr"
           target="_blank"
         >
-          https://chat.whatsapp.com/J8j8pSh1sdF3rWCETu1BWs
+          Here
         </a>
       </div>
       <form>
