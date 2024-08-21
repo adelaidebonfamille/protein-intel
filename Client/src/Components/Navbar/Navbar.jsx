@@ -25,7 +25,16 @@ const Navbar = () => {
     <div className={styles.container}>
       <nav className={styles.nav}>
         <div className={styles.logoContainer}>
-          <Link className={styles.logo} to={"/"}>
+          <Link
+            className={styles.logo}
+            to={
+              authCtx.userData
+                ? authCtx.userData.role === "admin"
+                  ? "/admin" // Arahkan ke halaman admin jika user adalah admin
+                  : "/profile" // Arahkan ke halaman profil user jika bukan admin
+                : "/"
+            }
+          >
             <img src={logo} alt="intel-logo" />
             <h1 className={styles["logo-text"]}>
               Protein <span className={styles["logo-text-int"]}>INT</span>
@@ -44,9 +53,11 @@ const Navbar = () => {
         </div>
 
         <ul className={styles.link1}>
-          <li>
-            <Link to={"/"}>Home</Link>
-          </li>
+          {!authCtx.userData && ( // Menyembunyikan tombol Home jika user sudah login
+            <li>
+              <Link to={"/"}>Home</Link>
+            </li>
+          )}
           {authCtx.userData && authCtx.userData.role === "admin" ? (
             <>
               <li>
@@ -58,9 +69,11 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <li>
-                <Link to={"/exam"}>Exam</Link>
-              </li>
+              {authCtx.userData && ( // Menampilkan Exam hanya jika user sudah login
+                <li>
+                  <Link to={"/exam"}>Exam</Link>
+                </li>
+              )}
               <li>
                 <a href="https://intel.ilkom.unsri.ac.id/" target="_blank">
                   About Us
@@ -115,7 +128,9 @@ const Navbar = () => {
         className={`${styles.menu} ${!showMenu && styles.hideMenu}`}
         onClick={clickMenuHandler}
       >
-        <Link to={"/"}>Home</Link>
+        {!authCtx.userData && ( // Menyembunyikan tombol Home jika user sudah login
+          <Link to={"/"}>Home</Link>
+        )}
         {authCtx.userData && authCtx.userData.role === "admin" ? (
           <>
             <Link to={"/admin/problems"}>Problems</Link>
@@ -123,7 +138,9 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <Link to={"/exam"}>Exam</Link>
+            {authCtx.userData && ( // Menampilkan Exam hanya jika user sudah login
+              <Link to={"/exam"}>Exam</Link>
+            )}
             <a href="https://intel.ilkom.unsri.ac.id/" target="_blank">
               About Us
             </a>
