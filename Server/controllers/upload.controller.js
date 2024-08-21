@@ -37,7 +37,7 @@ const problemUpload = (req, res) => {
       res.json({ error: "No file uploaded" });
       return;
     }
-    res.json({ problem: `/problems/files/${problemFilename}` });
+    res.json({ problem: `problems/files/${problemFilename}` });
   });
   req.pipe(bb);
   return;
