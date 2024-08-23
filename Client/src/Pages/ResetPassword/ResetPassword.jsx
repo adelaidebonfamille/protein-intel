@@ -17,7 +17,7 @@ const ResetPassword = () => {
       `${
         import.meta.env.VITE_API_URL
       }/auth/reset-password?token=${token}&id=${id}`) ||
-    `http://82.112.237.86:5000/api/auth/reset-password?token=${token}`;
+    `https://82.112.237.86:5000/api/auth/reset-password?token=${token}`;
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
