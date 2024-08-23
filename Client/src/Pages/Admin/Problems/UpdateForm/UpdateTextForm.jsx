@@ -81,7 +81,7 @@ const UpdateTextForm = (props) => {
                       `${import.meta.env.VITE_API_STATIC}/${
                         props.problem.associatedFile
                       }`) ||
-                    `http://82.112.237.86:5000${props.problem.associatedFile}`
+                    `https://82.112.237.86:5000${props.problem.associatedFile}`
                   }
                   type="audio/mpeg"
                 />
@@ -97,7 +97,7 @@ const UpdateTextForm = (props) => {
                     `${import.meta.env.VITE_API_STATIC}/${
                       props.problem.associatedFile
                     }`) ||
-                  `http://82.112.237.86:5000${props.problem.associatedFile}`
+                  `https://82.112.237.86:5000${props.problem.associatedFile}`
                 }
                 alt="server failed to retrieve file"
                 className={styles["image-file"]}
