@@ -21,7 +21,7 @@ const Problems = () => {
   const baseUrl =
     (import.meta.env.VITE_API_URL &&
       `${import.meta.env.VITE_API_URL}/admin/problems`) ||
-    "http://localhost:5000/api/admin/problems";
+    "http://82.112.237.86:5000/api/admin/problems";
 
   const fileChangedHandler = (e) => {
     // setSelectedFile(e.target.files[0]);
@@ -32,7 +32,7 @@ const Problems = () => {
     const URL =
       (import.meta.env.VITE_API_STATIC &&
         `${import.meta.env.VITE_API_STATIC}/upload/problem`) ||
-      "http://localhost:5000/upload/problem";
+      "http://82.112.237.86:5000/upload/problem";
 
     console.log(URL);
 
@@ -360,7 +360,7 @@ const Problems = () => {
                               `${import.meta.env.VITE_API_STATIC}${
                                 problem.associatedFile
                               }`) ||
-                            `http://localhost:5000/${problem.associatedFile}`
+                            `http://82.112.237.86:5000/${problem.associatedFile}`
                           }
                           type="audio/mpeg"
                         />
@@ -373,7 +373,7 @@ const Problems = () => {
                             `${import.meta.env.VITE_API_STATIC}${
                               problem.associatedFile
                             }`) ||
-                          `http://localhost:5000/${problem.associatedFile}`
+                          `http://82.112.237.86:5000/${problem.associatedFile}`
                         }
                         alt="server failed to retrieve file"
                       />
