@@ -7,7 +7,7 @@ const Scores = () => {
   const baseUrl =
     (import.meta.env.VITE_API_URL &&
       `${import.meta.env.VITE_API_URL}/admin/scores`) ||
-    "http://localhost:5000/api/admin/scores";
+    "http://82.112.237.86:5000/api/admin/scores";
 
   const [allScores, setAllScores] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState("");
