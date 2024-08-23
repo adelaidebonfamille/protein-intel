@@ -11,7 +11,7 @@ const Exam = () => {
   const authCtx = useContext(AuthContext);
   const baseUrl =
     (import.meta.env.VITE_API_URL && `${import.meta.env.VITE_API_URL}/test`) ||
-    "http://82.112.237.86:5000/api/test";
+    "https://82.112.237.86:5000/api/test";
 
   const [isLoading, setIsLoading] = useState(true);
   const [isNotStarted, setIsNotStarted] = useState(true);
