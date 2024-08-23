@@ -23,7 +23,7 @@ const OngoingExam = () => {
 
   const BASE_URL =
     (import.meta.env.VITE_API_URL && `${import.meta.env.VITE_API_URL}/test`) ||
-    "http://82.112.237.86:5000/api/test";
+    "https://82.112.237.86:5000/api/test";
 
   useEffect(() => {
     const getData = async () => {
@@ -202,7 +202,7 @@ const OngoingExam = () => {
                                       `${import.meta.env.VITE_API_STATIC}/${
                                         problem.associatedFile
                                       }`) ||
-                                    `http://82.112.237.86:5000/${problem.associatedFile}`
+                                    `https://82.112.237.86:5000/${problem.associatedFile}`
                                   }
                                   type="audio/mpeg"
                                 />
@@ -215,7 +215,7 @@ const OngoingExam = () => {
                                     `${import.meta.env.VITE_API_STATIC}/${
                                       problem.associatedFile
                                     }`) ||
-                                  `http://82.112.237.86:5000/${problem.associatedFile}`
+                                  `https://82.112.237.86:5000/${problem.associatedFile}`
                                 }
                                 alt="server failed to retrieve file"
                               />
