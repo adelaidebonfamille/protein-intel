@@ -7,7 +7,7 @@ const ResetPassword = () => {
   const baseUrl =
     (import.meta.env.VITE_API_URL &&
       `${import.meta.env.VITE_API_URL}/admin/reset-password`) ||
-      "http://localhost:5000/api/admin/reset-password";
+      "http://82.112.237.86:5000/api/admin/reset-password";
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
