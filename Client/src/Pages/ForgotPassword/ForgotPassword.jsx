@@ -6,7 +6,7 @@ import styles from "./ForgotPassword.module.css";
 const API_URL =
   (import.meta.env.VITE_API_URL &&
     `${import.meta.env.VITE_API_URL}/auth/forgot-password`) ||
-  "http://82.112.237.86:5000/api/auth/forgot-password";
+  "https://82.112.237.86:5000/api/auth/forgot-password";
 
 const ForgotPassword = () => {
   const [isMessage, setIsMessage] = useState(null);
