@@ -5,7 +5,7 @@ import styles from "./Profile.module.css";
 const Profile = () => {
   const baseUrl =
     (import.meta.env.VITE_API_URL && `${import.meta.env.VITE_API_URL}/user`) ||
-    "http://82.112.237.86:5000/api/user";
+    "https://82.112.237.86:5000/api/user";
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [kpmName, setKpmName] = useState("Tidak Ada File Terpilih");
@@ -124,7 +124,7 @@ const Profile = () => {
         <br />
         <h4>Join Protein Whatsapp Group (mandatory)</h4>
         <a
-          href="https://chat.whatsapp.com/GDwWZ3mw2d0GSXSJuQfFNr"
+          href="httpss://chat.whatsapp.com/GDwWZ3mw2d0GSXSJuQfFNr"
           target="_blank"
         >
           Here
