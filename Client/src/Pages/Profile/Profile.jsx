@@ -5,7 +5,7 @@ import styles from "./Profile.module.css";
 const Profile = () => {
   const baseUrl =
     (import.meta.env.VITE_API_URL && `${import.meta.env.VITE_API_URL}/user`) ||
-    "http://localhost:5000/api/user";
+    "http://82.112.237.86:5000/api/user";
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [kpmName, setKpmName] = useState("Tidak Ada File Terpilih");
