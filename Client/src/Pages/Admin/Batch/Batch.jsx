@@ -8,7 +8,7 @@ const Batch = () => {
   const baseUrl =
     (import.meta.env.VITE_API_URL &&
       `${import.meta.env.VITE_API_URL}/admin/batch`) ||
-    "http://localhost:5000/api/admin/batch";
+    "http://82.112.237.86:5000/api/admin/batch";
 
   const [allBatch, setAllBatch] = useState([]);
   const getAllBatch = async () => {
