@@ -124,7 +124,7 @@ const Profile = () => {
         <br />
         <h4>Join Protein Whatsapp Group (mandatory)</h4>
         <a
-          href="httpss://chat.whatsapp.com/GDwWZ3mw2d0GSXSJuQfFNr"
+          href="https://chat.whatsapp.com/GDwWZ3mw2d0GSXSJuQfFNr"
           target="_blank"
         >
           Here
