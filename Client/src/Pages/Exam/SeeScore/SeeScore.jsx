@@ -7,7 +7,7 @@ import AnimatedNumber from "react-animated-number";
 export default function SeeScore() {
   const baseUrl =
     (import.meta.env.VITE_API_URL && `${import.meta.env.VITE_API_URL}`) ||
-    "http://82.112.237.86:5000/api";
+    "https://82.112.237.86:5000/api";
 
   const [scores, setScores] = useState({});
   const [isLoading, setIsLoading] = useState(true);
